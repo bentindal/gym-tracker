@@ -1,0 +1,38 @@
+<%= erb :"common/nav" %>
+
+<body>
+    <main>
+        <div id="spacer">
+            <div id="loginBox">
+
+                <h1>Sign In</h1>
+                <strong><p id="hintText">Enter your details below</p></strong>
+
+                <form action="/validate_login" method="post">
+                    <p><label for="word">Username</label>
+                    <br>
+                    <input type="text" id="customWord" name="username" maxlength="14" minlength="3" required></p>
+
+                    <p><label for="word">Password</label>
+                    <br>
+                    <input type="password" id="customDefinition" name="password" required></p>
+
+                    <input type="submit" id="registerButton" value="Login">
+                </form>
+
+            </div>
+        </div>
+    </main>
+</body>
+
+<script>
+if ("<%=@hint%>" !== ""){
+    document.getElementById("hintText").innerText = "<%=@hint%>"
+    document.getElementById("hintText").classList.add("red")
+}
+</script>
+
+<%= erb :"common/footer" %>
+
+</html>
+
