@@ -21,17 +21,24 @@ get "/login" do
 end
 
 get "/logout" do 
-  session[:loggedIn] = false
-  session[:userID] = nil
-  erb :logout
+  if session[:LoggedIn]
+    session[:LoggedIn] = false
+    session[:UserID] = "none"
+    session[:Nickname] = "none"
+    erb :main
+  else
+    # ERROR: Cant logout if your not signed in
+    erb :notsignedin
+  end
 end
 
 post "/validate_login" do
   usernameAttempt = params[:username]
   passwordAttempt = params[:password]
   results = validateLogin(usernameAttempt, passwordAttempt)
-  session[:loggedIn] = results[0]
-  session[:userID] = results[1]
+  session[:LoggedIn] = results[0]
+  session[:UserID] = results[1]
+  session[:Nickname] = results[2]
   if results[0] == true
     redirect "/"
   else
