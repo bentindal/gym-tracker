@@ -16,7 +16,7 @@ end
 
 get "/login" do
   @page_name = "Login"
-  @hint = "&nbsp"
+  @hint = ""
   erb :login
 end
 
