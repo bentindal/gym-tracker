@@ -160,13 +160,13 @@ input{
     font-weight: bold;
 }
 th{
-    background-color:rgb(11, 52, 83);
+    background-color:rgb(7, 46, 76);
     font-size: 1em;
     padding: 1em;
 }
 
 td{
-    background-color: rgb(30, 61, 90);
+    background-color: rgb(32, 67, 100);
     font-size: 1.2em;
 }
 
@@ -256,6 +256,9 @@ td{
     #spacer{
         margin-left: 5%;
         margin-right: 5%;
+    }
+    table{
+        font-size: 1.2em;
     }
     footer{
         font-size: 12px;
