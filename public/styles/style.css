@@ -169,13 +169,13 @@ td{
 @media screen and (min-width: 220px){ /* Normal Phone */
     nav ul{
         border-radius: 0.2em;
-        font-size: 0.8em;
-    }
-    nav #header{
         font-size: 1em;
     }
+    nav #header{
+        font-size: 1.2em;
+    }
     body header {
-        font-size: 0.8em;
+        font-size: 1em;
     }
     #loginBox{
         width: 100%;
@@ -222,7 +222,7 @@ td{
 
 @media screen and (min-width: 390px){ /* larger phone */
     body header {
-        font-size: 0.9em;
+        font-size: 1.2em;
     }
     #loginButton{
         width: 30%;
