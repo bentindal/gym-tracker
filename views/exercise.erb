@@ -1,0 +1,46 @@
+<%= erb :"common/nav" %>
+<link rel="stylesheet" href="../styles/style.css">
+
+<body>
+    <main>
+        <div id="spacer">
+            <h1><%= @workoutName %></h1>
+            <span id="clock"><%=Time.now.strftime("%H:%M:%S")%></span>
+
+            <br><br>
+
+            <table class="profile">
+                    <tr>
+                        <th>Repetitions</th>
+                        <th>Weight</th>
+                        <th>Time</th>
+                        <th>Date</th>
+                    </tr>
+                    <% @target.each do |workout| %>
+                    <tr>
+                      <td><%= workout[:Reps] %></td>
+                      <td><%= workout[:Weight].to_s %></td>
+                      <td><%= workout[:Time] %></td>
+                      <td><%= workout[:Date] %></td>
+                    </tr>
+                    <%end%>
+                    <tr>
+                        <form action="/custom-game" method="post">
+                            <td><input type="number" name="Repetitions"required></td>
+                            <td><input type="number" name="Weight" required></td>
+                            <td id="clock2"><%=Time.now.strftime("%H:%M:%S")%></td>
+                            <td><%=Time.now.strftime("%d/%m/%Y")%></td>
+                            <td><input type="submit" id="registerButton" value="Add Set"></td>
+                        </form>
+                    </tr>
+                </form>
+                </table>
+        </div>
+    </main>
+</body>
+
+<%= erb :"common/footer" %>
+<script type="text/javascript" src="../scripts/time.js"></script>
+
+</html>
+

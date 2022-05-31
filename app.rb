@@ -16,6 +16,7 @@ end
 
 get "/profile" do
   if session[:LoggedIn]
+    @targetUser = DB[:EXERCISES].first(UserID: session[:UserID])
     @page_name = "Profile"
     erb :profile
   else
@@ -55,6 +56,16 @@ post "/validate_login" do
   end
 end
 
+get "/profile/exercise" do
+  if session[:LoggedIn] && params[:id] != nil
+    @workoutName = DB[:EXERCISES].first(UserID: session[:UserID])[:Name]
+    @target = DB[:WORKOUTS].where(ExID: params[:id])
+    @page_name = "Profile"
+    erb :exercise
+  else
+    erb :notsignedin
+  end
+end
 error 404 do
   erb :pagenotfound
 end

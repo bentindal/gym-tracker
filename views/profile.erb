@@ -5,6 +5,15 @@
         <div id="spacer">
             <h1>Your Profile</h1>
             <p>hello there!</p>
+            <table class="profile">
+                    <tr>
+                        <th>Exercise Name</th>
+                    </tr>
+                    <tr>
+                      <td><%= @targetUser[:Name] %></td>
+                      <td><a href="/profile/exercise?id=<%= @targetUser[:ExID]%>">View</a></td>
+                    </tr>
+                </table>
         </div>
     </main>
 </body>
