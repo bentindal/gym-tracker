@@ -121,6 +121,7 @@ footer {
     height: 40px;
     font-size: 0.6em;
     text-align: center;
+    position: fixed;
     background-color: #1e4366;
     color: rgb(255, 255, 255);
 }
