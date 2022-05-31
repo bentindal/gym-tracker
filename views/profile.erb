@@ -3,15 +3,24 @@
 <body>
     <main>
         <div id="spacer">
-            <h1>Your Profile</h1>
-            <p>hello there!</p>
+            <h1>All Exercises</h1>
+            <br>
             <table class="profile">
                     <tr>
                         <th>Exercise Name</th>
+                        <th>Options</th>
                     </tr>
+                    <% @target.each do |exercise| %>
                     <tr>
-                      <td><%= @targetUser[:Name] %></td>
-                      <td><a href="/profile/exercise?id=<%= @targetUser[:ExID]%>">View</a></td>
+                      <td><%= exercise[:Name] %></td>
+                      <td><a href="/workouts/exercise?id=<%= exercise[:ExID]%>">View</a></td>
+                    </tr>
+                    <%end%>
+                    <tr>
+                        <form action="/workouts" method="post">
+                            <td><input type="text" name="Name" required></td>
+                            <td><input type="submit" value="New Exercise"></td>
+                        </form>
                     </tr>
                 </table>
         </div>

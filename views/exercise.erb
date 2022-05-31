@@ -1,13 +1,13 @@
 <%= erb :"common/nav" %>
 <link rel="stylesheet" href="../styles/style.css">
-
+<script>
+    var lastRepCount = ""
+    var lastWeightCount = ""
+</script>
 <body>
     <main>
         <div id="spacer">
             <h1><%= @workoutName %></h1>
-            <span id="clock"><%=Time.now.strftime("%H:%M:%S")%></span>
-
-            <br><br>
 
             <table class="profile">
                     <tr>
@@ -23,24 +23,31 @@
                       <td><%= workout[:Time] %></td>
                       <td><%= workout[:Date] %></td>
                     </tr>
+                    <script>
+                        lastRepCount = "<%=workout[:Reps]%>"
+                        lastWeightCount = "<%=workout[:Weight]%>"
+                    </script>
                     <%end%>
-                    <tr>
-                        <form action="/custom-game" method="post">
-                            <td><input type="number" name="Repetitions"required></td>
-                            <td><input type="number" name="Weight" required></td>
+            </table>
+            <br>
+            <p>Add New Set</p>
+            <table>
+                    <tr id="editRow">
+                        <form action="/workouts/exercise?id=<%=@id%>" method="post">
+                            <td><input type="number" id="reps" name="Reps" required></td>
+                            <td><input type="number" id="weight" name="Weight" required></td>
                             <td id="clock2"><%=Time.now.strftime("%H:%M:%S")%></td>
                             <td><%=Time.now.strftime("%d/%m/%Y")%></td>
-                            <td><input type="submit" id="registerButton" value="Add Set"></td>
+                            <td><input type="submit" id="registerButton" value="Add"></td>
                         </form>
                     </tr>
-                </form>
-                </table>
+            </table>
         </div>
     </main>
 </body>
 
 <%= erb :"common/footer" %>
-<script type="text/javascript" src="../scripts/time.js"></script>
+<script type="text/javascript" src="../scripts/exercise.js"></script>
 
 </html>
 

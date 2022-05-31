@@ -14,7 +14,7 @@ get "/" do
   erb :main
 end
 
-get "/profile" do
+get "/workouts" do
   if session[:LoggedIn]
     @target = DB[:EXERCISES].where(UserID: session[:UserID])
     @page_name = "Profile"
@@ -40,7 +40,7 @@ get "/logout" do
   end
 end
 
-post "/validate_login" do
+post "/login" do
   usernameAttempt = params[:username]
   passwordAttempt = params[:password]
   results = validateLogin(usernameAttempt, passwordAttempt)
@@ -56,9 +56,10 @@ post "/validate_login" do
   end
 end
 
-get "/profile/exercise" do
+get "/workouts/exercise" do
   if session[:LoggedIn] && params[:id] != nil
-    @workoutName = DB[:EXERCISES].first(UserID: session[:UserID])[:Name]
+    @workoutName = DB[:EXERCISES].first(ExID: params[:id])[:Name]
+    @id = params[:id]
     @target = DB[:WORKOUTS].where(ExID: params[:id])
     @page_name = "Profile"
     erb :exercise
@@ -66,6 +67,17 @@ get "/profile/exercise" do
     erb :notsignedin
   end
 end
+
+post "/workouts/exercise" do
+  addSet(params[:id], params)
+  redirect "/workouts/exercise?id="+params[:id]
+end
+
+post "/workouts" do
+  addExerciseType(params)
+  redirect "/workouts"
+end
+
 error 404 do
   erb :pagenotfound
 end
