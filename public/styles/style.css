@@ -213,10 +213,10 @@ td{
         border-color: rgb(255, 255, 255);
     }
     #loginButton{
-        width: 10%;
+        width: 30%;
     }
     footer{
-        font-size: 10px;
+        font-size: 8px;
     }
 }
 
@@ -224,9 +224,11 @@ td{
     body header {
         font-size: 0.9em;
     }
-
+    #loginButton{
+        width: 30%;
+    }
     footer{
-        font-size: 12px;
+        font-size: 8px;
     }
 }
 
@@ -246,6 +248,9 @@ td{
     }
     table{
         font-size: 1.2em;
+    }
+    #loginButton{
+        width: 10%;
     }
     footer{
         font-size: 12px;
