@@ -173,11 +173,15 @@ td{
 .red{
     color: rgb(210, 38, 38);
 }
+.link{
+    color: rgb(159, 159, 159);
+}
 
 /* Custom settings for different screen widths SMALLEST TO LARGEST*/
 
 @media screen and (min-width: 220px){ /* Normal Phone */
     nav ul{
+        border-radius: 0.2em;
         font-size: 0.8em;
     }
     nav #header{
@@ -241,7 +245,7 @@ td{
 
 @media screen and (min-width: 724px){ /* Tablet */
     nav ul{
-        font-size: 1.2em;
+        font-size: 1.5em;
     }
     nav #header{
         font-size: 2.2em;

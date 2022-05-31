@@ -31,8 +31,7 @@ get "/logout" do
     session[:LoggedIn] = false
     session[:UserID] = "none"
     session[:Nickname] = "none"
-    @page_name = "Home"
-    erb :main
+    redirect "/"
   else
     # ERROR: Cant logout if your not signed in
     @page_name = "Login"

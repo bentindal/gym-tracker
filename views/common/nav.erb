@@ -12,17 +12,14 @@
 <header>
     <p id="loggedInInfo">&nbsp</p>
     <script>
-    
         var isloggedin = <%=session[:LoggedIn]%>
         if (isloggedin == true){
-            document.getElementById('loggedInInfo').innerHTML = "Welcome back <%=session[:Nickname]%>, <a href='/logout'>logout</a>?"
+            document.getElementById('loggedInInfo').innerHTML = "Welcome back <%=session[:Nickname]%>, <a class='link' href='/logout'>logout</a>?"
         }
     </script>
     <br>
     <nav id="menu">
-        <ul id="leftNav" class="side"><a href="/">Home</a></ul>
-        <ul id="header"><a href="/"><strong>Ben's Gym Tracker - <%=@page_name%></strong></a></ul>
-        <ul id="rightNav" class="side"><a href="/workouts">Workouts</a></ul>
+        <ul id="header"><a href="/"><strong>Ben's Gym Tracker</strong></a></ul>
     </nav>
     <br>
 </header>
