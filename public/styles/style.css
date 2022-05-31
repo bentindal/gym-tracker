@@ -201,7 +201,7 @@ td{
     #buttonTD{
        padding-right: 1em;
     }
-    input{
+    #buttonTD input{
         margin: 0.1em;
         font-size: 0.8em;
         width: 100%;
@@ -211,7 +211,19 @@ td{
         width: 120%;
         border-style: solid;
     }
-
+    input{
+        margin: 0.3em;
+    }
+    .button{
+        text-decoration: none;
+        border-radius: 0.5em;
+        color: white;
+        background: rgb(28, 156, 215);
+        border-color: rgb(255, 255, 255);
+    }
+    #loginButton{
+        width: 10%;
+    }
     footer{
         font-size: 10px;
     }

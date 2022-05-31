@@ -13,13 +13,13 @@
                     <% @target.each do |exercise| %>
                     <tr>
                       <td><%= exercise[:Name] %></td>
-                      <td><a href="/workouts/exercise?id=<%= exercise[:ExID]%>">View</a></td>
+                      <td><button class="button"><a class="button" href="/workouts/exercise?id=<%= exercise[:ExID]%>">View</a></button></td>
                     </tr>
                     <%end%>
                     <tr>
                         <form action="/workouts" method="post">
                             <td><input type="text" name="Name" required></td>
-                            <td><input type="submit" value="New Exercise"></td>
+                            <td><input type="submit" class="button" value="New Exercise"></td>
                         </form>
                     </tr>
                 </table>
