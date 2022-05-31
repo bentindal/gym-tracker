@@ -123,7 +123,6 @@ footer {
     text-align: center;
     background-color: #1e4366;
     color: rgb(255, 255, 255);
-    position: fixed;
 }
 
 /* Stats Page */
@@ -234,13 +233,13 @@ td{
 
 @media screen and (min-width: 724px){ /* Tablet */
     nav ul{
-        font-size: 1.5em;
+        font-size: 1em;
     }
     nav #header{
         font-size: 2.2em;
     }
     body header {
-        font-size: 1rem;
+        font-size: 1em;
     }
     #spacer{
         margin-left: 5%;
