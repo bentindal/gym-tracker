@@ -6,7 +6,7 @@ type = ENV.fetch("APP_ENV", "production")
 
 # find the path to the database file
 db_path = File.dirname(__FILE__)
-db = "#{db_path}/#{type}.db"
+db = "#{db_path}/production.db"
 
 # find the path to the log
 log_path = "#{File.dirname(__FILE__)}/../log/"
