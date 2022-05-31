@@ -10,8 +10,8 @@ set :session_secret, "$g]Rd2M/WbJ`~~<GZWdH@Fm'ESk2_gckCtLJJkySYG"
 require_rel "db", "models"
 
 get "/" do
-  @page_name = "Home"
-  erb :main
+  @page_name = "Workouts"
+  redirect "/workouts"
 end
 
 get "/workouts" do
