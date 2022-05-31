@@ -16,7 +16,7 @@ end
 
 get "/profile" do
   if session[:LoggedIn]
-    @targetUser = DB[:EXERCISES].first(UserID: session[:UserID])
+    @target = DB[:EXERCISES].where(UserID: session[:UserID])
     @page_name = "Profile"
     erb :profile
   else
