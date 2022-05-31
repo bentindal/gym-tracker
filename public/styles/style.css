@@ -181,11 +181,29 @@ td{
         font-size: 0.8em;
     }
     nav #header{
-        font-size: 1.2em;
+        font-size: 1em;
     }
     body header {
         font-size: 0.8em;
     }
+    #loginBox{
+        width: 100%;
+        margin: 0;
+    }
+    table{
+        font-size: 0.8em;
+    }
+    input{
+        margin: 0.1em;
+        font-size: 0.85em;
+        padding: 1px;
+    }
+    #inputButton{
+        padding: 0.2em;
+        width: 120%;
+        border-style: solid;
+    }
+
     footer{
         font-size: 10px;
     }
@@ -193,8 +211,9 @@ td{
 
 @media screen and (min-width: 390px){ /* larger phone */
     body header {
-        font-size: 1rem;
+        font-size: 0.9em;
     }
+
     footer{
         font-size: 12px;
     }
