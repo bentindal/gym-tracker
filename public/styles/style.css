@@ -6,7 +6,7 @@ body {
     margin: 0;
     width: 100%;
     font-family: Helvetica, sans-serif;
-    background-color:rgb(34, 85, 112);
+    background-color: rgb(34, 85, 112);
     color: rgb(255, 255, 255);
 }
 
@@ -40,7 +40,7 @@ body header {
 }
 
 #header{
-    background-color:#436b91;
+    background-color: #436b91;
 }
 
 #menu #header #customHeader2{
@@ -70,7 +70,6 @@ nav ul:hover:not(.active) {
 nav {
     margin: 0;
     padding: 5px;
-    background-color: rgb(34, 85, 112);
     text-align: center;
 }
 nav ul {
@@ -78,18 +77,6 @@ nav ul {
 }
 
 /* NAV */
-
-main{ /* Bit surrounding everything except the footer */
-    background-color: rgb(34, 85, 112);
-}
-
-#wordCanvas{
-    background-color:rgb(34, 85, 112);
-    text-align: center;
-    margin-top: 25px;
-    margin-bottom: 15px;
-}
-
 
 #spacer{
     text-align:center;
