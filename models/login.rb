@@ -7,7 +7,7 @@ def validateLogin(usernameAttempt, passwordAttempt)
 
         else
             puts "Login failed..."
-            return [false, "", ""]
         end
     end
+    return [false, "", ""]
 end
