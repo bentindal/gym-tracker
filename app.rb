@@ -14,7 +14,7 @@ get "/" do
   erb :main
 end
 
-get "/login" do
+get "/profile" do
   if session[:LoggedIn]
     @page_name = "Profile"
     erb :profile
