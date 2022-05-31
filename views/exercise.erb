@@ -9,7 +9,7 @@
         <div id="spacer">
             <h1><%= @workoutName %></h1>
 
-            <table class="profile">
+            <table>
                     <tr>
                         <th>Reps</th>
                         <th>Weight</th>
@@ -38,7 +38,7 @@
                             <td><input type="number" id="weight" name="Weight" required></td>
                             <td id="clock2"><%=Time.now.strftime("%H:%M:%S")%></td>
                             <td><%=Time.now.strftime("%d/%m/%Y")%></td>
-                            <td><input type="submit" id="inputButton" value="Add"></td>
+                            <td id="buttonTD"><input type="submit" id="inputButton" value="Add"></td>
                         </form>
                     </tr>
             </table>

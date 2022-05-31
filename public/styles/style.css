@@ -193,10 +193,18 @@ td{
     table{
         font-size: 0.8em;
     }
+    #editRow #reps, #editRow #weight{
+        width: 50%;
+        font-size: 0.9em;
+        background-color: rgb(255, 255, 255);
+    }
+    #buttonTD{
+       padding-right: 1em;
+    }
     input{
         margin: 0.1em;
-        font-size: 0.85em;
-        padding: 1px;
+        font-size: 0.8em;
+        width: 100%;
     }
     #inputButton{
         padding: 0.2em;
