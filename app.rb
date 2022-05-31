@@ -15,9 +15,14 @@ get "/" do
 end
 
 get "/login" do
-  @page_name = "Login"
-  @hint = ""
-  erb :login
+  if session[:LoggedIn]
+    @page_name = "Profile"
+    erb :profile
+  else
+    @page_name = "Login"
+    @hint = ""
+    erb :login
+  end
 end
 
 get "/logout" do 
@@ -25,9 +30,11 @@ get "/logout" do
     session[:LoggedIn] = false
     session[:UserID] = "none"
     session[:Nickname] = "none"
+    @page_name = "Home"
     erb :main
   else
     # ERROR: Cant logout if your not signed in
+    @page_name = "Login"
     erb :notsignedin
   end
 end
