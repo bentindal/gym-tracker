@@ -5,7 +5,7 @@
 body {
     margin: 0;
     width: 100%;
-    font-family: Helvetica, sans-serif;
+    font-family: monospace;
     background-color: rgb(34, 85, 112);
     color: rgb(255, 255, 255);
 }
@@ -35,12 +35,12 @@ body header {
 #menu #header a{
     text-decoration: none;
     color: white;
-    font-family: 'Courier New', monospace;
+    font-family: monospace;
     font-size: 1em;
 }
 
 #header{
-    background-color: #436b91;
+    background-color: #2b8ace;
 }
 
 #menu #header #customHeader2{
@@ -83,11 +83,17 @@ nav ul {
     margin: 1em;
     padding: 1em;
     border-style: dotted;
-    border-color: black;
-    border-radius: 10px;
+    border-color: rgb(255, 255, 255);
+    border-radius: 5em;
     color: rgb(255, 255, 255);
+    background-color: rgb(6, 94, 131);
+}
 
-    background-color:#28537c;
+#customSpacer{
+    text-align: center;
+    margin: 1em;
+    padding: 1em;
+    color: rgb(255, 255, 255);
 }
 
 
@@ -101,17 +107,36 @@ nav ul {
     border-radius: 10px;
 }
 
+.button{
+    text-decoration: none;
+    border-radius: 0.5em;
+    color: white;
+    background: rgb(28, 156, 215);
+    border-color: rgb(255, 255, 255);
+}
+
 /* Login Page */
 
 #loginBox{
     margin-left: 30%;
     margin-right: 30%;
     padding-bottom: 2em;
-    background-color: rgb(74, 112, 170);
+    background-color:rgb(6, 94, 131);
     color: rgb(255, 255, 255);
-    border-style: dotted;
+    border-style: dashed;
+    border-color: rgb(0, 0, 0);
     border-radius: 1em;
 }
+
+.loginForm{
+    text-decoration: none;
+    border-radius: 0.5em;
+    color: white;
+    background: rgb(28, 156, 215);
+    border-color: rgb(255, 255, 255);
+    width: 30%;
+}
+
 
 /* Footer and below! */
 footer {
@@ -122,8 +147,9 @@ footer {
     font-size: 0.6em;
     text-align: center;
     position: fixed;
-    background-color: #1e4366;
+    background-color: #2d2c2c;
     color: rgb(255, 255, 255);
+    border-top: solid;
 }
 
 /* Stats Page */
@@ -205,13 +231,6 @@ td{
     input{
         margin: 0.3em;
     }
-    .button{
-        text-decoration: none;
-        border-radius: 0.5em;
-        color: white;
-        background: rgb(28, 156, 215);
-        border-color: rgb(255, 255, 255);
-    }
     #loginButton{
         width: 30%;
     }
@@ -259,15 +278,67 @@ td{
     #menu #header #customHeader2{
         font-size: 0.5em;
     }
+    #loginBox{
+        width: 50%;
+        margin: 0 auto;
+    }
 }
 
-@media screen and (min-width: 1224px){ /* S Laptop */
+@media screen and (min-width: 1224px){ /* Laptop */
     body header {
         font-size: 0.9em;
         margin: 1em;
+    }
+    #spacer{
+        width: 60%;
+        margin: 0 auto;
     }
     footer{
         font-size: 12px;
         position: fixed;
     }
+    #loginBox{
+        width: 40%;
+        margin: 0 auto;
+    }
+}
+
+/* background styling */
+body{
+	margin:0;
+	padding:0;
+	font-family: Avantgarde, TeX Gyre Adventor, URW Gothic L, sans-serif;
+	font-size:12px;
+    background: #2980b9 url('https://static.tumblr.com/03fbbc566b081016810402488936fbae/pqpk3dn/MRSmlzpj3/tumblr_static_bg3.png') repeat 0 0;
+	-webkit-animation: 10s linear 0s normal none infinite animate;
+	-moz-animation: 10s linear 0s normal none infinite animate;
+	-ms-animation: 10s linear 0s normal none infinite animate;
+	-o-animation: 10s linear 0s normal none infinite animate;
+	animation: 10s linear 0s normal none infinite animate;
+ 
+}
+ 
+@-webkit-keyframes animate {
+	from {background-position:0 0;}
+	to {background-position: 500px 0;}
+}
+ 
+@-moz-keyframes animate {
+	from {background-position:0 0;}
+	to {background-position: 500px 0;}
+}
+ 
+@-ms-keyframes animate {
+	from {background-position:0 0;}
+	to {background-position: 500px 0;}
+}
+ 
+@-o-keyframes animate {
+	from {background-position:0 0;}
+	to {background-position: 500px 0;}
+}
+ 
+@keyframes animate {
+	from {background-position:0 0;}
+	to {background-position: 500px 0;}
 }

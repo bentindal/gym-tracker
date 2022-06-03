@@ -2,22 +2,22 @@
 
 <body>
     <main>
-        <div id="spacer">
+        <div id="customSpacer">
             <div id="loginBox">
 
                 <h1>Sign In</h1>
-                <strong><p id="hintText">Enter your details below</p></strong>
+                <strong><p id="hintText" style="color: gainsboro">Enter your details below</p></strong>
 
                 <form action="/login" method="post">
                     <p><label for="word">Username</label>
                     <br>
-                    <input type="text" id="customWord" name="username" maxlength="14" minlength="3" required></p>
+                    <input type="text" class="loginForm" name="username" maxlength="14" minlength="3" required></p>
 
                     <p><label for="word">Password</label>
                     <br>
-                    <input type="password" id="customDefinition" name="password" required></p>
+                    <input type="password" class="loginForm" name="password" required></p>
 
-                    <input type="submit" id="loginButton" class="button" value="Login">
+                    <input type="submit" class="loginForm" value="Login">
                 </form>
 
             </div>
