@@ -2,7 +2,7 @@ require "sinatra"
 require "sinatra/reloader"
 require "require_all"
 
-set :port, 433
+set :port, 4333
 
 enable :sessions
 set :session_secret, "$g]Rd2M/WbJ`~~<GZWdH@Fm'ESk2_gckCtLJJkySYG"
@@ -56,11 +56,17 @@ post "/login" do
 end
 
 get "/workouts/exercise" do
+  @page_name = "Profile"
   if session[:LoggedIn] && params[:id] != nil
     @workoutName = DB[:EXERCISES].first(ExID: params[:id])[:Name]
     @id = params[:id]
-    @target = DB[:WORKOUTS].where(ExID: params[:id])
-    @page_name = "Profile"
+    if params[:filter] == "today"
+      @filter_type = "Today"
+      @target = DB[:WORKOUTS].where(ExID: params[:id]).where(Date: Time.now.strftime("%d/%m/%Y"))
+    else
+      @filter_type = "All"
+      @target = DB[:WORKOUTS].where(ExID: params[:id])
+    end
     erb :exercise
   else
     erb :notsignedin
@@ -69,12 +75,33 @@ end
 
 post "/workouts/exercise" do
   addSet(params[:id], params)
-  redirect "/workouts/exercise?id="+params[:id]
+  puts params[:filter]
+  redirect "/workouts/exercise?id="+params[:id]+"&filter="+params[:filter]
 end
 
 post "/workouts" do
   addExerciseType(params)
   redirect "/workouts"
+end
+
+get "/edit-set" do
+  if params[:id] != nil
+    @setid = params[:id]
+    @workout = DB[:WORKOUTS].where(SetID: @setid).first
+    erb :editset
+  else
+    erb :pagenotfound
+  end
+end
+
+post "/edit-set" do
+  i = params[:id]
+  r = params[:Reps]
+  w = params[:Weight]
+  t = params[:Time]
+  d = params[:Date]
+  editSet(i, r, w, t, d)
+  redirect "/"
 end
 
 error 404 do

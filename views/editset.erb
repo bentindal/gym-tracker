@@ -1,0 +1,27 @@
+<%= erb :"common/nav" %>
+<link rel="stylesheet" href="../styles/style.css">
+<script>
+    var lastRepCount = ""
+    var lastWeightCount = ""
+</script>
+<body>
+    <main>
+        <div id="spacer">
+            <h1>Edit Set</h1>
+            <form action="/edit-set?id=<%=@setid%>" method="post">
+                            <input type="number" id="reps" name="Reps" value="<%= @workout[:Reps] %>" required>
+                            <input type="number" id="reps" name="Weight" value="<%= @workout[:Weight] %>" required>
+                            <input type="text" id="reps" name="Time" value="<%= @workout[:Time] %>" required>
+                            <input type="text" id="reps" name="Date" value="<%= @workout[:Date] %>" required>
+                            <br><br>
+                            <input type="submit" class="button" value="Submit Changes">
+            </form>
+        </div>
+        <br><br><br><br><br><br>
+    </main>
+</body>
+
+<%= erb :"common/footer" %>
+
+</html>
+
