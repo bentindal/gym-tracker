@@ -2,7 +2,7 @@ require "sinatra"
 require "sinatra/reloader"
 require "require_all"
 
-set :port, 4333
+set :port, 433
 
 enable :sessions
 set :session_secret, "$g]Rd2M/WbJ`~~<GZWdH@Fm'ESk2_gckCtLJJkySYG"
