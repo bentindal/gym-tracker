@@ -87,7 +87,7 @@ end
 get "/edit-set" do
   if params[:id] != nil
     @setid = params[:id]
-    @workout = DB[:WORKOUTS].where(SetID: @setid).first
+    @workout = DB[:WORKOUTS].first(SetID: @setid)
     erb :editset
   else
     erb :pagenotfound
@@ -102,6 +102,15 @@ post "/edit-set" do
   d = params[:Date]
   editSet(i, r, w, t, d)
   redirect "/"
+end
+
+get "/delete-set" do
+  if params[:id] != nil && session[:LoggedIn]
+    deleteSet(params[:id])
+    redirect "/"
+  else
+    erb :notsignedin
+  end
 end
 
 error 404 do

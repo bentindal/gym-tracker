@@ -27,3 +27,8 @@ def editSet(sid, r, w, t, d)
     target[:Date] = d
     puts "Successful edit of SetID #{sid}, #{r}"
 end
+
+def deleteSet(sid)
+    target = WORKOUTS.first(SetID: sid)
+    target.delete
+end
