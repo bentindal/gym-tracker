@@ -22,7 +22,7 @@
                       <td><%= workout[:Weight].to_s %></td>
                       <td><%= workout[:Time] %></td>
                       <td><%= workout[:Date] %></td>
-                      <td><button style="border-radius: 0.5em"><a style="text-decoration: none" href="/edit-set?id=<%=workout[:SetID]%>">&#x270E</a></button></td>
+                      <td><button class="editButton" style="border-radius: 0.5em"><a style="text-decoration: none" href="/edit-set?id=<%=workout[:SetID]%>">&#x270E</a></button></td>
                     </tr>
                     <script>
                         lastRepCount = "<%=workout[:Reps]%>"
