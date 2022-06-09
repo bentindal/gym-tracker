@@ -28,7 +28,7 @@ function getSecondsSince(time) {
     if (difference >= 60) {
         result = "last set " + Math.floor(difference / 60) + " minutes " + difference % 60 + " seconds ago"
     }
-    else if (difference < 3600) {
+    else if (difference > 3600) {
         result = "last set " + difference + " seconds ago"
     }
     else {
@@ -57,7 +57,3 @@ setInterval(updateRestTimer, 100)
 
 document.getElementById("reps").setAttribute("value", lastRepCount)
 document.getElementById("weight").setAttribute("value", lastWeightCount)
-
-if (filter != "Today") {
-    document.getElementById("restTime").setAttribute("hidden", true)
-}
