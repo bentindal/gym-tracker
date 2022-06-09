@@ -9,7 +9,7 @@
         <div id="spacer">
             <h1><%= @workoutName %></h1>
             <p>Filter by: <a href="/workouts/exercise?id=<%=@id%>&filter=today">Today</a> - <a href="/workouts/exercise?id=<%=@id%>&filter=all">All</a></p>
-            <table>
+            <table id="exerciseTable">
                     <tr>
                         <th>Reps</th>
                         <th>Weight</th>
@@ -32,6 +32,7 @@
                     <%end%>
             </table>
             <br>
+            <h3 id="noWorkoutText"><i>log your first workout & see it here</i><br><br></h3>
             <p>Add New Set</p>
             <table>
                     <tr id="editRow">
@@ -44,9 +45,7 @@
                         </form>
                     </tr>
             </table>
-            <p>
-                <span id="restTime"></span>
-            </p>
+            <h2><span id="restTime"></span></h2>
         </div>
         <br><br><br><br><br><br>
     </main>

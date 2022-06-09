@@ -28,10 +28,10 @@ function getSecondsSince(time) {
     var difference = total2 - total1
     var result = 0
     if (difference >= 60) {
-        result = "last set was " + Math.floor(difference / 60) + " minutes " + difference % 60 + " seconds ago"
+        result = "last set " + Math.floor(difference / 60) + " minutes " + difference % 60 + " seconds ago"
     }
     else {
-        result = "last set was " + difference % 60 + " seconds ago"
+        result = "last set " + difference % 60 + " seconds ago"
     }
     return result
 }
@@ -42,6 +42,14 @@ function updateRestTimer() {
     document.getElementById("restTime").innerText = total
 }
 
+function showTable(){
+    document.getElementById("noWorkoutText").setAttribute("hidden", true)
+}
+console.log(lastRepCount)
+if (lastRepCount != "") {
+    console.log("Workout(s) found!")
+    showTable()
+}
 
 var clock = document.getElementById('clock2');
 setInterval(time, 100);
