@@ -25,7 +25,10 @@ function getSecondsSince(time) {
     var total2 = parseInt(time2[0])*60*60 + parseInt(time2[1])*60 + parseInt(parseInt(time2[2]))
     var difference = total2 - total1
     var result = 0
-    if (difference >= 60) {
+    if (difference >= 3600) {
+        result = "last set " + Math.floor(difference / 3600)+ " hours " + (Math.floor(difference / 60) - Math.floor(difference / 3600)*60) + " minutes " + difference % 60 + " seconds ago"
+    }
+    else if (difference >= 60) {
         result = "last set " + Math.floor(difference / 60) + " minutes " + difference % 60 + " seconds ago"
     }
     else if (difference > 3600) {
