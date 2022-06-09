@@ -21,17 +21,18 @@ function getCurrentTime(){
 function getSecondsSince(time) {
     var time1 = time.split(":")
     var time2 = getCurrentTime().split(":")
-    console.log(time1, time2)
-    var total1 = parseInt(time1[1])*60 + parseInt(parseInt(time1[2]))
-    var total2 = parseInt(time2[1])*60 + parseInt(parseInt(time2[2]))
-    console.log(total1, total2)
+    var total1 = parseInt(time1[0])*60*60 + parseInt(time1[1])*60 + parseInt(parseInt(time1[2]))
+    var total2 = parseInt(time2[0])*60*60 + parseInt(time2[1])*60 + parseInt(parseInt(time2[2]))
     var difference = total2 - total1
     var result = 0
     if (difference >= 60) {
         result = "last set " + Math.floor(difference / 60) + " minutes " + difference % 60 + " seconds ago"
     }
+    else if (difference < 3600) {
+        result = "last set " + difference + " seconds ago"
+    }
     else {
-        result = "last set " + difference % 60 + " seconds ago"
+        result = ""
     }
     return result
 }
@@ -47,13 +48,16 @@ function showTable(){
 }
 console.log(lastRepCount)
 if (lastRepCount != "") {
-    console.log("Workout(s) found!")
     showTable()
 }
 
 var clock = document.getElementById('clock2');
 setInterval(time, 100);
-setInterval(updateRestTimer, 1000)
+setInterval(updateRestTimer, 100)
 
 document.getElementById("reps").setAttribute("value", lastRepCount)
 document.getElementById("weight").setAttribute("value", lastWeightCount)
+
+if (filter != "Today") {
+    document.getElementById("restTime").setAttribute("hidden", true)
+}
