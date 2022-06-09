@@ -18,14 +18,14 @@ end
 
 def editSet(sid, r, w, t, d)
     target = WORKOUTS.first(SetID: sid)
-    puts "Was: #{target[:Reps]}"
+    puts "Was: #{target[:Date]}"
     target[:Reps] = r
-    puts "Now: #{target[:Reps]}"
-    target.save_changes
     target[:Weight] = w
     target[:Time] = t
     target[:Date] = d
-    puts "Successful edit of SetID #{sid}, #{r}"
+    target.save_changes
+    puts "Now: #{target[:Date]}"
+    puts "Successful edit of SetID #{sid}, #{d}"
 end
 
 def deleteSet(sid)

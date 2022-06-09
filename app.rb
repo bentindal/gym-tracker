@@ -1,8 +1,9 @@
 require "sinatra"
 require "sinatra/reloader"
 require "require_all"
+require "date"
 
-set :port, 80
+set :port, 8080
 
 enable :sessions
 set :session_secret, "$g]Rd2M/WbJ`~~<GZWdH@Fm'ESk2_gckCtLJJkySYG"
@@ -63,9 +64,15 @@ get "/workouts/exercise" do
     if params[:filter] == "today"
       @filter_type = "Today"
       @target = DB[:WORKOUTS].where(ExID: params[:id]).where(Date: Time.now.strftime("%d/%m/%Y"))
-    else
+    elsif params[:filter] == "all"
       @filter_type = "All"
       @target = DB[:WORKOUTS].where(ExID: params[:id])
+    elsif params[:filter] == "yesterday"
+      @filter_type = "Yesterday"
+      @target = DB[:WORKOUTS].where(ExID: params[:id]).where(Date: Date.today.prev_day.strftime("%d/%m/%Y"))
+    else
+      @filter_type = "Today"
+      @target = @target = DB[:WORKOUTS].where(ExID: params[:id]).where(Date: Time.now.strftime("%d/%m/%Y"))
     end
     erb :exercise
   else
