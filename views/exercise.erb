@@ -27,6 +27,7 @@
                     <script>
                         lastRepCount = "<%=workout[:Reps]%>"
                         lastWeightCount = "<%=workout[:Weight]%>"
+                        lastTime = "<%=workout[:Time]%>"
                     </script>
                     <%end%>
             </table>
@@ -43,6 +44,9 @@
                         </form>
                     </tr>
             </table>
+            <p>
+                <span id="restTime"></span>
+            </p>
         </div>
         <br><br><br><br><br><br>
     </main>
