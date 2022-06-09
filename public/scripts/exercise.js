@@ -31,11 +31,11 @@ function getSecondsSince(time) {
     else if (difference >= 60) {
         result = "last set " + Math.floor(difference / 60) + " minutes " + difference % 60 + " seconds ago"
     }
-    else if (difference > 3600) {
+    else if (difference < 60) {
         result = "last set " + difference + " seconds ago"
     }
     else {
-        result = ""
+        result = "error"
     }
     return result
 }
