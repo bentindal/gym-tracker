@@ -200,15 +200,9 @@ td{
 /* Custom settings for different screen widths SMALLEST TO LARGEST*/
 
 @media screen and (min-width: 220px){ /* Normal Phone */
-    nav ul{
-        border-radius: 0.2em;
-        font-size: 1em;
-    }
     nav #header{
-        font-size: 1.2em;
-    }
-    body header {
-        font-size: 1em;
+        border-radius: 0.2em;
+        font-size: 1.5em;
     }
     #loginBox{
         width: 100%;
@@ -244,8 +238,9 @@ td{
 }
 
 @media screen and (min-width: 390px){ /* larger phone */
-    body header {
-        font-size: 1.2em;
+    nav #header{
+        border-radius: 0.2em;
+        font-size: 1.5em;
     }
     footer{
         font-size: 1em;
@@ -253,14 +248,9 @@ td{
 }
 
 @media screen and (min-width: 724px){ /* Tablet */
-    nav ul{
-        font-size: 1em;
-    }
     nav #header{
-        font-size: 2.2em;
-    }
-    body header {
-        font-size: 1em;
+        border-radius: 0.2em;
+        font-size: 2em;
     }
     #spacer{
         margin-left: 5%;
