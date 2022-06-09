@@ -200,6 +200,9 @@ td{
 /* Custom settings for different screen widths SMALLEST TO LARGEST*/
 
 @media screen and (min-width: 220px){ /* Normal Phone */
+    p#loggedInInfo{
+        font-size: 0.7em;
+    }
     nav #header{
         border-radius: 0.2em;
         font-size: 1.5em;
@@ -238,6 +241,9 @@ td{
 }
 
 @media screen and (min-width: 390px){ /* larger phone */
+    p#loggedInInfo{
+        font-size: 0.9em;
+    }
     nav #header{
         border-radius: 0.2em;
         font-size: 1.5em;
@@ -248,6 +254,9 @@ td{
 }
 
 @media screen and (min-width: 724px){ /* Tablet */
+    p#loggedInInfo{
+        font-size: 0.9em;
+    }
     nav #header{
         border-radius: 0.2em;
         font-size: 2em;
@@ -273,6 +282,9 @@ td{
 }
 
 @media screen and (min-width: 1224px){ /* Laptop */
+    p#loggedInInfo{
+        font-size: 0.9em;
+    }
     nav #header{
         border-radius: 0.2em;
         font-size: 1.8em;
