@@ -1,6 +1,11 @@
 require "logger"
 require "sequel"
 
+def getCurrentDate
+    date = Time.now.strftime("%d/%m/%Y")
+    return date
+end
+
 def addSet(exID, params)
     date = Time.now.strftime("%d/%m/%Y")
     time = Time.now.strftime("%H:%M:%S")
