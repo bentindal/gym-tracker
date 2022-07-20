@@ -120,6 +120,15 @@ get "/delete-set" do
   end
 end
 
+get "/summary" do
+  if session[:LoggedIn]
+    @allUsersExercises = DB[:EXERCISES].where(UserID: session[:UserID])
+    erb :summary
+  else
+    erb:notsignedin
+  end
+end
+
 error 404 do
   erb :pagenotfound
 end

@@ -1,0 +1,49 @@
+<%= erb :"common/nav" %>
+
+<body>
+    <main>
+        <div id="spacer">
+            <h3><a href="/workouts">Add More Sets</a><h3>
+            <h1>Today's Summary</h1>
+                    <%
+                    i = 0
+                    @allUsersExercises.each do |ex|
+                        @workoutName = ex[:Name]
+                        @setInformation = DB[:WORKOUTS].where(ExID: ex[:ExID]).where(Date: Time.now.strftime("%d/%m/%Y"))
+                    x = 0
+                    @setInformation.each do
+                        x += 1
+                    end
+                    if x == 0
+                        next
+                    end
+                    i += 1
+                    %>
+                    <h3><%=@workoutName%></h3>
+                    <table class="profile">
+                    <tr>
+                        <th>Reps</th>
+                        <th>Weight</th>
+                    </tr>
+                    <%
+                        @setInformation.each do |set|
+                    %>
+                    <tr>
+                      <td><%= set[:Reps] %></td>
+                      <td><%= set[:Weight] %></td>
+                    </tr>
+                    <%end%>
+                </table>
+                <%end%>
+                <%
+                if i==0%>
+                <h3>No Sets Logged yet today, head over to <a href="/workouts">workouts page</a> to log your first<h3>
+                <%end%>
+        </div>
+    </main>
+</body>
+
+<%= erb :"common/footer" %>
+
+</html>
+
