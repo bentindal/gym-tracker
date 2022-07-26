@@ -100,13 +100,25 @@ nav ul {
     border-radius: 10px;
 }
 
+.button a{
+    text-decoration: none;
+    color: white;
+}
 .button{
     text-decoration: none;
-    border-radius: 0.5em;
     border-style: none;
+    border-radius: 0.5em;
     color: white;
-    background: rgb(28, 156, 215);
-    border-color: rgb(255, 255, 255);
+    background-color: rgb(28, 156, 215);
+
+    
+    box-shadow: 0 3px 0 #157097;
+}
+
+.button:active{
+    box-shadow: none;
+    transform: translateY(3px);
+    text-decoration: none;
 }
 
 .editButton{

@@ -14,7 +14,7 @@
                     <% @target.each do |exercise| %>
                     <tr>
                       <td><%= exercise[:Name] %></td>
-                      <td><button class="button"><a class="button" href="/workouts/exercise?id=<%= exercise[:ExID]%>">View</a></button></td>
+                      <td><button class="button"><a href="/workouts/exercise?id=<%= exercise[:ExID]%>">View</a></button></td>
                     </tr>
                     <%end%>
                     <tr>
