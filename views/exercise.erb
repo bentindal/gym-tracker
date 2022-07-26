@@ -8,6 +8,9 @@
 <body>
     <main>
         <div id="spacer">
+            <br>
+            <a class="button" id="backButton" href="/workouts">Head Back</a>
+            <br><br>
             <h1><%= @workoutName %></h1>
             <p>Filter by: <a href="/workouts/exercise?id=<%=@id%>&filter=today">Today</a> - <a href="/workouts/exercise?id=<%=@id%>&filter=all">All</a></p>
             <table id="exerciseTable">
