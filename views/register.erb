@@ -1,0 +1,50 @@
+<%= erb :"common/nav" %>
+
+<body>
+    <main>
+        <div id="customSpacer">
+            <div id="loginBox">
+
+                <h1>Sign Up</h1>
+                <strong><p id="hintText">Create an Account</p></strong>
+
+                <form action="/register" method="post">
+                    <p><label for="word">Desired Username</label>
+                    <br>
+                    <input type="text" class="loginForm" name="username" maxlength="14" minlength="3" required></p>
+
+                    <p><label for="word">Enter a Secure Password</label>
+                    <br>
+                    <input type="password" class="loginForm" name="password" required></p>
+                    
+                    <p><label for="word">Retype Password</label>
+                    <br>
+                    <input type="password" class="loginForm" name="password2" required></p>
+                    
+                    <p><label for="word">What should we call you?</label>
+                    <br>
+                    <input type="text" class="loginForm" name="nickname" maxlength="14" minlength="3" required></p>
+
+                    <p><label for="word">Email</label>
+                    <br>
+                    <input type="text" class="loginForm" name="email" maxlength="20" minlength="5" required></p>
+
+                    <input type="submit" id="registerButton" class="loginForm" value="Register">
+                </form>
+
+            </div>
+        </div>
+    </main>
+</body>
+
+<script>
+if ("<%=@hint%>" != ""){
+    document.getElementById("hintText").innerText = "<%=@hint%>"
+    document.getElementById("hintText").classList.add("red")
+}
+</script>
+
+<%= erb :"common/footer" %>
+
+</html>
+

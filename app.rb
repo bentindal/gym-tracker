@@ -125,7 +125,26 @@ get "/summary" do
     @allUsersExercises = DB[:EXERCISES].where(UserID: session[:UserID])
     erb :summary
   else
-    erb:notsignedin
+    erb :notsignedin
+  end
+end
+
+get "/register" do
+  if session[:LoggedIn] == false
+    erb :register
+  else
+    erb :pagenotfound
+  end
+end
+
+post "/register" do
+  result = registerUser(params)
+  puts result
+  if result[0]
+    redirect "/"
+  else
+    @hint = result[1]
+    erb :register
   end
 end
 
