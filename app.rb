@@ -8,7 +8,7 @@ set :port, 80
 enable :sessions
 set :session_secret, "$g]Rd2M/WbJ`~~<GZWdH@Fm'ESk2_gckCtLJJkySYG"
 
-require_rel "db", "models"
+require_rel "../db", "models"
 
 get "/" do
   @page_name = "Workouts"
