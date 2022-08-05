@@ -18,6 +18,8 @@ def addExerciseType(params)
     DB[:EXERCISES] << {Name: params[:Name], UserID: session[:UserID]}
 end
 
+class EXERCISES < Sequel::Model
+end
 class WORKOUTS < Sequel::Model
 end
 
@@ -35,5 +37,18 @@ end
 
 def deleteSet(sid)
     target = WORKOUTS.first(SetID: sid)
+    target.delete
+end
+
+def editExercise(eid, n,u,g)
+    target = EXERCISES.first(ExID: eid)
+    target[:Name] = n
+    target[:Unit] = u
+    target[:GroupName] = g
+    target.save_changes
+end
+
+def deleteExercise(eid)
+    target = EXERCISES.first(ExID: eid)
     target.delete
 end

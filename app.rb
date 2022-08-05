@@ -60,6 +60,7 @@ get "/workouts/exercise" do
   @page_name = "Profile"
   if session[:LoggedIn] && params[:id] != nil
     @workoutName = DB[:EXERCISES].first(ExID: params[:id])[:Name]
+    @unit = DB[:EXERCISES].first(ExID: params[:id])[:Unit]
     @id = params[:id]
     if params[:filter] == "today"
       @filter_type = "Today"
@@ -108,12 +109,39 @@ post "/edit-set" do
   t = params[:Time]
   d = params[:Date]
   editSet(i, r, w, t, d)
-  redirect "/"
+  redirect "/workouts/exercise?id="+params[:id]
 end
 
 get "/delete-set" do
   if params[:id] != nil && session[:LoggedIn]
     deleteSet(params[:id])
+    redirect "/"
+  else
+    erb :notsignedin
+  end
+end
+
+get "/edit-exercise" do
+  if params[:id] != nil
+    @exid = params[:id]
+    @exercise = DB[:EXERCISES].first(ExID: @exid)
+    erb :editexercise
+  else
+    erb :pagenotfound
+  end
+end
+
+post "/edit-exercise" do
+  n = params[:Name]
+  u = params[:Unit]
+  g = params[:GroupName]
+  editExercise(params[:id], n,u,g)
+  redirect "/"
+end
+
+get "/delete-exercise" do
+  if params[:id] != nil && session[:LoggedIn]
+    deleteExercise(params[:id])
     redirect "/"
   else
     erb :notsignedin
@@ -130,11 +158,10 @@ get "/summary" do
 end
 
 get "/register" do
-  if session[:LoggedIn] == false
-    erb :register
-  else
-    erb :pagenotfound
-  end
+  session[:LoggedIn] = false
+  session[:UserID] = "none"
+  session[:Nickname] = "none"
+  erb :register
 end
 
 post "/register" do
