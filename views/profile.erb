@@ -8,6 +8,30 @@
         <br><br>
 
             <h1>All Exercises</h1>
+
+            <form action="/workouts" method="get">
+            <p>Filter by: 
+            <select id="filterChoice" name="filter">
+            <option value="All">All</option>
+            <%
+            list = getAllGroupNames(session[:UserID])
+            list.each do |name|
+                if name == "none"
+                    next
+                end
+                if name == @filter_type
+                    next
+                end
+            %>
+            <option value="<%= name %>"><%= name %></option>
+
+            <%end%>
+            </select>
+            <button>Reset</button>
+            </form>
+
+            </p>
+
             <table class="profile">
                     <tr>
                         <th>Exercise Name</th>
@@ -30,7 +54,7 @@
         </div>
     </main>
 </body>
-
+<script type="text/javascript" src="../scripts/filterCheck.js"></script>
 <%= erb :"common/footer" %>
 
 </html>

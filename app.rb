@@ -17,7 +17,13 @@ end
 
 get "/workouts" do
   if session[:LoggedIn]
-    @target = DB[:EXERCISES].where(UserID: session[:UserID])
+    if params[:filter] != "All" && params[:filter] != nil
+      @target = DB[:EXERCISES].where(UserID: session[:UserID])
+      @target = @target.where(GroupName: params[:filter])
+    else
+      @target = DB[:EXERCISES].where(UserID: session[:UserID])
+    end
+    @filterType = params[:filter]
     @page_name = "Profile"
     erb :profile
   else
