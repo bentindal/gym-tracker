@@ -16,7 +16,13 @@
             <table id="exerciseTable">
                     <tr>
                         <th>Reps</th>
-                        <th>Weight (<%= @unit %>)</th>
+                        <th>Weight (<%=
+                        if @unit != ""
+                            @unit
+                        else
+                            "kg"
+                        end
+                        %>)</th>
                         <th>Time</th>
                         <th>Date</th>
                     </tr>
