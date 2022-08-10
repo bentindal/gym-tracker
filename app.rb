@@ -115,7 +115,7 @@ post "/edit-set" do
   t = params[:Time]
   d = params[:Date]
   editSet(i, r, w, t, d)
-  redirect "/"
+  redirect "/workouts/exercise?id="+params[:exid]
 end
 
 get "/delete-set" do

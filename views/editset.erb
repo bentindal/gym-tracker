@@ -8,7 +8,7 @@
     <main>
         <div id="spacer">
             <h1>Edit Set</h1>
-            <form action="/edit-set?id=<%=@setid%>" method="post">
+            <form action="/edit-set?id=<%=@setid%>&exid=<%=params[:exid]%>" method="post">
                             <input type="number" id="reps" name="Reps" value="<%= @workout[:Reps] %>" required>
                             <input type="number" id="reps" name="Weight" value="<%= @workout[:Weight] %>" required>
                             <input type="text" id="reps" name="Time" value="<%= @workout[:Time] %>" required>
