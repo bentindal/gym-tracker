@@ -68,9 +68,9 @@ get "/workouts/exercise" do
     @workoutName = DB[:EXERCISES].first(ExID: params[:id])[:Name]
     @unit = DB[:EXERCISES].first(ExID: params[:id])[:Unit]
     @id = params[:id]
-    if params[:filter] == "today"
-      @filter_type = "Today"
-      @target = DB[:WORKOUTS].where(ExID: params[:id]).where(Date: Time.now.strftime("%d/%m/%Y"))
+    if params[:filter] == "recent"
+      @filter_type = "Recent"
+      @target = DB[:WORKOUTS].where(ExID: params[:id]).where(Date: getLastWorkoutDate(session[:UserID], params[:id]))
     elsif params[:filter] == "all"
       @filter_type = "All"
       @target = DB[:WORKOUTS].where(ExID: params[:id])
@@ -78,8 +78,8 @@ get "/workouts/exercise" do
       @filter_type = "Yesterday"
       @target = DB[:WORKOUTS].where(ExID: params[:id]).where(Date: Date.today.prev_day.strftime("%d/%m/%Y"))
     else
-      @filter_type = "Today"
-      @target = @target = DB[:WORKOUTS].where(ExID: params[:id]).where(Date: Time.now.strftime("%d/%m/%Y"))
+      @filter_type = "Recent"
+      @target = DB[:WORKOUTS].where(ExID: params[:id]).where(Date: getLastWorkoutDate(session[:UserID], params[:id]))
     end
     erb :exercise
   else
