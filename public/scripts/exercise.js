@@ -38,11 +38,8 @@ function getSecondsSince(time) {
     if (lastDate != getCurrentDate()){
         result = ""
     }
-    else if (difference > (60*60*24)){
+    else if (difference > (60*60)){
         result = ""
-    }
-    else if (difference >= 3600) {
-        result = "last set " + Math.floor(difference / 3600)+ " hours " + (Math.floor(difference / 60) - Math.floor(difference / 3600)*60) + " minutes " + difference % 60 + " seconds ago"
     }
     else if (difference >= 60) {
         result = "last set " + Math.floor(difference / 60) + " minutes " + difference % 60 + " seconds ago"
