@@ -62,6 +62,9 @@ post "/login" do
   end
 end
 
+get "/contactus" do
+  erb :contactus
+end
 get "/workouts/exercise" do
   @page_name = "Profile"
   if session[:LoggedIn] && params[:id] != nil
