@@ -11,17 +11,19 @@
             <option value="All">All</option>
             <%
             list = getAllGroupNames(session[:UserID])
-            list.each do |name|
-                if name == "none"
-                    next
-                end
-                if name == @filter_type
-                    next
-                end
+            if list != nil
+                list.each do |name|
+                    if name == "none"
+                        next
+                    end
+                    if name == @filter_type
+                        next
+                    end
             %>
             <option value="<%= name %>"><%= name %></option>
 
-            <%end%>
+            <%end
+            end%>
             </select>
             <button>Reset</button>
             </form>
