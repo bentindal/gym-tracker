@@ -36,7 +36,7 @@ nav ul{
     display: inline;
     list-style-type: none;
     margin: 0;
-    padding: 0.3em;
+    padding: 0.4em;
 }
 
 nav {
@@ -195,12 +195,12 @@ td{
 /* Custom settings for different screen widths SMALLEST TO LARGEST*/
 
 @media screen and (min-width: 220px){ /* Normal Phone */
-    p#loggedInInfo{
-        font-size: 0.7em;
-    }
     nav #header{
         border-radius: 0.2em;
-        font-size: 1.5em;
+        font-size: 1.2em;
+    }
+    nav ul{
+        font-size: .75em;
     }
     #loginBox{
         width: 100%;
@@ -236,12 +236,12 @@ td{
 }
 
 @media screen and (min-width: 390px){ /* larger phone */
-    p#loggedInInfo{
-        font-size: 0.9em;
-    }
     nav #header{
         border-radius: 0.2em;
-        font-size: 1.5em;
+        font-size: 1.3em;
+    }
+    nav ul{
+        font-size: 0.9em;
     }
     footer{
         font-size: 1em;
@@ -249,8 +249,8 @@ td{
 }
 
 @media screen and (min-width: 724px){ /* Tablet */
-    p#loggedInInfo{
-        font-size: 0.9em;
+    nav{
+        margin-bottom: 1.5em;
     }
     nav #header{
         border-radius: 0.2em;
@@ -277,9 +277,6 @@ td{
 }
 
 @media screen and (min-width: 1224px){ /* Laptop */
-    p#loggedInInfo{
-        font-size: 0.9em;
-    }
     nav #header{
         border-radius: 0.2em;
         font-size: 1.8em;
