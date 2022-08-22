@@ -62,5 +62,9 @@ def getDaysForThisMonth(userID)
         end
     end
     list.uniq!
-    list.sort!
+    if list.length > 0
+        list.sort!
+    else
+        return []
+    end
 end
