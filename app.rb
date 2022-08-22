@@ -15,6 +15,17 @@ get "/" do
   redirect "/workouts"
 end
 
+get "/stats" do
+  if session[:LoggedIn]
+    @page_name = "Stats"
+    @user = DB[:USERS].first(UserID: session[:UserID])
+    @days = getDaysForThisMonth(@user[:UserID])
+    erb :stats
+  else
+    erb :notsignedin
+  end
+end
+
 get "/workouts" do
   if session[:LoggedIn]
     if params[:filter] != "All" && params[:filter] != nil
