@@ -102,7 +102,7 @@ body {font-family: Verdana, sans-serif;}
     <li class="prev">&#10094;</li>
     <li class="next">&#10095;</li>
     <li>
-      August<br>
+      <%= @monthName %><br>
       <span style="font-size:18px">2022</span>
     </li>
   </ul>
@@ -122,7 +122,7 @@ body {font-family: Verdana, sans-serif;}
 <%
 x = 0
 
-(1..31).each { |x|
+(1..@daysInThisMonth).each { |x|
     match = false
     @days.each do |i|
         if i == x
