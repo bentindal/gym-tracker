@@ -99,8 +99,8 @@ body {font-family: Verdana, sans-serif;}
 
 <div class="month">      
   <ul>
-    <li class="prev">&#10094;</li>
-    <li class="next">&#10095;</li>
+    <li class="prev"><a href="/stats?month=<%= @prevMonth %>">&#10094;</a></li>
+    <li class="next"><a href="stats?month=<%= @nextMonth %>">&#10095;</a></li>
     <li>
       <%= @monthName %><br>
       <span style="font-size:18px">2022</span>

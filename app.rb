@@ -28,6 +28,8 @@ get "/stats" do
       @days = getDaysForMonth(@user[:UserID], params[:month])
       @monthName = numberToMonth(params[:month])
       @daysInThisMonth = Date.new(2022, params[:month].to_i, -1).strftime("%d").to_i
+      @nextMonth = (params[:month].to_i + 1).to_s.rjust(2,'0')
+      @prevMonth = (params[:month].to_i - 1).to_s.rjust(2,'0')
       puts "#{@monthName} | Days in this month: #{@daysInThisMonth}"
     end
     erb :stats
