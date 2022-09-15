@@ -79,18 +79,42 @@ def getDaysForMonth(userID, monthNum)
         t.each do |set|
             month = set[:Date][3...5]
             if todaysMonth == month
-                list[x] = set[:Date][0...2].to_i
+                if set[:Date][0...2].to_i # If the day is a number
+                    list[x] = set[:Date][0...2].to_i
+                end
             else
             end
             x += 1
         end
     end
     list.uniq!
+    if list[0].class != Integer
+        list[0] = -1
+    end
+    if list[list.length-1].class != Integer
+        list[list.length-1] = -1
+    end
     if list.length > 0
-        list.sort!
+        bubbleSort(list)
     else
         return []
     end
+end
+
+def bubbleSort(list)
+    n = list.length
+    loop do
+        swapped = false
+        (n-1).times do |i|
+            puts "Comparing #{list[i]} and #{list[i+1]}"
+            if list[i] > list[i+1]
+                list[i], list[i+1] = list[i+1], list[i]
+                swapped = true
+            end
+        end
+        break if not swapped
+    end
+    list
 end
 
 def daysInMonth(month)
