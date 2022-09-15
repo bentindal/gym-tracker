@@ -19,7 +19,17 @@ get "/stats" do
   if session[:LoggedIn]
     @page_name = "Stats"
     @user = DB[:USERS].first(UserID: session[:UserID])
-    @days = getDaysForThisMonth(@user[:UserID])
+    if params[:month] == nil
+      redirect "/stats?month=#{Date.today.strftime("%m")}"
+      #@days = getDaysForThisMonth(@user[:UserID])
+      #@monthName = Date.today.strftime("%B")
+      #@daysInThisMonth = Date.today.strftime("%d").to_i
+    else
+      @days = getDaysForMonth(@user[:UserID], params[:month])
+      @monthName = numberToMonth(params[:month])
+      @daysInThisMonth = Date.new(2022, params[:month].to_i, -1).strftime("%d").to_i
+      puts "#{@monthName} | Days in this month: #{@daysInThisMonth}"
+    end
     erb :stats
   else
     erb :notsignedin
