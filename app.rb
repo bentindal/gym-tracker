@@ -3,7 +3,7 @@ require "sinatra/reloader"
 require "require_all"
 require "date"
 
-set :port, 12345
+set :port, 80
 
 enable :sessions
 set :session_secret, "154a6e0b931dabbdcd78db7eac23bfabc421785aa5a149970a1f3c8c2271ce29"
