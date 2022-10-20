@@ -3,10 +3,10 @@ require "sinatra/reloader"
 require "require_all"
 require "date"
 
-set :port, 80
+set :port, 12345
 
 enable :sessions
-set :session_secret, "$g]Rd2M/WbJ`~~<GZWdH@Fm'ESk2_gckCtLJJkySYG"
+set :session_secret, "154a6e0b931dabbdcd78db7eac23bfabc421785aa5a149970a1f3c8c2271ce29"
 
 require_rel "../db", "models"
 

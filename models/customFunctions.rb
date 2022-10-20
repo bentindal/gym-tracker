@@ -24,7 +24,7 @@ def getLastWorkoutDate(userID, exID)
         end
     end
     list.uniq!
-    list = list.sort_by{|d| m,d,y=d.split("/");[y,m,d]}
+    list = list.sort_by{|d| d,m,y=d.split("/");[y,m,d]}
     list = list[list.length-1]
 end
 
@@ -106,10 +106,13 @@ def bubbleSort(list)
     loop do
         swapped = false
         (n-1).times do |i|
-            puts "Comparing #{list[i]} and #{list[i+1]}"
-            if list[i] > list[i+1]
-                list[i], list[i+1] = list[i+1], list[i]
-                swapped = true
+            begin
+                if list[i] > list[i+1]
+                    list[i], list[i+1] = list[i+1], list[i]
+                    swapped = true
+                end
+            rescue ArgumentError, NoMethodError => e
+                puts "Error Captured: (#{e}), happened whilst comparing #{list[i]} and #{list[i+1]}"
             end
         end
         break if not swapped

@@ -52,9 +52,10 @@ nav ul {
 
 #spacer{
     text-align:center;
-    margin: 1em;
+    margin: 5%;
+    margin-top: 1em;
     padding: 1em;
-    background-color:rgb(36, 121, 182, 60%);
+    background-color:rgb(36, 121, 182, 80%);
     color: rgb(255, 255, 255);
     border-style: solid;
     border-width: 0.2em;
@@ -83,6 +84,7 @@ nav ul {
 
 a#backButton{
     padding: .5em;
+    font-size: 0.45em;
 }
 .button a{
     text-decoration: none;
@@ -147,7 +149,7 @@ footer {
     padding: 5px 10px 5px 0px;
     bottom: 0;
     width: 100%;
-    height: 40px;
+    height: 25px;
     text-align: center;
     position: fixed;
     background-color: rgb(9, 58, 99);
@@ -163,7 +165,9 @@ table{
 td{
     padding: 0.3em;
 }
-
+tr{
+    background-color: #000000;
+}
 input{
     padding: 0.3em;
     text-align: center;
@@ -177,12 +181,12 @@ input{
 th{
     background-color:rgb(7, 46, 76);
     font-size: 1em;
-    padding: 1em;
+    padding: 0.5em;
 }
 
 td{
     background-color: rgb(32, 67, 100);
-    font-size: 1.2em;
+    font-size: 1.25em;
 }
 
 .red{
@@ -215,12 +219,12 @@ td{
         background-color: rgb(255, 255, 255);
     }
     #buttonTD{
-       padding-right: 1em;
+       padding: .2em;
+       padding-left: 2em;
+       padding-right: 2em;
     }
     #buttonTD input{
-        margin: 0.1em;
         font-size: 0.8em;
-        width: 100%;
     }
     #inputButton{
         padding: 0.2em;
@@ -228,10 +232,10 @@ td{
         border-style: solid;
     }
     input{
-        margin: 0.3em;
+        margin: 0.2em;
     }
     footer{
-        font-size: 1em;
+        font-size: .75em;
     }
 }
 
@@ -244,7 +248,7 @@ td{
         font-size: 0.9em;
     }
     footer{
-        font-size: 1em;
+        font-size: .75em;
     }
 }
 
