@@ -135,13 +135,17 @@ puts "first day of month: #{firstDayOfMonth}"
 todaysDate = Date.today.day
 puts "todays date: #{todaysDate}"
 
+todaysMonth = Date.today.month
+puts "todays month: #{todaysMonth}"
+
+
 (1..@daysInThisMonth).each { |x|
     match = false
     @days.each do |i|
         if i == x && match == false
             match = true
             %><li class="match"><strong><%= x %></strong></li><%
-        elsif x == todaysDate && match == false
+        elsif x == todaysDate && match == false && params[:month].to_i == todaysMonth
             match = true
             %><li id="today"><strong><%= x %></strong></li><%
         end
