@@ -80,6 +80,10 @@ body {font-family: Verdana, sans-serif;}
     background: rgb(34, 85, 112, 50%);
 }
 
+#today{
+    background: rgb(0, 200, 0, 50%);
+}
+
 /* Add media queries for smaller screens */
 @media screen and (max-width:720px) {
   .weekdays li, .days li {width: 13.1%;}
@@ -122,12 +126,24 @@ body {font-family: Verdana, sans-serif;}
 <%
 x = 0
 
+firstDayOfMonth = Date.new(2022, params[:month].to_i, 1).wday - 1
+puts "first day of month: #{firstDayOfMonth}"
+(1..firstDayOfMonth).each { |x|
+  %><li></li><%
+}
+
+todaysDate = Date.today.day
+puts "todays date: #{todaysDate}"
+
 (1..@daysInThisMonth).each { |x|
     match = false
     @days.each do |i|
-        if i == x
+        if i == x && match == false
             match = true
-            %><li class="match"><b><%= x %></b></li><%
+            %><li class="match"><strong><%= x %></strong></li><%
+        elsif x == todaysDate && match == false
+            match = true
+            %><li id="today"><strong><%= x %></strong></li><%
         end
     end
     if match == false
@@ -136,8 +152,7 @@ x = 0
     
     %>
 <% } %>
-  
-   
+
 </ul>
 
 </body>
