@@ -13,7 +13,7 @@
                 <a class="button" id="backButton" href="/workouts">Head Back</a>
             </h1>
             <p>Filter by: <a href="/workouts/exercise?id=<%=@id%>&filter=recent">Recent</a> - <a href="/workouts/exercise?id=<%=@id%>&filter=all">All</a></p>
-            <table>
+            <table id="exerciseInfo">
                     <tr>
                         <th>Reps</th>
                         <th>Weight (<%=
@@ -26,8 +26,10 @@
                         <th>Time</th>
                         <th>Date</th>
                     </tr>
-                    <% @target.each do |workout| %>
-                    <tr>
+                    <%
+                    x = 0
+                    @target.reverse_each do |workout| %>
+                    <tr id="set<%= x %>">
                       <td><%= workout[:Reps] %></td>
                       <td><%= workout[:Weight].to_s %></td>
                       <td><%= workout[:Time] %></td>
@@ -40,10 +42,12 @@
                         lastTime = "<%=workout[:Time]%>"
                         lastDate = "<%=workout[:Date]%>"
                     </script>
-                    <%end%>
+                    <%
+                    x += 1
+                    end%>
             </table>
-            <br>
-            <h3 id="noWorkoutText"><em>No Sets Logged Today Yet</em><br><br></h3>
+            <h3 id="noWorkoutText"><em><br>No Sets Logged Today Yet</em><br><br></h3>
+            <h2><span id="restTime"></span></h2>
             <p>Add New Set</p>
             <table>
                     <tr>
@@ -60,16 +64,11 @@
                     <tr id="editRow">
                         <form action="/workouts/exercise?id=<%=@id%>&filter=<%=@filter_type.downcase%>" method="post">
                             <td><input type="number" id="reps" name="Reps" required></td>
-                            <td><input type="number" step="0.1" id="weight" name="Weight" required></td>
-                            
-                            
-                
-                        
+                            <td><input type="number" step="0.5" id="weight" name="Weight" required></td>
                     </tr>
                     <td  colspan=100%><input id="buttonTD" type="submit" class="button" value="Add"></td>
             </table>
             </form>
-            <h2><span id="restTime"></span></h2>
         </div>
         <br><br><br><br><br><br>
     </main>

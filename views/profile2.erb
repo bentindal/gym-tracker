@@ -1,0 +1,40 @@
+<%= erb :"common/nav" %>
+
+<body>
+    <main>
+        <div id="spacer">
+        <% 
+        p=-1
+                    @filterResults.each do |group|
+                    p += 1
+        %>
+            <table class="profile">
+                <h2><%= @filterList[p] %></h2>
+                    <tr>
+                        <th>Exercise Name</th>
+                        <th>Options</th>
+                    </tr>
+                    <%
+                    group.each do |exercise| %>
+                        <tr>
+                            <td><%= exercise[:Name] %></td>
+                            <td><button class="button"><a href="/workouts/exercise?id=<%= exercise[:ExID]%>">View</a></button></td>
+                            <td><button class="editButton" style="border-radius: 0.5em"><a style="text-decoration: none" href="/edit-exercise?id=<%= exercise[:ExID]%>">&#x270E</a></button></td>
+                        </tr>
+                        <%end%>
+                        <tr>
+                            <form action="/workouts" method="post">
+                                <td><input type="text" name="Name" required></td>
+                                <td><input type="submit" class="button" value="New Exercise"></td>
+                            </form>
+                        </tr>
+                </table>
+                <%end%>
+        </div>
+    </main>
+</body>
+<script type="text/javascript" src="../scripts/filterCheck.js"></script>
+<%= erb :"common/footer" %>
+
+</html>
+

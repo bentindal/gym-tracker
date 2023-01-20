@@ -3,10 +3,9 @@ require "sinatra/reloader"
 require "require_all"
 require "date"
 
-set :port, 80
-
 enable :sessions
 set :session_secret, "154a6e0b931dabbdcd78db7eac23bfabc421785aa5a149970a1f3c8c2271ce29"
+
 
 require_rel "../db", "models"
 
@@ -15,6 +14,16 @@ get "/" do
   redirect "/workouts"
 end
 
+get "/test" do
+  erb :test
+end
+
+get "/welcome" do
+  if session[:LoggedIn]
+    @target = DB[:EXERCISES].where(UserID: session[:UserID])
+    erb :welcome_screen
+  end
+end
 get "/stats" do
   if session[:LoggedIn]
     @page_name = "Stats"
@@ -39,6 +48,23 @@ get "/stats" do
   end
 end
 
+get "/test" do
+  puts params
+  redirect "/welcome"
+end
+
+get "/profile2" do
+  if session[:LoggedIn]
+    puts "filter results: #{params[:filter]}"
+    @filterResults = [];
+    @filterList = [];
+    params[:filter].split(",").each do |filter|
+      @filterList.push(filter);
+      @filterResults.push(DB[:EXERCISES].where(UserID: session[:UserID], GroupName: filter));
+    end
+    erb :profile2
+  end
+end
 get "/workouts" do
   if session[:LoggedIn]
     if params[:filter] != "All" && params[:filter] != nil

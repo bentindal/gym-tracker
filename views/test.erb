@@ -1,0 +1,37 @@
+<%= erb :"common/nav" %>
+<div id="spacer">
+
+            <form class="groupPicker">
+            <div>
+            <h1 style="color: white;">What muscle groups would you like to target today?</h1>
+                <%
+                list = getAllGroupNames(session[:UserID])
+                if list != nil
+                    list.each do |name|
+                        if name == "none"
+                            next
+                        end
+                        if name == @filter_type
+                            next
+                        end
+                %>
+
+                
+                <p class="groupButton">
+                <input type="checkbox" style="font-size: 2em;" value="<%= name %>">
+                <a style="padding: 0.5em; color: white; align-self: center;"><%=name%></a>
+                </p>
+
+                <%end
+                end%>
+                <input type="hidden" id="groupsSelected" name="groupsSelected" value="-1">
+                </div>
+                </form>
+                <input type="submit" class="groupButton" value="Start Workout" onclick="updateSelected()">
+
+            </p>
+            </div>
+
+</body>
+<%= erb :"common/footer" %>
+</html>
