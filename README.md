@@ -1,4 +1,4 @@
-<div align="center">
+<div text-align="center">
 <h1> Gym Tracker </h1>
 <p>A lightweight, easy-to-use, web-based Gym Progress Tracker 🏋️ </p>
 <p>Try it out yourself, sign up <a href="http://gymtracker.uk/">here</a></p>
