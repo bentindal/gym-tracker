@@ -6,7 +6,7 @@ function time() {
     var m = d.getMinutes();
     var h = d.getHours();
     theTime = ("0" + h).substr(-2) + ":" + ("0" + m).substr(-2) + ":" + ("0" + s).substr(-2);
-    clock.innerText = theTime
+    //clock.innerText = theTime
 }
 
 function getCurrentDate(){
@@ -33,8 +33,6 @@ function getSecondsSince(time) {
     var total2 = parseInt(time2[0])*60*60 + parseInt(time2[1])*60 + parseInt(parseInt(time2[2]))
     var difference = total2 - total1
     var result = 0
-    console.log(lastDate)
-    console.log(getCurrentDate())
     if (lastDate != getCurrentDate()){
         result = ""
     }
@@ -62,7 +60,7 @@ function updateRestTimer() {
 function showTable(){
     document.getElementById("noWorkoutText").setAttribute("hidden", true)
 }
-console.log(lastRepCount)
+
 if (lastRepCount != "") {
     showTable()
 }
