@@ -29,18 +29,18 @@ get "/stats" do
     @page_name = "Stats"
     @user = DB[:USERS].first(UserID: session[:UserID])
     if params[:month] == nil
-      redirect "/stats?month=#{Date.today.strftime("%m")}"
+      redirect "/stats?month=#{Date.today.strftime("%m").to_i.to_s}&year=#{Date.today.strftime("%Y")}"
       #@days = getDaysForThisMonth(@user[:UserID])
       #@monthName = Date.today.strftime("%B")
       #@daysInThisMonth = Date.today.strftime("%d").to_i
     else
-      @days = getDaysForMonth(@user[:UserID], params[:month])
+      @days = getDaysForMonth(@user[:UserID], params[:month], params[:year])
       @monthName = numberToMonth(params[:month])
       @monthNum = params[:month]
-      @daysInThisMonth = Date.new(2022, params[:month].to_i, -1).strftime("%d").to_i
-      @nextMonth = (params[:month].to_i + 1).to_s.rjust(2,'0')
-      @prevMonth = (params[:month].to_i - 1).to_s.rjust(2,'0')
-      puts "#{@monthName} | Days in this month: #{@daysInThisMonth}"
+      @year = params[:year]
+      @daysInThisMonth = Date.new(@year.to_i, params[:month].to_i, -1).strftime("%d").to_i
+      @nextDate = nextMonthYear(params[:month].to_i, params[:year].to_i)
+      @prevDate = previousMonthYear(params[:month].to_i, params[:year].to_i)
     end
     erb :stats
   else

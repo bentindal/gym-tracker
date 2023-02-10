@@ -69,8 +69,7 @@ def getDaysForThisMonth(userID)
     end
 end
 
-def getDaysForMonth(userID, monthNum)
-    todaysMonth = monthNum
+def getDaysForMonth(userID, monthNum, yearNum)
     allUsersExercises = DB[:EXERCISES].where(UserID: userID)
     list = []
     x=0
@@ -78,7 +77,8 @@ def getDaysForMonth(userID, monthNum)
         t = DB[:WORKOUTS].where(ExID: ex[:ExID]) # Gets all sets for that exercise
         t.each do |set|
             month = set[:Date][3...5]
-            if todaysMonth == month
+            year = set[:Date][6...10]
+            if monthNum == month && yearNum == year
                 if set[:Date][0...2].to_i # If the day is a number
                     list[x] = set[:Date][0...2].to_i
                 end
@@ -126,23 +126,23 @@ end
 
 def numberToMonth(num)
     case num
-    when "01"
+    when "1"
         return "January"
-    when "02"
+    when "2"
         return "February"
-    when "03"
+    when "3"
         return "March"
-    when "04"
+    when "4"
         return "April"
-    when "05"
+    when "5"
         return "May"
-    when "06"
+    when "6"
         return "June"
-    when "07"
+    when "7"
         return "July"
-    when "08"
+    when "8"
         return "August"
-    when "09"
+    when "9"
         return "September"
     when "10"
         return "October"
@@ -166,4 +166,20 @@ def getAllWorkoutDatesByID(userID)
     end
     list.uniq!
     list = list.sort_by{|d| m,d,y=d.split("/");[y,m,d]}
+end
+
+def nextMonthYear(month, year)
+    if month == 12
+        return 1, year+1
+    else
+        return month+1, year
+    end
+end
+
+def previousMonthYear(month, year)
+    if month == 1
+        return 12, year-1
+    else
+        return month-1, year
+    end
 end

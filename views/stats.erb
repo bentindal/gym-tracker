@@ -103,11 +103,11 @@ body {font-family: Verdana, sans-serif;}
 
 <div class="month">      
   <ul>
-    <li class="prev"><a href="/stats?month=<%= @prevMonth %>">&#10094;</a></li>
-    <li class="next"><a href="stats?month=<%= @nextMonth %>">&#10095;</a></li>
+    <li class="prev"><a href="/stats?month=<%= @prevDate[0] %>&year=<%=@prevDate[1] %>">&#10094;</a></li>
+    <li class="next"><a href="stats?month=<%= @nextDate[0] %>&year=<%=@nextDate[1] %>">&#10095;</a></li>
     <li>
       <%= @monthName %><br>
-      <span style="font-size:18px">2022</span>
+      <span style="font-size:18px"><%= @year %></span>
     </li>
   </ul>
 </div>
@@ -138,6 +138,8 @@ puts "todays date: #{todaysDate}"
 todaysMonth = Date.today.month
 puts "todays month: #{todaysMonth}"
 
+todaysYear = Date.today.year
+puts "todays month: #{todaysMonth}"
 
 (1..@daysInThisMonth).each { |x|
     match = false
@@ -145,7 +147,7 @@ puts "todays month: #{todaysMonth}"
         if i == x && match == false
             match = true
             %><li class="match"><strong><%= x %></strong></li><%
-        elsif x == todaysDate && match == false && params[:month].to_i == todaysMonth
+        elsif x == todaysDate && match == false && params[:month].to_i == todaysMonth && params[:year].to_i == todaysYear
             match = true
             %><li id="today"><strong><%= x %></strong></li><%
         end
