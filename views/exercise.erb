@@ -28,7 +28,13 @@
                     </tr>
                     <%
                     x = 0
-                    @target.reverse_each do |workout| %>
+                    data = @target.reverse_each.first
+                    @target.reverse_each do |workout| 
+                    
+                    
+                    
+                    
+                    %>
                     <tr id="set<%= x %>">
                       <td><%= workout[:Reps] %></td>
                       <td><%= workout[:Weight].to_s %></td>
@@ -37,10 +43,10 @@
                       <td><button class="editButton" style="border-radius: 0.5em"><a style="text-decoration: none" href="/edit-set?id=<%=workout[:SetID]%>&exid=<%=workout[:ExID]%>">&#x270E</a></button></td>
                     </tr>
                     <script>
-                        lastRepCount = "<%=workout[:Reps]%>"
-                        lastWeightCount = "<%=workout[:Weight]%>"
-                        lastTime = "<%=workout[:Time]%>"
-                        lastDate = "<%=workout[:Date]%>"
+                        lastRepCount = "<%=data[:Reps]%>"
+                        lastWeightCount = "<%=data[:Weight]%>"
+                        lastTime = "<%=data[:Time]%>"
+                        lastDate = "<%=data[:Date]%>"
                     </script>
                     <%
                     x += 1
