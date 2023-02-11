@@ -10,7 +10,6 @@
 <style>
 * {box-sizing: border-box;}
 ul {list-style-type: none;}
-body {font-family: Verdana, sans-serif;}
 
 .month {
   padding: 10px 25px;
@@ -69,7 +68,19 @@ body {font-family: Verdana, sans-serif;}
   font-size:12px;
   color: #777;
 }
+a:link { text-decoration: none; }
+a:visited { text-decoration: none; }
+a:hover { text-decoration: none; }
+a:active { text-decoration: none; }
 
+.prev, .next {
+    text-decoration: none;
+    cursor: pointer;
+    background: rgb(255,255,255);
+    border-style: none;
+    font-size: 20px;
+    color: black;
+}
 .days li .active {
   padding: 5px;
   background: #1abc9c;
@@ -99,74 +110,65 @@ body {font-family: Verdana, sans-serif;}
 }
 </style>
 </head>
-<body>
+  <div class="month">      
+    <ul>
+      <button class="prev"><a href="/stats?month=<%= @prevDate[0] %>&year=<%=@prevDate[1] %>">&#10094;</a></button>
+      <button class="next"><a href="stats?month=<%= @nextDate[0] %>&year=<%=@nextDate[1] %>">&#10095;</a></button>
+      <li>
+        <%= @monthName %><br>
+        <span style="font-size:18px"><%= @year %></span>
+      </li>
+    </ul>
+  </div>
 
-<div class="month">      
-  <ul>
-    <li class="prev"><a href="/stats?month=<%= @prevDate[0] %>&year=<%=@prevDate[1] %>">&#10094;</a></li>
-    <li class="next"><a href="stats?month=<%= @nextDate[0] %>&year=<%=@nextDate[1] %>">&#10095;</a></li>
-    <li>
-      <%= @monthName %><br>
-      <span style="font-size:18px"><%= @year %></span>
-    </li>
+  <ul class="weekdays">
+    <li>Mo</li>
+    <li>Tu</li>
+    <li>We</li>
+    <li>Th</li>
+    <li>Fr</li>
+    <li>Sa</li>
+    <li>Su</li>
   </ul>
-</div>
 
-<ul class="weekdays">
-  <li>Mo</li>
-  <li>Tu</li>
-  <li>We</li>
-  <li>Th</li>
-  <li>Fr</li>
-  <li>Sa</li>
-  <li>Su</li>
-</ul>
+  <ul class="days">
+  <%
+  x = 0
 
-<ul class="days">
-<%
-x = 0
+  firstDayOfMonth = Date.new(2022, params[:month].to_i, 1).wday - 1
+  puts "first day of month: #{firstDayOfMonth}"
+  (1..firstDayOfMonth).each { |x|
+    %><li></li><%
+  }
 
-firstDayOfMonth = Date.new(2022, params[:month].to_i, 1).wday - 1
-puts "first day of month: #{firstDayOfMonth}"
-(1..firstDayOfMonth).each { |x|
-  %><li></li><%
-}
+  todaysDate = Date.today.day
+  puts "todays date: #{todaysDate}"
 
-todaysDate = Date.today.day
-puts "todays date: #{todaysDate}"
+  todaysMonth = Date.today.month
+  puts "todays month: #{todaysMonth}"
 
-todaysMonth = Date.today.month
-puts "todays month: #{todaysMonth}"
+  todaysYear = Date.today.year
+  puts "todays month: #{todaysMonth}"
 
-todaysYear = Date.today.year
-puts "todays month: #{todaysMonth}"
+  (1..@daysInThisMonth).each { |x|
+      match = false
+      @days.each do |i|
+          if i == x && match == false
+              match = true
+              %><li class="match"><strong><%= x %></strong></li><%
+          elsif x == todaysDate && match == false && params[:month].to_i == todaysMonth && params[:year].to_i == todaysYear
+              match = true
+              %><li id="today"><strong><%= x %></strong></li><%
+          end
+      end
+      if match == false
+          %><li><%= x %></li><%
+      end
+      
+      %>
+  <% } %>
 
-(1..@daysInThisMonth).each { |x|
-    match = false
-    @days.each do |i|
-        if i == x && match == false
-            match = true
-            %><li class="match"><strong><%= x %></strong></li><%
-        elsif x == todaysDate && match == false && params[:month].to_i == todaysMonth && params[:year].to_i == todaysYear
-            match = true
-            %><li id="today"><strong><%= x %></strong></li><%
-        end
-    end
-    if match == false
-        %><li><%= x %></li><%
-    end
-    
-    %>
-<% } %>
-
-</ul>
-
-</body>
-</html>
-
-        
-        
-        
+  </ul>  
         
         </div>
     </main>
