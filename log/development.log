@@ -51329,3 +51329,365 @@ ActionView::Template::Error (undefined method `strftime' for nil:NilClass
     68:     .container-fluid.text-center.justify-content-center.d-flex
   
 app/views/users/view.html.haml:65
+Started GET "/users/view?id=7" for 127.0.0.1 at 2023-05-22 16:27:30 +0100
+Processing by UsersController#view as HTML
+  Parameters: {"id"=>"7"}
+  [1m[36mUser Load (1.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:3:in `view'
+  Rendering layout layouts/application.html.haml
+  Rendering users/view.html.haml within layouts/application
+  [1m[36mWorkout Load (0.1ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:14
+  [1m[36mExercise Load (0.1ms)[0m  [1m[34mSELECT "exercises".* FROM "exercises" WHERE "exercises"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:24
+  [1m[36mCACHE Workout Load (0.0ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:53
+  Rendered users/view.html.haml within layouts/application (Duration: 25.4ms | Allocations: 20009)
+  Rendered layout layouts/application.html.haml (Duration: 52.8ms | Allocations: 50971)
+Completed 200 OK in 79ms (Views: 55.6ms | ActiveRecord: 1.5ms | Allocations: 53895)
+
+
+Started GET "/users/view?id=7" for 127.0.0.1 at 2023-05-22 16:27:49 +0100
+Processing by UsersController#view as HTML
+  Parameters: {"id"=>"7"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:3:in `view'
+  Rendering layout layouts/application.html.haml
+  Rendering users/view.html.haml within layouts/application
+  [1m[36mWorkout Load (0.1ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:14
+  [1m[36mExercise Load (0.0ms)[0m  [1m[34mSELECT "exercises".* FROM "exercises" WHERE "exercises"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:24
+  [1m[36mCACHE Workout Load (0.0ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:53
+  Rendered users/view.html.haml within layouts/application (Duration: 21.8ms | Allocations: 20469)
+  Rendered layout layouts/application.html.haml (Duration: 37.8ms | Allocations: 51413)
+Completed 200 OK in 50ms (Views: 39.1ms | ActiveRecord: 0.4ms | Allocations: 54227)
+
+
+Started GET "/users/view?id=7" for 127.0.0.1 at 2023-05-22 16:27:53 +0100
+Processing by UsersController#view as HTML
+  Parameters: {"id"=>"7"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:3:in `view'
+  Rendering layout layouts/application.html.haml
+  Rendering users/view.html.haml within layouts/application
+  [1m[36mWorkout Load (0.1ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:14
+  [1m[36mExercise Load (0.1ms)[0m  [1m[34mSELECT "exercises".* FROM "exercises" WHERE "exercises"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:24
+  [1m[36mCACHE Workout Load (0.0ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:53
+  Rendered users/view.html.haml within layouts/application (Duration: 18.6ms | Allocations: 20417)
+  Rendered layout layouts/application.html.haml (Duration: 39.4ms | Allocations: 51302)
+Completed 200 OK in 51ms (Views: 41.9ms | ActiveRecord: 0.7ms | Allocations: 54097)
+
+
+Started GET "/users/view?id=7" for 127.0.0.1 at 2023-05-22 16:28:00 +0100
+Processing by UsersController#view as HTML
+  Parameters: {"id"=>"7"}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:3:in `view'
+  Rendering layout layouts/application.html.haml
+  Rendering users/view.html.haml within layouts/application
+  [1m[36mWorkout Load (0.1ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:14
+  [1m[36mExercise Load (0.1ms)[0m  [1m[34mSELECT "exercises".* FROM "exercises" WHERE "exercises"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:24
+  [1m[36mCACHE Workout Load (0.0ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:53
+  Rendered users/view.html.haml within layouts/application (Duration: 19.1ms | Allocations: 20585)
+  Rendered layout layouts/application.html.haml (Duration: 46.0ms | Allocations: 51536)
+Completed 200 OK in 63ms (Views: 48.6ms | ActiveRecord: 0.6ms | Allocations: 54334)
+
+
+Started GET "/users/view?id=7" for 127.0.0.1 at 2023-05-22 16:28:01 +0100
+Processing by UsersController#view as HTML
+  Parameters: {"id"=>"7"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:3:in `view'
+  Rendering layout layouts/application.html.haml
+  Rendering users/view.html.haml within layouts/application
+  [1m[36mWorkout Load (0.2ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:14
+  [1m[36mExercise Load (0.1ms)[0m  [1m[34mSELECT "exercises".* FROM "exercises" WHERE "exercises"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:24
+  [1m[36mCACHE Workout Load (0.0ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:53
+  Rendered users/view.html.haml within layouts/application (Duration: 5.5ms | Allocations: 1961)
+  Rendered layout layouts/application.html.haml (Duration: 15.2ms | Allocations: 4740)
+Completed 200 OK in 22ms (Views: 15.6ms | ActiveRecord: 0.7ms | Allocations: 6940)
+
+
+Started GET "/exercises" for 127.0.0.1 at 2023-05-22 16:28:03 +0100
+Processing by ExerciseController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.haml
+  Rendering exercise/index.html.haml within layouts/application
+  [1m[36mExercise Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "exercises" LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/views/exercise/index.html.haml:5
+  [1m[36mExercise Load (0.0ms)[0m  [1m[34mSELECT "exercises".* FROM "exercises"[0m
+  ↳ app/views/exercise/index.html.haml:16
+  Rendered exercise/index.html.haml within layouts/application (Duration: 9.7ms | Allocations: 9379)
+  Rendered layout layouts/application.html.haml (Duration: 15.1ms | Allocations: 12446)
+Completed 200 OK in 23ms (Views: 17.9ms | ActiveRecord: 0.3ms | Allocations: 14400)
+
+
+Started GET "/workout/show?id=1" for 127.0.0.1 at 2023-05-22 16:28:04 +0100
+Processing by WorkoutController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mExercise Load (0.2ms)[0m  [1m[34mSELECT "exercises".* FROM "exercises" WHERE "exercises"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/workout_controller.rb:4:in `show'
+  Rendering layout layouts/application.html.haml
+  Rendering workout/show.html.haml within layouts/application
+  Rendered workout/_form.html.haml (Duration: 7.3ms | Allocations: 10429)
+  [1m[36mWorkout Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "workouts" WHERE "workouts"."exercise_id" = ? LIMIT ?[0m  [["exercise_id", 1], ["LIMIT", 1]]
+  ↳ app/views/workout/show.html.haml:12
+  [1m[36mWorkout Load (0.5ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."exercise_id" = ? ORDER BY "workouts"."created_at" DESC[0m  [["exercise_id", 1]]
+  ↳ app/views/workout/show.html.haml:23
+  Rendered workout/show.html.haml within layouts/application (Duration: 26.7ms | Allocations: 28656)
+  Rendered layout layouts/application.html.haml (Duration: 29.3ms | Allocations: 31713)
+Completed 200 OK in 45ms (Views: 30.2ms | ActiveRecord: 1.1ms | Allocations: 38182)
+
+
+Started GET "/workout/create?exercise_id=1&user_id=1&weight=5&repetitions=5" for 127.0.0.1 at 2023-05-22 16:28:07 +0100
+Processing by WorkoutController#create as HTML
+  Parameters: {"exercise_id"=>"1", "user_id"=>"1", "weight"=>"5", "repetitions"=>"5"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/workout_controller.rb:15:in `create'
+  [1m[36mWorkout Create (1.0ms)[0m  [1m[32mINSERT INTO "workouts" ("exercise_id", "repetitions", "weight", "created_at", "updated_at", "user_id") VALUES (?, ?, ?, ?, ?, ?)[0m  [["exercise_id", 1], ["repetitions", 5], ["weight", 5.0], ["created_at", "2023-05-22 15:28:07.156013"], ["updated_at", "2023-05-22 15:28:07.156013"], ["user_id", 1]]
+  ↳ app/controllers/workout_controller.rb:15:in `create'
+  [1m[36mTRANSACTION (1.4ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/workout_controller.rb:15:in `create'
+Redirected to http://127.0.0.1:3000/workout/show?id=1
+Completed 302 Found in 14ms (ActiveRecord: 2.7ms | Allocations: 3551)
+
+
+Started GET "/workout/show?id=1" for 127.0.0.1 at 2023-05-22 16:28:07 +0100
+Processing by WorkoutController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mExercise Load (0.1ms)[0m  [1m[34mSELECT "exercises".* FROM "exercises" WHERE "exercises"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/workout_controller.rb:4:in `show'
+  Rendering layout layouts/application.html.haml
+  Rendering workout/show.html.haml within layouts/application
+  Rendered workout/_form.html.haml (Duration: 0.0ms | Allocations: 20)
+  [1m[36mWorkout Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "workouts" WHERE "workouts"."exercise_id" = ? LIMIT ?[0m  [["exercise_id", 1], ["LIMIT", 1]]
+  ↳ app/views/workout/show.html.haml:12
+  [1m[36mWorkout Load (0.1ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."exercise_id" = ? ORDER BY "workouts"."created_at" DESC[0m  [["exercise_id", 1]]
+  ↳ app/views/workout/show.html.haml:23
+  Rendered workout/show.html.haml within layouts/application (Duration: 3.5ms | Allocations: 3398)
+  Rendered layout layouts/application.html.haml (Duration: 7.7ms | Allocations: 6203)
+Completed 200 OK in 12ms (Views: 8.0ms | ActiveRecord: 0.4ms | Allocations: 8351)
+
+
+Started GET "/workout/show" for 127.0.0.1 at 2023-05-22 16:28:08 +0100
+Processing by WorkoutController#show as HTML
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+Completed 404 Not Found in 6ms (ActiveRecord: 0.3ms | Allocations: 1842)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find Exercise without an ID):
+  
+app/controllers/workout_controller.rb:4:in `show'
+Started GET "/workout/show?id=1" for 127.0.0.1 at 2023-05-22 16:28:08 +0100
+Processing by WorkoutController#show as HTML
+  Parameters: {"id"=>"1"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mExercise Load (0.0ms)[0m  [1m[34mSELECT "exercises".* FROM "exercises" WHERE "exercises"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/workout_controller.rb:4:in `show'
+  Rendering layout layouts/application.html.haml
+  Rendering workout/show.html.haml within layouts/application
+  Rendered workout/_form.html.haml (Duration: 0.0ms | Allocations: 20)
+  [1m[36mWorkout Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "workouts" WHERE "workouts"."exercise_id" = ? LIMIT ?[0m  [["exercise_id", 1], ["LIMIT", 1]]
+  ↳ app/views/workout/show.html.haml:12
+  [1m[36mWorkout Load (0.0ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."exercise_id" = ? ORDER BY "workouts"."created_at" DESC[0m  [["exercise_id", 1]]
+  ↳ app/views/workout/show.html.haml:23
+  Rendered workout/show.html.haml within layouts/application (Duration: 2.1ms | Allocations: 3393)
+  Rendered layout layouts/application.html.haml (Duration: 4.3ms | Allocations: 6189)
+Completed 200 OK in 6ms (Views: 4.4ms | ActiveRecord: 0.2ms | Allocations: 8300)
+
+
+Started GET "/users/view?id=7" for 127.0.0.1 at 2023-05-22 16:28:09 +0100
+Processing by UsersController#view as HTML
+  Parameters: {"id"=>"7"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:3:in `view'
+  Rendering layout layouts/application.html.haml
+  Rendering users/view.html.haml within layouts/application
+  [1m[36mWorkout Load (0.2ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:14
+  [1m[36mExercise Load (0.3ms)[0m  [1m[34mSELECT "exercises".* FROM "exercises" WHERE "exercises"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:24
+  [1m[36mCACHE Workout Load (0.0ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:53
+  Rendered users/view.html.haml within layouts/application (Duration: 7.1ms | Allocations: 1979)
+  Rendered layout layouts/application.html.haml (Duration: 15.7ms | Allocations: 4769)
+Completed 200 OK in 23ms (Views: 16.4ms | ActiveRecord: 0.9ms | Allocations: 6869)
+
+
+Started GET "/users/view" for 127.0.0.1 at 2023-05-22 16:28:15 +0100
+Processing by UsersController#view as HTML
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+Completed 404 Not Found in 5ms (ActiveRecord: 0.5ms | Allocations: 1815)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find User without an ID):
+  
+app/controllers/users_controller.rb:3:in `view'
+Started GET "/users/view?id=7" for 127.0.0.1 at 2023-05-22 16:28:15 +0100
+Processing by UsersController#view as HTML
+  Parameters: {"id"=>"7"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:3:in `view'
+  Rendering layout layouts/application.html.haml
+  Rendering users/view.html.haml within layouts/application
+  [1m[36mWorkout Load (0.1ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:14
+  [1m[36mExercise Load (0.0ms)[0m  [1m[34mSELECT "exercises".* FROM "exercises" WHERE "exercises"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:24
+  [1m[36mCACHE Workout Load (0.0ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:53
+  Rendered users/view.html.haml within layouts/application (Duration: 1.6ms | Allocations: 1961)
+  Rendered layout layouts/application.html.haml (Duration: 4.4ms | Allocations: 4758)
+Completed 200 OK in 7ms (Views: 4.8ms | ActiveRecord: 0.2ms | Allocations: 6878)
+
+
+Started GET "/users/view?id=7" for 127.0.0.1 at 2023-05-22 16:29:04 +0100
+Processing by UsersController#view as HTML
+  Parameters: {"id"=>"7"}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:3:in `view'
+  Rendering layout layouts/application.html.haml
+  Rendering users/view.html.haml within layouts/application
+  [1m[36mWorkout Load (0.1ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:14
+  [1m[36mExercise Load (0.0ms)[0m  [1m[34mSELECT "exercises".* FROM "exercises" WHERE "exercises"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:24
+  [1m[36mCACHE Workout Load (0.0ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:57
+  Rendered users/view.html.haml within layouts/application (Duration: 24.2ms | Allocations: 21174)
+  Rendered layout layouts/application.html.haml (Duration: 50.8ms | Allocations: 52096)
+Completed 200 OK in 88ms (Views: 55.3ms | ActiveRecord: 0.6ms | Allocations: 54798)
+
+
+Started GET "/users/view?id=7" for 127.0.0.1 at 2023-05-22 16:29:55 +0100
+Processing by UsersController#view as HTML
+  Parameters: {"id"=>"7"}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mUser Load (0.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:3:in `view'
+  Rendering layout layouts/application.html.haml
+  Rendering users/view.html.haml within layouts/application
+  [1m[36mWorkout Load (0.1ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:14
+  [1m[36mExercise Load (0.0ms)[0m  [1m[34mSELECT "exercises".* FROM "exercises" WHERE "exercises"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:24
+  [1m[36mCACHE Workout Load (0.0ms)[0m  [1m[34mSELECT "workouts".* FROM "workouts" WHERE "workouts"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/users/view.html.haml:57
+  Rendered users/view.html.haml within layouts/application (Duration: 14.6ms | Allocations: 21252)
+  Rendered layout layouts/application.html.haml (Duration: 32.1ms | Allocations: 63703)
+Completed 200 OK in 45ms (Views: 32.9ms | ActiveRecord: 0.9ms | Allocations: 74430)
+
+
+Started GET "/" for 127.0.0.1 at 2023-05-22 16:29:56 +0100
+Processing by ExerciseController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.haml
+  Rendering exercise/index.html.haml within layouts/application
+  [1m[36mExercise Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "exercises" WHERE "exercises"."user_id" = ? LIMIT ?[0m  [["user_id", 7], ["LIMIT", 1]]
+  ↳ app/views/exercise/index.html.haml:5
+  Rendered exercise/index.html.haml within layouts/application (Duration: 9.6ms | Allocations: 8589)
+  Rendered layout layouts/application.html.haml (Duration: 13.6ms | Allocations: 11649)
+Completed 200 OK in 22ms (Views: 16.1ms | ActiveRecord: 0.4ms | Allocations: 13982)
+
+
+Started GET "/" for 127.0.0.1 at 2023-05-22 16:29:57 +0100
+Processing by ExerciseController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.haml
+  Rendering exercise/index.html.haml within layouts/application
+  [1m[36mExercise Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "exercises" WHERE "exercises"."user_id" = ? LIMIT ?[0m  [["user_id", 7], ["LIMIT", 1]]
+  ↳ app/views/exercise/index.html.haml:5
+  Rendered exercise/index.html.haml within layouts/application (Duration: 1.4ms | Allocations: 576)
+  Rendered layout layouts/application.html.haml (Duration: 6.4ms | Allocations: 3353)
+Completed 200 OK in 12ms (Views: 6.9ms | ActiveRecord: 0.4ms | Allocations: 5070)
+
+
+Started GET "/" for 127.0.0.1 at 2023-05-22 16:30:19 +0100
+Processing by ExerciseController#index as HTML
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.haml
+  Rendering exercise/index.html.haml within layouts/application
+  [1m[36mExercise Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "exercises" WHERE "exercises"."user_id" = ? LIMIT ?[0m  [["user_id", 7], ["LIMIT", 1]]
+  ↳ app/views/exercise/index.html.haml:5
+  Rendered exercise/index.html.haml within layouts/application (Duration: 15.0ms | Allocations: 8523)
+  Rendered layout layouts/application.html.haml (Duration: 44.9ms | Allocations: 39449)
+Completed 200 OK in 65ms (Views: 47.9ms | ActiveRecord: 0.5ms | Allocations: 41662)
+
+
+Started GET "/exercise/create" for 127.0.0.1 at 2023-05-22 16:30:24 +0100
+Processing by ExerciseController#create as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.haml
+  Rendering exercise/create.html.haml within layouts/application
+  Rendered exercise/_form.html.haml (Duration: 14.7ms | Allocations: 14227)
+  Rendered exercise/create.html.haml within layouts/application (Duration: 22.9ms | Allocations: 16644)
+  Rendered layout layouts/application.html.haml (Duration: 27.6ms | Allocations: 19422)
+Completed 200 OK in 34ms (Views: 28.5ms | ActiveRecord: 0.2ms | Allocations: 21092)
+
+
+Started GET "/exercise/new?user_id=7&name=users.rb&unit=Chest&group=Chest" for 127.0.0.1 at 2023-05-22 16:30:26 +0100
+Processing by ExerciseController#new as HTML
+  Parameters: {"user_id"=>"7", "name"=>"users.rb", "unit"=>"Chest", "group"=>"Chest"}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/exercise_controller.rb:11:in `new'
+  [1m[36mExercise Create (0.4ms)[0m  [1m[32mINSERT INTO "exercises" ("user_id", "name", "unit", "group", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?)[0m  [["user_id", 7], ["name", "users.rb"], ["unit", "Chest"], ["group", "Chest"], ["created_at", "2023-05-22 15:30:26.414931"], ["updated_at", "2023-05-22 15:30:26.414931"]]
+  ↳ app/controllers/exercise_controller.rb:11:in `new'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/exercise_controller.rb:11:in `new'
+Redirected to http://127.0.0.1:3000/exercises
+Completed 302 Found in 15ms (ActiveRecord: 2.0ms | Allocations: 5099)
+
+
+Started GET "/exercises" for 127.0.0.1 at 2023-05-22 16:30:26 +0100
+Processing by ExerciseController#index as HTML
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.haml
+  Rendering exercise/index.html.haml within layouts/application
+  [1m[36mExercise Exists? (0.1ms)[0m  [1m[34mSELECT 1 AS one FROM "exercises" WHERE "exercises"."user_id" = ? LIMIT ?[0m  [["user_id", 7], ["LIMIT", 1]]
+  ↳ app/views/exercise/index.html.haml:5
+  [1m[36mExercise Load (0.1ms)[0m  [1m[34mSELECT "exercises".* FROM "exercises" WHERE "exercises"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/exercise/index.html.haml:16
+  Rendered exercise/index.html.haml within layouts/application (Duration: 1.7ms | Allocations: 1255)
+  Rendered layout layouts/application.html.haml (Duration: 6.3ms | Allocations: 4044)
+Completed 200 OK in 10ms (Views: 6.6ms | ActiveRecord: 0.3ms | Allocations: 5651)
+
+
+Started GET "/exercises" for 127.0.0.1 at 2023-05-22 16:30:31 +0100
+Processing by ExerciseController#index as HTML
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = ? ORDER BY "users"."id" ASC LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  Rendering layout layouts/application.html.haml
+  Rendering exercise/index.html.haml within layouts/application
+  [1m[36mExercise Exists? (0.2ms)[0m  [1m[34mSELECT 1 AS one FROM "exercises" WHERE "exercises"."user_id" = ? LIMIT ?[0m  [["user_id", 7], ["LIMIT", 1]]
+  ↳ app/views/exercise/index.html.haml:5
+  [1m[36mExercise Load (0.1ms)[0m  [1m[34mSELECT "exercises".* FROM "exercises" WHERE "exercises"."user_id" = ?[0m  [["user_id", 7]]
+  ↳ app/views/exercise/index.html.haml:16
+  Rendered exercise/index.html.haml within layouts/application (Duration: 15.4ms | Allocations: 9198)
+  Rendered layout layouts/application.html.haml (Duration: 43.1ms | Allocations: 40107)
+Completed 200 OK in 60ms (Views: 52.8ms | ActiveRecord: 0.5ms | Allocations: 42290)
+
+
