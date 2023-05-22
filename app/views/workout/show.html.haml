@@ -1,0 +1,57 @@
+.container
+    .text-right
+        = link_to 'Back', "/exercises", {class: "btn btn-primary"}
+    .d-flex.justify-content-center.text-center
+        %h1
+            = @exercise.name
+            .badge.badge-warning
+                = @exercise.group
+
+    = render 'form'
+    
+    - if @sets.empty?
+        %p.text-center.text-muted No sets have been logged yet.
+    - else
+        %table.table.table-hover.text-center
+            %thead
+                %tr
+                    %th Weight
+                    %th Repetitions
+                    %th Date
+                    %th Options
+            %tbody
+                - @sets.each do |set|
+                    %tr
+                        %td.col-3
+                            - if set.weight == 0
+                                = "Bodyweight"
+                            - elsif set.weight == nil
+                                .text-muted
+                                    = "?"
+                            - else
+                                = set.weight
+                        %td.col-3
+                            - if set.repetitions == nil
+                                .text-muted
+                                    = "?"
+                            - else
+                                = set.repetitions
+                        %td.col-3
+                            - if set.created_at > Time.now.beginning_of_day
+                                .text-muted
+                                    = set.created_at.strftime("%H:%M")
+                            - elsif set.created_at > Time.now.beginning_of_day - 1.day
+                                .text-muted
+                                    = "Yesterday"
+                            - elsif set.created_at > Time.now.beginning_of_day - 6.days
+                                .text-muted
+                                    = set.created_at.strftime("%A") + " " + set.created_at.strftime("%H:%M")
+                            - else
+                                // Output date
+                                .text-muted
+                                    = set.created_at.strftime("%d/%m/%Y")
+                        %td.col-3
+                            = link_to '✎', "#", {class: "btn btn-sm btn-outline-primary"}
+                            = link_to 'X', "/workout/destroy?id="+set.id.to_s, {class: "btn btn-sm btn-outline-danger"}
+
+    %br

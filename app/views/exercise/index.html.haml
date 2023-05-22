@@ -1,0 +1,25 @@
+.container
+    .text-right
+        = link_to 'Create Exercise', "/exercise/create", {class: "btn btn-sm btn-outline-primary"}
+    %h1 All Exercises
+    - if @exercises.empty?
+        %p No exercises have been created yet.
+    - else
+        %table.table.table-hover
+            %thead
+                %tr
+                    %th Name
+                    %th Group
+                    %th Options
+                    %th
+            %tbody
+                - @exercises.each do |exercise|
+                    %tr
+                        %td
+                            = exercise.name
+                        %td
+                            = exercise.group
+                        %td
+                            = link_to 'Show', "/workout/show?id="+exercise.id.to_s, {class: "btn btn-sm btn-outline-primary"}
+                            = link_to 'Edit', "#", {class: "btn btn-sm btn-outline-primary"}
+                            = link_to 'Destroy', "/exercise/destroy?id="+exercise.id.to_s, {class: "btn btn-sm btn-outline-danger"}

@@ -1,0 +1,107 @@
+.container.text-center
+    
+    %h1
+        %strong
+            = @user.first_name + ' ' + @user.last_name + "'s"
+        Profile
+    .text-muted 
+        = '@'+@user.username
+    %hr
+
+    // Get all dates from workouts and count unique dates
+    - @sets = Workout.where(user_id: @user.id)
+    - @dates = []
+    - @sets.each do |workout|
+        - @dates.push(workout.created_at.to_date)
+    - @dates = @dates.uniq
+    %h6
+        = @dates.length.to_s + ' days logged'
+    %br
+        %h5
+            %strong
+                3-Set Average
+        - @exercises = Exercise.where(user_id: @user.id)
+        - @exercises.each do |exercise|
+            - @sets = Workout.where(user_id: @user.id, exercise_id: exercise.id)
+            - @sets = @sets.order(exercise_id: :desc)
+            // 3-set average
+            - @sets = @sets.first(3)
+            - if @sets.length > 0
+                - totalReps = 0
+                - totalWeight = 0
+                %strong
+                    = exercise.name + ' (' + exercise.group + '):'
+                - @sets.each do |s|
+                    - totalReps += s.repetitions
+                    - totalWeight += s.weight
+                // Display avg weight and reps
+                - if totalReps > 0
+                    .text-muted
+                        = (totalWeight / totalReps).round(2).to_s + ' ' + exercise.unit + ' per rep for ' + (totalReps / @sets.length).round(2).to_s
+                    %nbsp
+                // Recent 3 sets
+                - @sets = @sets.first(3)
+            - else
+                %strong
+                    = exercise.name + ':'
+                .text-muted
+                    &nbsp[no sets logged]
+    
+    // Display this month as a calender
+    - @sets = Workout.where(user_id: @user.id)
+    - @dates = []
+    - @sets.each do |workout|
+        - @dates.push(workout.created_at.to_date)
+    - @dates = @dates.uniq
+    - @dates = @dates.sort
+    - @dates = @dates.reverse
+    - @dates = @dates.first(30)
+    // Display all unique set dates on a calender
+    %hr
+    %h5
+        %strong
+            Calender
+        (
+        = @dates.last.strftime("%B")
+        )
+
+    .container-fluid.text-center.justify-content-center.d-flex
+        %table.table.border
+            %thead
+                %tr
+                    %th
+                        Mon
+                    %th
+                        Tues
+                    %th
+                        Wed
+                    %th
+                        Thur
+                    %th
+                        Fri
+                    %th
+                        Sat
+                    %th
+                        Sun
+            %tbody
+                - (1..31).each do |dayCount|
+                    - dateFound = false
+                    - if dayCount % 7 == 1
+                        %tr
+                    - @dates.each do |date|
+                        - if dayCount == date.day && date.strftime("%B") == Date.today.strftime("%B")
+                            - dateFound = true
+                    - if dateFound
+                        %td.bg-success
+                            = dayCount
+                    - elsif dayCount == Date.today.day && Date.today.strftime("%B") == Date.today.strftime("%B")
+                        %td.bg-warning
+                            = dayCount
+                    - elsif dayCount < Date.today.day && Date.today.strftime("%B") == Date.today.strftime("%B")
+                        %td.bg-secondary
+                            = dayCount
+                    - else
+                        %td
+                            = dayCount
+                      
+

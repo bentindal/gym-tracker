@@ -1,0 +1,13 @@
+.container
+    %h1 All Exercises
+    - if @exercise.empty?
+        %p No sets have been created yet.
+    - else
+        %table.table.table-hover
+            %thead
+                %tr
+                    %th Name
+                    %th Group
+                    %th Options
+            %tbody
+                

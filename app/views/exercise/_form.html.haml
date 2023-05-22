@@ -1,0 +1,23 @@
+
+// f.input :exercise_id, label: "Exercise", collection: Exercise.all.map { |exercise| [exercise.name, exercise.id] }
+// f.input :user_id, label: "User", collection: User.all.map { |user| [user.username, user.id] }
+
+.card-body.justify-content-center.d-flex
+  %form{action: "/exercise/new", method: "GET"}
+    %input.form-control{name: "user_id", placeholder: "UserID", value: current_user.id, hidden: hidden}
+    %input.form-control{name: "name", placeholder: "Name"}
+    %select.form-control{placeholder: "Select a Unit", name: "unit"}
+      %option{value: "Chest"} kg
+      %option{value: "Back"} lbs
+      %option{value: "kg/db"} kg per dumbbell
+      %option{value: "lbs/db"} lbs per dumbbell
+    %select.form-control{placeholder: "Select a Muscle", name: "group"}
+      %option{value: "Chest"} Chest
+      %option{value: "Back"} Back
+      %option{value: "Legs"} Legs
+      %option{value: "Shoulders"} Shoulders
+      %option{value: "Bicep"} Bicep
+      %option{value: "Triceps"} Triceps
+      %option{value: "Core"} Core
+
+    %button.form-control{type: "submit", class: "btn btn-sm btn-outline-primary"} Add
