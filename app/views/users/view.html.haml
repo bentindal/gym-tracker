@@ -62,7 +62,10 @@
         %strong
             Calender
         (
-        = @dates.last.strftime("%B")
+        - if @dates.length > 0
+            = @dates.first.strftime("%B") - @dates.last.strftime("%B")
+        - else
+            = Date.today.strftime("%B")
         )
 
     .container-fluid.text-center.justify-content-center.d-flex
