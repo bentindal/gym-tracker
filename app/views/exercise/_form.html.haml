@@ -4,7 +4,7 @@
 
 .card-body.justify-content-center.d-flex
   %form{action: "/exercise/new", method: "GET"}
-    %input.form-control{name: "user_id", placeholder: "UserID", value: current_user.id, hidden: hidden}
+    %input.form-control{name: "user_id", placeholder: "UserID", value: current_user.id, hidden: true}
     %input.form-control{name: "name", placeholder: "Name"}
     %select.form-control{placeholder: "Select a Unit", name: "unit"}
       %option{value: "Chest"} kg
