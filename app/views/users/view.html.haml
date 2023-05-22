@@ -21,31 +21,35 @@
             %strong
                 3-Set Average
         - @exercises = Exercise.where(user_id: @user.id)
-        - @exercises.each do |exercise|
-            - @sets = Workout.where(user_id: @user.id, exercise_id: exercise.id)
-            - @sets = @sets.order(exercise_id: :desc)
-            // 3-set average
-            - @sets = @sets.first(3)
-            - if @sets.length > 0
-                - totalReps = 0
-                - totalWeight = 0
-                %strong
-                    = exercise.name + ' (' + exercise.group + '):'
-                - @sets.each do |s|
-                    - totalReps += s.repetitions
-                    - totalWeight += s.weight
-                // Display avg weight and reps
-                - if totalReps > 0
-                    .text-muted
-                        = (totalWeight / totalReps).round(2).to_s + ' ' + exercise.unit + ' per rep for ' + (totalReps / @sets.length).round(2).to_s
-                    %nbsp
-                // Recent 3 sets
+        - if @exercises.length == 0
+            .text-muted
+                &nbsp[no exercises logged]
+        - else
+            - @exercises.each do |exercise|
+                - @sets = Workout.where(user_id: @user.id, exercise_id: exercise.id)
+                - @sets = @sets.order(exercise_id: :desc)
+                // 3-set average
                 - @sets = @sets.first(3)
-            - else
-                %strong
-                    = exercise.name + ':'
-                .text-muted
-                    &nbsp[no sets logged]
+                - if @sets.length > 0
+                    - totalReps = 0
+                    - totalWeight = 0
+                    %strong
+                        = exercise.name + ' (' + exercise.group + '):'
+                    - @sets.each do |s|
+                        - totalReps += s.repetitions
+                        - totalWeight += s.weight
+                    // Display avg weight and reps
+                    - if totalReps > 0
+                        .text-muted
+                            = (totalWeight / totalReps).round(2).to_s + ' ' + exercise.unit + ' per rep for ' + (totalReps / @sets.length).round(2).to_s
+                        %nbsp
+                    // Recent 3 sets
+                    - @sets = @sets.first(3)
+                - else
+                    %strong
+                        = exercise.name + ':'
+                    .text-muted
+                        &nbsp[no sets logged]
     
     // Display this month as a calender
     - @sets = Workout.where(user_id: @user.id)

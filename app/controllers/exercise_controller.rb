@@ -1,6 +1,6 @@
 class ExerciseController < ApplicationController
   def index
-    @exercises = Exercise.all
+    @exercises = Exercise.where(user_id: current_user.id)
   end
   def view
     @exercise = Exercise.find(params[:id])
