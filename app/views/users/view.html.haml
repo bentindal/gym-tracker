@@ -52,7 +52,7 @@
                     .text-muted
                         &nbsp[no sets logged]
     
-    // Display this month as a calender
+    // Display this month as a calendar
     - @sets = Workout.where(user_id: @user.id)
     - @dates = []
     - @sets.each do |workout|
@@ -61,11 +61,11 @@
     - @dates = @dates.sort
     - @dates = @dates.reverse
     - @dates = @dates.first(30)
-    // Display all unique set dates on a calender
+    // Display all unique set dates on a calendar
     %hr
     %h5
         %strong
-            Calender
+            Calendar
         (
         - if @dates.length > 0
             = @dates.first.strftime("%B") + ' - ' + @dates.last.strftime("%B")
