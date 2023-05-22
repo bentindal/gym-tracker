@@ -67,7 +67,7 @@
             Calender
         (
         - if @dates.length > 0
-            = @dates.first.strftime("%B") - @dates.last.strftime("%B")
+            = @dates.first.strftime("%B") + ' - ' + @dates.last.strftime("%B")
         - else
             = Date.today.strftime("%B")
         )
