@@ -2,3 +2,4 @@ db/development.sqlite3
 log/development.log
 db/production.sqlite3
 log/production.log
+config/master.key
