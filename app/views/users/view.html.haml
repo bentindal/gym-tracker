@@ -29,7 +29,8 @@
                 - @sets = Workout.where(user_id: @user.id, exercise_id: exercise.id)
                 - @sets = @sets.order(exercise_id: :desc)
                 // 3-set average
-                - @sets = @sets.first(3)
+                - num = 3
+                - @sets = @sets.first(num)
                 - if @sets.length > 0
                     - totalReps = 0
                     - totalWeight = 0
@@ -41,7 +42,7 @@
                     // Display avg weight and reps
                     - if totalReps > 0
                         .text-muted
-                            = (totalWeight / totalReps).round(2).to_s + ' ' + exercise.unit + ' per rep for ' + (totalReps / @sets.length).round(2).to_s
+                            = (totalWeight / num).round(2).to_s + ' ' + exercise.unit + ' per rep for ' + (totalReps / @sets.length).round(2).to_s
                         %nbsp
                     // Recent 3 sets
                     - @sets = @sets.first(3)
