@@ -45,7 +45,7 @@
               // left aligned dropdown menu
               .dropdown-menu.dropdown-menu-right
                 %a.dropdown-item{href: "/users/view?id="+current_user.id.to_s} My Profile
-                %a.dropdown-item{href: "#"} Edit my Details
+                %a.dropdown-item{href: "/users/edit"} Edit my Details
                 .dropdown-divider
                 // Logout
                 = link_to "Logout", destroy_user_session_path, method: :delete, class: "dropdown-item text-danger"
