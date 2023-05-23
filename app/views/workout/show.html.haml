@@ -1,6 +1,6 @@
 .container
     .text-right
-        = link_to 'Back', "/exercises", {class: "btn btn-primary"}
+        = link_to 'Back', "/exercises", {class: "btn btn-outline-primary"}
     .d-flex.justify-content-center.text-center
         %h1
             = @exercise.name
@@ -15,14 +15,14 @@
         %table.table.table-hover.text-center
             %thead
                 %tr
-                    %th Repetitions
+                    %th Reps
                     %th Weight
                     %th When
                     %th Options
             %tbody
                 - @sets.each do |set|
                     %tr
-                        %td.col-3
+                        %td.col-2
                             - if set.repetitions == nil
                                 .text-muted
                                     = "?"
@@ -30,7 +30,7 @@
                                 = set.repetitions
                         %td.col-3
                             - if set.weight == 0
-                                = "Bodyweight"
+                                = "BW"
                             - elsif set.weight == nil
                                 .text-muted
                                     = "?"

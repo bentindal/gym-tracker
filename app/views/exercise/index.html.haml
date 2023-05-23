@@ -15,11 +15,11 @@
             %tbody
                 - @exercises.each do |exercise|
                     %tr
-                        %td
+                        %td.col-4
                             = exercise.name
-                        %td
+                        %td.col-4
                             = exercise.group
-                        %td
+                        %td.col-5
                             = link_to '', "/workout/show?id="+exercise.id.to_s, {class: "fa-solid fa-eye btn btn-sm btn-primary"}
                             = link_to '', "#", {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary"}
                             = link_to '', "/exercise/destroy?id="+exercise.id.to_s, {class: " fa-solid fa-trash-can btn btn-sm btn-outline-danger"}
