@@ -20,6 +20,7 @@
                         %td
                             = exercise.group
                         %td
-                            = link_to 'Show', "/workout/show?id="+exercise.id.to_s, {class: "btn btn-sm btn-outline-primary"}
-                            = link_to 'Edit', "#", {class: "btn btn-sm btn-outline-primary"}
-                            = link_to 'Destroy', "/exercise/destroy?id="+exercise.id.to_s, {class: "btn btn-sm btn-outline-danger"}
+                            = link_to '', "/workout/show?id="+exercise.id.to_s, {class: "fa-solid fa-eye btn btn-sm btn-primary"}
+                            = link_to '', "#", {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary"}
+                            = link_to '', "/exercise/destroy?id="+exercise.id.to_s, {class: " fa-solid fa-trash-can btn btn-sm btn-outline-danger"}
+                                
