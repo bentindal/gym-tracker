@@ -3,7 +3,8 @@
   %form{action: "/workout/create?exercise_id="+@exercise.id.to_s, method: "GET"}
     %input{name: "exercise_id", placeholder: "ExID", value: @exercise.id.to_s, hidden: true}
     %input{name: "user_id", placeholder: "UserID", value: @exercise.user_id.to_s, hidden: true}
-    %input.m-1.text-center{name: "weight", placeholder: "Weight ("+@exercise.unit+")", type: "number", step: "0.25", min: "0"}
+    
     %input.m-1.text-center.w-25{name: "repetitions", placeholder: "Reps", type: "number", step: "1", min: "0", max: "100"}
-
+    %input.m-1.text-center{name: "weight", placeholder: "Weight ("+@exercise.unit+")", type: "number", step: "0.25", min: "0"}
+    
     %button.m-1{type: "submit", class: "btn btn-sm w-100 btn-outline-primary"} Add

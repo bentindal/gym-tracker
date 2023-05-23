@@ -15,13 +15,19 @@
         %table.table.table-hover.text-center
             %thead
                 %tr
-                    %th Weight
                     %th Repetitions
-                    %th Date
+                    %th Weight
+                    %th When
                     %th Options
             %tbody
                 - @sets.each do |set|
                     %tr
+                        %td.col-3
+                            - if set.repetitions == nil
+                                .text-muted
+                                    = "?"
+                            - else
+                                = set.repetitions
                         %td.col-3
                             - if set.weight == 0
                                 = "Bodyweight"
@@ -29,13 +35,7 @@
                                 .text-muted
                                     = "?"
                             - else
-                                = set.weight
-                        %td.col-3
-                            - if set.repetitions == nil
-                                .text-muted
-                                    = "?"
-                            - else
-                                = set.repetitions
+                                = set.weight.to_s + " " + @exercise.unit
                         %td.col-3
                             - if set.created_at > Time.now.beginning_of_day
                                 .text-muted
@@ -51,7 +51,7 @@
                                 .text-muted
                                     = set.created_at.strftime("%d/%m/%Y")
                         %td.col-3
-                            = link_to '✎', "#", {class: "btn btn-sm btn-outline-primary"}
-                            = link_to 'X', "/workout/destroy?id="+set.id.to_s, {class: "btn btn-sm btn-outline-danger"}
+                            = link_to '', "#", {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary"}
+                            = link_to '', "/workout/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger"}
 
     %br
