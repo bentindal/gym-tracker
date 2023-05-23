@@ -1,0 +1,28 @@
+%h1.text-center My Feed
+.container
+    - prevDate = nil
+    - @feed.each do |day|
+        %h4
+            = day[0].strftime("%B %d, %Y")
+            = "- " + day[1].first_name + " " + day[1].last_name
+        .row
+            - day[2].each do |workout|
+                - if workout[1].any?
+                    .column.m-1.p-2
+                        %strong
+                            = workout[0].name
+                        - workout[1].each do |set|
+                            - if set.weight != nil && set.repetitions != nil
+                                %li
+                                    - if set.weight == 0
+                                        = 'BW ' + workout[0].unit.to_s + ' x ' + set.repetitions.to_s
+                                    - else
+                                        = set.weight.to_s + ' ' + workout[0].unit.to_s + ' x ' + set.repetitions.to_s
+                            - else
+                                %li.text-muted
+                                    [invalid set]
+                                    
+
+                    
+        %hr
+            

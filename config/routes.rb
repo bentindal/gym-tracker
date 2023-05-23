@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get 'exercise/destroy'
   get 'home/index'
   get 'users/view'
+  get 'feed' => 'feed#view'
   devise_for :users, :controllers => {
     registrations: 'registrations'
   }

@@ -3,3 +3,4 @@ log/development.log
 db/production.sqlite3
 log/production.log
 config/master.key
+db/development.sqlite3
