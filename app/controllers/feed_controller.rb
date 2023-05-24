@@ -20,7 +20,10 @@ class FeedController < ApplicationController
         @exercises.each do |exercise|
           @list.push([exercise, @sets.where(exercise_id: exercise.id).where(created_at: date.beginning_of_day..date.end_of_day)])
         end
-        @feed.push([@list.first[1].first.created_at, @user, @list])
+        # Only if the user has a workout on the date, add it to the feed
+        if @list.first[1].first != nil
+          @feed.push([@list.first[1].first.created_at, @user, @list])
+        end
       end
     end
     # Order feed by date
