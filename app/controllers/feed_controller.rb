@@ -20,7 +20,7 @@ class FeedController < ApplicationController
         @exercises.each do |exercise|
           @list.push([exercise, @sets.where(exercise_id: exercise.id).where(created_at: date.beginning_of_day..date.end_of_day)])
         end
-        @feed.push([date, @user, @list])
+        @feed.push([@list.first[1].first.created_at, @user, @list])
       end
     end
     # Order feed by date
