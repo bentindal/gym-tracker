@@ -13,4 +13,7 @@ class UsersController < ApplicationController
             end
         end
     end
+    def find
+        @users = User.all
+    end
 end
