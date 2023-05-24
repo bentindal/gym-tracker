@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  # get 'friend/index'
   get 'friend/list'
   get 'friend/add'
   get 'friend/remove'
@@ -13,6 +12,7 @@ Rails.application.routes.draw do
   get 'exercise/destroy'
   get 'home/index'
   get 'users/view'
+  get 'users/find'
   get 'feed' => 'feed#view'
   devise_for :users, :controllers => {
     registrations: 'registrations'
