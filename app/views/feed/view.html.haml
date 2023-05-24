@@ -1,8 +1,11 @@
 .container
-    %h1
+    %h1.text-center
         My Feed
     %hr
     - prevDate = nil
+    - if @feed.length == 0
+        .text-muted.text-center
+            No workouts logged yet
     - @feed.each do |day|
         %h4
             %strong
@@ -12,6 +15,35 @@
                 - else
                     %a.badge.badge-secondary.badge-pill{href: "/users/view?id=#{day[1].id}"}
                         = day[1].first_name + " " + day[1].last_name # "@" + day[1].username
+                
+                - if day[3].first == "Chest"
+                    %a.badge.badge-primary.text-white
+                        - day[3].each do |ex|
+                            - if ex == day[3].last
+                                = ex
+                            - else
+                                = ex + " & "
+                - elsif day[3].first == "Back"
+                    %a.badge.badge-danger.text-white
+                        - day[3].each do |ex|
+                            - if ex == day[3].last
+                                = ex
+                            - else
+                                = ex + " & "
+                - elsif day[3].first == "Legs"
+                    %a.badge.badge-success.text-white
+                        - day[3].each do |ex|
+                            - if ex == day[3].last
+                                = ex
+                            - else
+                                = ex + " & "
+                - else
+                    %a.badge.badge-info.text-white
+                        - day[3].each do |ex|
+                            - if ex == day[3].last
+                                = ex
+                            - else
+                                = ex + " & "
             
         %h6.text-muted
             = day[0].strftime("%B %d, %Y") + " @ "

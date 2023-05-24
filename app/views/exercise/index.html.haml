@@ -2,6 +2,7 @@
     .text-right
         = link_to 'Create Exercise', "/exercise/create", {class: "btn btn-sm btn-outline-primary"}
     %h1 All Exercises
+    %hr
     - if @exercises.empty?
         %p No exercises have been created yet.
     - else

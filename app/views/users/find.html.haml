@@ -3,9 +3,9 @@
         All Users
     %hr
 .container
-    .row
+    .row.m-1
         - @users.each do |user|
-            %a.col-md-4.col-sm-6.col-xs-12.border.text-primary.btn.btn-light{href: "/users/view?id=#{user.id}"}
+            %a.col-md-6.col-sm-12.col-xs-12.border.text-primary.btn.btn-light{href: "/users/view?id=#{user.id}"}
                 = user.first_name + " " + user.last_name
                 .text-secondary
                     = '@' + user.username
