@@ -47,8 +47,8 @@
             
         %h6.text-muted
             = day[0].strftime("%B %d, %Y") + " @ "
-            // 12 hour time format with lower case am/pm
-            = day[0].strftime("%I:%M%p").downcase
+            // 24 hour time
+            = day[0].strftime("%H:%M")
         .row
             %table
                 - day[2].each do |workout|
