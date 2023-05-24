@@ -47,14 +47,9 @@
             %h5
                 %strong
                     Calendar
-                (
-                - if @dates.length > 0
-                    = @dates.first.strftime("%B") + ' - ' + @dates.last.strftime("%B")
-                - else
-                    = Date.today.strftime("%B")
-                )
+                = Date.today.strftime("(%B)")
 
-            .justify-content-center.d-flex
+            .justify-content-center.d-flex.text-center
                 %table.table.border.w-25
                     %thead.bg-dark.text-light
                         %tr
