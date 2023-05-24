@@ -51,7 +51,7 @@
 
     .container-fluid.text-center.justify-content-center.d-flex
         %table.table.border
-            %thead
+            %thead.bg-dark.text-light
                 %tr
                     %th
                         M
@@ -67,7 +67,7 @@
                         S
                     %th
                         S
-            %tbody
+            %tbody.border
                 - (1..31).each do |dayCount|
                     - dateFound = false
                     - if dayCount % 7 == 1
@@ -82,45 +82,43 @@
                         %td.bg-warning
                             = dayCount
                     - elsif dayCount < Date.today.day && Date.today.strftime("%B") == Date.today.strftime("%B")
-                        %td.bg-secondary
+                        %td.bg-secondary.border.border-light
                             = dayCount
                     - else
-                        %td
+                        %td.border
                             = dayCount
                       
-
-    %hr
-        %h5
-            %strong
-                3-Set Average
-        - @exercises = Exercise.where(user_id: @user.id)
-        - if @exercises.length == 0
-            .text-muted
-                &nbsp[no exercises logged]
-        - else
-            - @exercises.each do |exercise|
-                - @sets = Workout.where(user_id: @user.id, exercise_id: exercise.id)
-                - @sets = @sets.order(exercise_id: :desc)
-                // 3-set average
-                - num = 3
-                - @sets = @sets.first(num)
-                - if @sets.length > 0
-                    - totalReps = 0
-                    - totalWeight = 0
-                    %strong
-                        = exercise.name + ' (' + exercise.group + '):'
-                    - @sets.each do |s|
-                        - totalReps += s.repetitions
-                        - totalWeight += s.weight
-                    // Display avg weight and reps
-                    - if totalReps > 0
-                        .text-muted
-                            = (totalWeight / num).round(2).to_s + ' ' + exercise.unit + ' per rep for ' + (totalReps / @sets.length).round(2).to_s
-                        %nbsp
-                    // Recent 3 sets
-                    - @sets = @sets.first(3)
-                - else
-                    %strong
-                        = exercise.name + ':'
+    %h5
+        %strong
+            3-Set Average
+    - @exercises = Exercise.where(user_id: @user.id)
+    - if @exercises.length == 0
+        .text-muted
+            &nbsp[no exercises logged]
+    - else
+        - @exercises.each do |exercise|
+            - @sets = Workout.where(user_id: @user.id, exercise_id: exercise.id)
+            - @sets = @sets.order(exercise_id: :desc)
+            // 3-set average
+            - num = 3
+            - @sets = @sets.first(num)
+            - if @sets.length > 0
+                - totalReps = 0
+                - totalWeight = 0
+                %strong
+                    = exercise.name + ' (' + exercise.group + '):'
+                - @sets.each do |s|
+                    - totalReps += s.repetitions
+                    - totalWeight += s.weight
+                // Display avg weight and reps
+                - if totalReps > 0
                     .text-muted
-                        &nbsp[no sets logged]
+                        = (totalWeight / num).round(2).to_s + ' ' + exercise.unit + ' per rep for ' + (totalReps / @sets.length).round(2).to_s
+                    %nbsp
+                // Recent 3 sets
+                - @sets = @sets.first(3)
+            - else
+                %strong
+                    = exercise.name + ':'
+                .text-muted
+                    &nbsp[no sets logged]
