@@ -1,16 +1,17 @@
 .container 
-    %h1 Your Friends
-    %p Here is a list of all your friends
+    %h1 
+        Your Friends
     .col
         - @friends.each do |friend|
             .row
                 .col-md-4
                     %p
-                        %strong Name:
-                
                         = friend.first_name
                         = friend.last_name
                         %strong Username:
                         = "@" + friend.username
                         // Remove friend button
                         = link_to "Remove Friend", "/friend/remove?id=#{friend.id}", data: { confirm: "Are you sure?" }, class: "btn btn-danger"
+            %hr
+    .text-center
+        %a{href: "/users/explore", class: "btn btn-warning text-white w-25"} Explore Users

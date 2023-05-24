@@ -5,10 +5,10 @@
         %h4
             %strong
                 - if current_user == day[1]
-                    .badge.badge-warning.badge-pill
+                    %a.badge.badge-warning.badge-pill{href: "/users/view?id=#{day[1].id}"}
                         = "You"
                 - else
-                    .badge.badge-secondary.badge-pill
+                    %a.badge.badge-secondary.badge-pill{href: "/users/view?id=#{day[1].id}"}
                         = day[1].first_name + " " + day[1].last_name # "@" + day[1].username
             
         %h6.text-muted
@@ -22,14 +22,14 @@
                         %strong
                             = workout[0].name
                         - workout[1].each do |set|
+                            %br
                             - if set.weight != nil && set.repetitions != nil
-                                %li
-                                    - if set.weight == 0
-                                        = 'BW ' + workout[0].unit.to_s + ' x ' + set.repetitions.to_s
-                                    - else
-                                        = set.weight.to_s + ' ' + workout[0].unit.to_s + ' x ' + set.repetitions.to_s
+                                - if set.weight == 0
+                                    = 'BW ' + workout[0].unit.to_s + ' x ' + set.repetitions.to_s
+                                - else
+                                    = set.weight.to_s + ' ' + workout[0].unit.to_s + ' x ' + set.repetitions.to_s
                             - else
-                                %li.text-muted
+                                .text-muted
                                     [invalid set]
                                     
 
