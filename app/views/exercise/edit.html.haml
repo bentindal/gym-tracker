@@ -1,0 +1,9 @@
+%h1.text-center
+  Update Exercise
+.card-body.justify-content-center.d-flex
+  = form_with model: @exercise, url: exercise_path(@exercise), method: :patch, local: true do |f|
+    = f.hidden_field :user_id, value: current_user.id
+    = f.text_field :name, class: "form-control"
+    = f.select :unit, ["kg", "lbs", "kg/db", "lbs/db"], { label: "Unit" }, class: "form-control"
+    = f.select :group, ["Chest", "Back", "Legs", "Shoulders", "Biceps", "Triceps", "Core"], { label: "Muscle Group" }, class: "form-control"
+    = f.submit "Update", class: "btn btn-primary w-100"

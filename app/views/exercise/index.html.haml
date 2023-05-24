@@ -1,6 +1,6 @@
 .container.text-center
     .text-right
-        = link_to 'Create Exercise', "/exercise/create", {class: "btn btn-sm btn-outline-primary"}
+        = link_to 'Create Exercise', "/exercise/new", {class: "btn btn-outline-primary"}
     %h1 All Exercises
     %hr
     - if @exercises.empty?
@@ -21,7 +21,8 @@
                         %td.col-4
                             = exercise.group
                         %td.col-5
-                            = link_to '', "/workout/show?id="+exercise.id.to_s, {class: "fa-solid fa-eye btn btn-sm btn-primary"}
-                            = link_to '', "#", {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary"}
-                            = link_to '', "/exercise/destroy?id="+exercise.id.to_s, class: " fa-solid fa-trash-can btn btn-sm btn-outline-danger", data: { confirm: "Are you sure?" }
+                            = link_to '', "/workout/"+exercise.id.to_s, {class: "fa-solid fa-eye btn btn-sm btn-primary"}
+                            = link_to '', "/exercise/edit?id=#{exercise.id.to_s}", {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary"}
+                            // delete link
+                            = link_to '', "/exercise/destroy?id=#{exercise.id.to_s}", data: { confirm: 'Are you sure?' }, class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger"
                                 

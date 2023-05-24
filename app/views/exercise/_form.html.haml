@@ -1,23 +1,7 @@
-
-// f.input :exercise_id, label: "Exercise", collection: Exercise.all.map { |exercise| [exercise.name, exercise.id] }
-// f.input :user_id, label: "User", collection: User.all.map { |user| [user.username, user.id] }
-
 .card-body.justify-content-center.d-flex
-  %form{action: "/exercise/new", method: "GET"}
-    %input.form-control{name: "user_id", placeholder: "UserID", value: current_user.id, hidden: true}
-    %input.form-control{name: "name", placeholder: "Name"}
-    %select.form-control{placeholder: "Select a Unit", name: "unit"}
-      %option{value: "kg"} kg
-      %option{value: "lbs"} lbs
-      %option{value: "kg/db"} kg per dumbbell
-      %option{value: "lbs/db"} lbs per dumbbell
-    %select.form-control{placeholder: "Select a Muscle", name: "group"}
-      %option{value: "Chest"} Chest
-      %option{value: "Back"} Back
-      %option{value: "Legs"} Legs
-      %option{value: "Shoulders"} Shoulders
-      %option{value: "Biceps"} Biceps
-      %option{value: "Triceps"} Triceps
-      %option{value: "Core"} Core
-
-    %button.form-control{type: "submit", class: "btn btn-sm btn-outline-primary"} Add
+  = form_with model: @exercise, url: "/exercise/create", method: :post, local: true do |f|
+    = f.hidden_field :user_id, value: current_user.id
+    = f.text_field :name, placeholder: "Exercise Name", class: "form-control"
+    = f.select :unit, ["kg", "lbs", "kg/db", "lbs/db"], { prompt: "Select Unit" }, class: "form-control"
+    = f.select :group, ["Chest", "Back", "Legs", "Shoulders", "Biceps", "Triceps", "Core"], { prompt: "Select Muscle Group" }, class: "form-control"
+    = f.submit "Create", class: "btn btn-primary w-100"
