@@ -42,7 +42,7 @@
     - @dates = @dates.first(30)
     // Display all unique set dates on a calendar
     .row
-        .col-lg-4.col-md-6.col-xs-12
+        .col-lg-4.col-md-12.col-xs-12
             %hr
             %h5
                 %strong
@@ -50,7 +50,7 @@
                 = Date.today.strftime("(%B)")
 
             .justify-content-center.d-flex.text-center
-                %table.table.border.w-25
+                %table.table.border
                     %thead.bg-dark.text-light
                         %tr
                             %th
