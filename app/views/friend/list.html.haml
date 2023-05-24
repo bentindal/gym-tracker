@@ -1,6 +1,12 @@
-.container 
+.container.text-center
     %h1 
         Your Friends
+    %hr
+
+    - if @friends.empty?
+        %p.text-muted
+            You have no friends yet.
+
     .col
         - @friends.each do |friend|
             .row
