@@ -38,12 +38,12 @@
         %form.form-inline.mr-auto.mr-sm-5
           - if user_signed_in?
             .btn-group
-              %button.btn.btn-info
+              %a.btn.btn-info{href: "/users/view?id="+current_user.id.to_s}
                 %i.fa-solid.fa-user
                 %strong.ml-1
                   = current_user.first_name 
 
-              %button.btn.btn-info.dropdown-toggle.dropdown-toggle-split{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", href: "/users/view?id="+current_user.id.to_s, role: "button"}
+              %button.btn.btn-info.dropdown-toggle.dropdown-toggle-split{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", role: "button"}
                 %span.sr-only Toggle Dropdown
               // left aligned dropdown menu
               .dropdown-menu.dropdown-menu-right
