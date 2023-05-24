@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  # get 'friend/index'
+  get 'friend/list'
+  get 'friend/add'
+  get 'friend/remove'
   get 'workout/show'
   get 'workout/create'
   get 'workout/destroy'

@@ -1,7 +1,11 @@
 class FeedController < ApplicationController
   def view
+    list_of_friends_ids = Friend.where(user: current_user.id)
+    viewList = [current_user.id]
+    list_of_friends_ids.each do |friend|
+      viewList.push(friend.follows)
+    end
     @feed = []
-    viewList = [1]
     viewList.each do |userid|
       @user = User.find(userid)
       @sets = Workout.where(user_id: @user.id)
@@ -19,5 +23,7 @@ class FeedController < ApplicationController
         @feed.push([date, @user, @list])
       end
     end
+    # Order feed by date
+    @feed = @feed.sort_by { |date, user, list| date }.reverse!
   end
 end

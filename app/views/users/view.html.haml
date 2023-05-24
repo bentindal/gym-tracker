@@ -1,5 +1,18 @@
 .container.text-center
-    
+    - if current_user && current_user.id == @user.id
+        %h5
+            %strong
+                Your Profile
+    - elsif current_user.id != @user.id && @is_friend == false
+        %h5
+            %strong
+                %a.btn.btn-primary.btn-sm{href: "/friend/add?id=" + @user.id.to_s}
+                    Add Friend
+    - elsif current_user.id != @user.id && @is_friend == true
+        %h5
+            %strong
+                %a.btn.btn-danger.btn-sm{href: "/friend/remove?id=" + @user.id.to_s}
+                    Remove Friend
     %h1
         %strong
             = @user.first_name + ' ' + @user.last_name + "'s"

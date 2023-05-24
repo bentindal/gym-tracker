@@ -3,8 +3,18 @@
     - prevDate = nil
     - @feed.each do |day|
         %h4
-            = day[0].strftime("%B %d, %Y")
-            = "- " + day[1].first_name + " " + day[1].last_name
+            %strong
+                - if current_user == day[1]
+                    .badge.badge-warning.badge-pill
+                        = "You"
+                - else
+                    .badge.badge-secondary.badge-pill
+                        = day[1].first_name + " " + day[1].last_name # "@" + day[1].username
+            
+        %h6.text-muted
+            = day[0].strftime("%B %d, %Y") + " @ "
+            // 12 hour time format with lower case am/pm
+            = day[0].strftime("%I:%M%p").downcase
         .row
             - day[2].each do |workout|
                 - if workout[1].any?
