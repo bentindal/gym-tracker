@@ -18,7 +18,10 @@ class FeedController < ApplicationController
       @dates.each do |date|
         @list = []
         @exercises.each do |exercise|
-          @list.push([exercise, @sets.where(exercise_id: exercise.id).where(created_at: date.beginning_of_day..date.end_of_day)])
+          @listofsets = @sets.where(exercise_id: exercise.id).where(created_at: date.beginning_of_day..date.end_of_day)
+          if @listofsets.first != nil
+            @list.push([exercise, @listofsets])
+          end
         end
         # Only if the user has a workout on the date, add it to the feed
         if @list.first[1].first != nil
