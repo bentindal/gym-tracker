@@ -6,7 +6,7 @@ class WorkoutController < ApplicationController
   end
 
   def create
-    @workout = Workout.new(workout_params2)
+    @workout = Workout.new(workout_params)
 
     if @workout.save
       redirect_to "/workout/" + params[:exercise_id].to_s, notice: "Set added successfully!"
@@ -38,11 +38,8 @@ class WorkoutController < ApplicationController
 
   private
 
-    def workout_params2
-      params.permit(:exercise_id, :user_id, :repetitions, :weight)
-    end
     def workout_params
-      params.require(:workout).permit(:exercise_id, :user_id, :repetitions, :weight)
+      params.permit(:exercise_id, :user_id, :repetitions, :weight)
     end
     
 end
