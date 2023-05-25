@@ -21,7 +21,7 @@ class WorkoutController < ApplicationController
 
   def update
     @workout = Workout.find(params[:id])
-    if @workout.update(workout_params)
+    if @workout.update(workout_params2)
       redirect_to "/workout/#{@workout.exercise_id}", notice: "Set was successfully updated!"
     else
       puts @workout.errors.full_messages # Output error messages to the console
@@ -38,8 +38,12 @@ class WorkoutController < ApplicationController
 
   private
 
-    def workout_params
-      params.permit(:exercise_id, :user_id, :repetitions, :weight)
-    end
+  def workout_params
+    params.permit(:exercise_id, :user_id, :repetitions, :weight, :isFailure, :isDropset)
+  end
+  def workout_params2
+    params.require(:workout).permit(:exercise_id, :user_id, :repetitions, :weight, :isFailure, :isDropset)
+  end
+  
     
 end

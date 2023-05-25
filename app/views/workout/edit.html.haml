@@ -6,4 +6,11 @@
     = f.hidden_field :user_id
     = f.number_field :repetitions, class: "form-control", step: "1", min: "0", max: "100", placeholder: "Reps"
     = f.number_field :weight, class: "form-control", step: "0.25", min: "0", placeholder: "Weight"
+    
+    %h6.text-center.text-secondary.m-1
+      = f.check_box :isFailure
+      Failure?
+      = f.check_box :isDropset
+      Dropset?
+      
     = f.submit "Update", class: "btn btn-primary w-100"
