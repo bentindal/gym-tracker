@@ -51,7 +51,7 @@
                                 .text-muted
                                     = set.created_at.strftime("%d/%m/%Y")
                         %td.col-3
-                            = link_to '', "#", {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary"}
+                            = link_to '', edit_workout_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary"}
                             = link_to '', "/workout/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger"}
 
     %br

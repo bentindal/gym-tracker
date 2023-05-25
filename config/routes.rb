@@ -2,26 +2,39 @@ Rails.application.routes.draw do
   get 'friend/list'
   get 'friend/add'
   get 'friend/remove'
-  get 'workout/show'
-  get 'workout/create'
+
+  post 'workout/create'
   get 'workout/destroy'
-  get 'exercise/create'
+  patch 'workout/edit'
+  patch 'workout/update'
+
+
+  get 'exercise/edit'
+  post 'exercise/create'
   get 'exercise/new'
   get '/exercises' => 'exercise#index'
-  get 'exercise/create'
   get 'exercise/destroy'
-  get 'home/index'
+
   get 'users/view'
   get 'users/find'
   get 'feed' => 'feed#view'
+
   devise_for :users, :controllers => {
     registrations: 'registrations'
   }
   devise_scope :user do
     get '/users/sign_out' => 'devise/sessions#destroy'
   end
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Defines the root path route ("/")
+  resources :exercise, except: [:show] # Use plural 'exercises' for the resource name
+  resource :exercise, only: [:show] # Use singular 'exercise' for the resource name
+
+  resources :workout, except: [:update] do
+    get 'show', on: :member
+    get 'edit', on: :member
+    patch '', action: :update, on: :member
+  end
+
   root "exercise#index"
+
 end
