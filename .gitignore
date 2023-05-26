@@ -4,3 +4,6 @@ db/production.sqlite3
 log/production.log
 config/master.key
 db/development.sqlite3
+db/schema.rb
+db/production.sqlite3
+db/test.rb
