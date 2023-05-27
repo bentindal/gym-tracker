@@ -7,17 +7,15 @@
         %p.text-muted
             You have no friends yet.
 
-    .col
-        - @friends.each do |friend|
-            .row
-                .col-md-4
-                    %p
-                        = friend.first_name
-                        = friend.last_name
-                        %strong Username:
-                        = "@" + friend.username
-                        // Remove friend button
-                        = link_to "Remove Friend", "/friend/remove?id=#{friend.id}", data: { confirm: "Are you sure?" }, class: "btn btn-danger"
-            %hr
+    - @friends.each do |friend|
+        .row.justify-content-center.d-flex
+            %a.col-md-6.col-sm-12.col-xs-12.border.text-primary.btn.btn-light{href: "/users/view?id=#{friend.id}"}
+                .text-primary
+                    = friend.first_name + " " + friend.last_name
+                .text-muted
+                    = "@#{friend.username}"
+            .ml-3.align-self-center
+                = link_to "", "/friend/remove?id=#{friend.id}", data: { confirm: "Are you sure?" }, class: "align-self-center fa-solid fa-trash-can btn btn-lg btn-outline-danger"
+        %hr
     .text-center
         %a{href: "/users/find", class: "btn btn-warning text-white btn-lg"} Find new Users
