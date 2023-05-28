@@ -13,17 +13,14 @@ class ExerciseController < ApplicationController
   
 
   def create
-    if current_use.id == exercise_params[:user_id]
-      @exercise = Exercise.new(exercise_params)
-    
-      if @exercise.save
-        redirect_to "/", notice: "Exercise created successfully!"
-      else
-        render :new, status: :unprocessable_entity
-      end
+    @exercise = Exercise.new(exercise_params)
+  
+    if @exercise.save
+      redirect_to "/", notice: "Exercise created successfully!"
     else
-      redirect_to "/error/permission"
+      render :new, status: :unprocessable_entity
     end
+  
   end
   
 
