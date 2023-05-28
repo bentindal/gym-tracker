@@ -10,16 +10,12 @@ class WorkoutController < ApplicationController
   end
 
   def create
-    if current_user.id == workout_params[:user_id]
-      @workout = Workout.new(workout_params)
+    @workout = Workout.new(workout_params)
 
-      if @workout.save
-        redirect_to "/workout/" + params[:exercise_id].to_s, notice: "Set added successfully!"
-      else
-        render :new, status: :unprocessable_entity
-      end
+    if @workout.save
+      redirect_to "/workout/" + params[:exercise_id].to_s, notice: "Set added successfully!"
     else
-      redirect_to "/error/permission"
+      render :new, status: :unprocessable_entity
     end
   end
 
