@@ -13,12 +13,16 @@ class ExerciseController < ApplicationController
   
 
   def create
-    @exercise = Exercise.new(exercise_params)
-  
-    if @exercise.save
-      redirect_to "/", notice: "Exercise created successfully!"
+    if current_use.id == exercise_params[:user_id]
+      @exercise = Exercise.new(exercise_params)
+    
+      if @exercise.save
+        redirect_to "/", notice: "Exercise created successfully!"
+      else
+        render :new, status: :unprocessable_entity
+      end
     else
-      render :new, status: :unprocessable_entity
+      redirect_to "/error/permission"
     end
   end
   
@@ -29,19 +33,27 @@ class ExerciseController < ApplicationController
 
   def update
     @exercise = Exercise.find(params[:id])
-    if @exercise.update(exercise_params)
-      redirect_to "/", notice: "Exercise updated successfully"
+    if current_user.id == @exercise.user_id
+      if @exercise.update(exercise_params)
+        redirect_to "/", notice: "Exercise updated successfully"
+      else
+        puts @exercise.errors.full_messages # Output error messages to the console
+        redirect_to edit_exercise_path(@exercise), notice: "Error updating exercise"
+      end
     else
-      puts @exercise.errors.full_messages # Output error messages to the console
-      redirect_to edit_exercise_path(@exercise), notice: "Error updating exercise"
+      redirect_to "/error/permission"
     end
   end
   
 
   def destroy
     @exercise = Exercise.find(params[:id])
-    @exercise.destroy
-    redirect_to exercises_url
+    if current_user.id == @exercise.user_id
+      @exercise.destroy
+      redirect_to exercises_url
+    else
+      redirect_to "/error/permission"
+    end
   end
 
   private

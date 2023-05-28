@@ -19,6 +19,9 @@ Rails.application.routes.draw do
   get 'users/find'
   get 'feed' => 'feed#view'
 
+  get 'error/permission' => 'application#no_permission'
+  get 'error/page_not_found' => 'application#page_not_found'
+
   devise_for :users, :controllers => {
     registrations: 'registrations'
   }
@@ -36,5 +39,6 @@ Rails.application.routes.draw do
   end
 
   root "exercise#index"
+
 
 end
