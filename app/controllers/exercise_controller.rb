@@ -1,6 +1,12 @@
 class ExerciseController < ApplicationController
   def index
     @exercises = Exercise.where(user_id: current_user.id)
+    @exercises = @exercises.order(:group)
+    # Get all unique group names
+    @groups = @exercises.pluck(:group).uniq
+    if params[:group]
+      @exercises = @exercises.where(group: params[:group])
+    end
   end
 
   def view

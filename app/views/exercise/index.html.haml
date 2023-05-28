@@ -6,7 +6,18 @@
         - if @exercises.empty?
             %p No exercises have been created yet.
         - else
-            %table.table.table-sm{width: "auto"}
+            %span.m-2
+                %a.btn.btn-primary.btn-sm{href: "/"} All
+                - @groups.each do |group|
+                    - if group == "Chest"
+                        %a.btn.btn-outline-primary.btn-sm{href: "/exercise?group=#{group}"}= group
+                    - elsif group == "Back"
+                        %a.btn.btn-outline-danger.btn-sm{href: "/exercise?group=#{group}"}= group
+                    - elsif group == "Legs"
+                        %a.btn.btn-outline-success.btn-sm{href: "/exercise?group=#{group}"}= group
+                    - else
+                        %a.btn.btn-outline-info.btn-sm{href: "/exercise?group=#{group}"}= group
+            %table.table.table-sm.mt-3{width: "auto"}
                 %thead
                     %tr
                         %th Name
