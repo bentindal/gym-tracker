@@ -2,10 +2,19 @@
     %h1.text-center
         My Feed
     %hr
+    
+    .text-center
+        - if params[:filter] == "you"
+            %a.btn.btn-outline-primary.btn-sm{href: "/feed"} You + Friends
+            %a.btn.btn-primary.btn-sm{href: "/feed?filter=you"} You
+        - else
+            %a.btn.btn-primary.btn-sm{href: "/feed"} You + Friends
+            %a.btn.btn-outline-primary.btn-sm{href: "/feed?filter=you"} You
     - prevDate = nil
     - if @feed.length == 0
         .text-muted.text-center
             No workouts logged yet
+    
     - @feed.each do |day|
         %h4
             %strong

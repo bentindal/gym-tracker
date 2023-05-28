@@ -2,8 +2,10 @@ class FeedController < ApplicationController
   def view
     list_of_friends_ids = Friend.where(user: current_user.id)
     viewList = [current_user.id]
-    list_of_friends_ids.each do |friend|
-      viewList.push(friend.follows)
+    if params[:filter] != "you"
+      list_of_friends_ids.each do |friend|
+        viewList.push(friend.follows)
+      end
     end
     @feed = []
     viewList.each do |userid|
