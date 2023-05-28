@@ -1,42 +1,39 @@
 .container.text-center
     .text-right
-        = link_to 'Create Exercise', "/exercise/new", {class: "btn btn-outline-primary"}
+        = link_to 'Add New', "/exercise/new", {class: "btn btn-sm btn-outline-primary"}
     %h1 All Exercises
     %hr
-    - if @exercises.empty?
-        %p No exercises have been created yet.
-    - else
-        %table.table
-            %thead
-                %tr
-                    %th Name
-                    %th Group
-                    %th Options
-            %tbody
-                - @exercises.each do |exercise|
+        - if @exercises.empty?
+            %p No exercises have been created yet.
+        - else
+            %table.table.table-sm{width: "auto"}
+                %thead
                     %tr
-                        
-                        %td
-                            %h5
-                                %a.w-100.p-2.btn.btn-oultine-secondary.border-radius-5{href: "/workout/"+exercise.id.to_s}
-                                    = exercise.name
-                        %td.align-middle.text-center.col-2
-                            %h4
-                                - if exercise.group == "Chest"
-                                    %span.badge.badge-primary.text-white
-                                        = exercise.group
-                                - elsif exercise.group == "Back"
-                                    %span.badge.badge-danger.text-white
-                                        = exercise.group
-                                - elsif exercise.group == "Legs"
-                                    %span.badge.badge-success.text-white
-                                        = exercise.group
-                                - else
-                                    %span.badge.badge-info.text-white
-                                        = exercise.group
-                        %td.align-middle
-                            - link_to '', "/workout/"+exercise.id.to_s, {class: "fa-solid fa-eye btn btn-sm btn-primary"}
-                            = link_to '', "/exercise/edit?id=#{exercise.id.to_s}", {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary"}
-                            // delete link
-                            = link_to '', "/exercise/destroy?id=#{exercise.id.to_s}", data: { confirm: 'Are you sure?' }, class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger"
-                                
+                        %th Name
+                        %th.text-muted Options
+                %tbody
+                    - @exercises.each do |exercise|
+                        %tr
+                            %td
+                                %h6
+                                    %a.btn.btn-oultine-secondary{href: "/workout/"+exercise.id.to_s}
+                                        = exercise.name
+                            
+                                    - if exercise.group == "Chest"
+                                        %span.badge.badge-primary.text-white
+                                            = exercise.group
+                                    - elsif exercise.group == "Back"
+                                        %span.badge.badge-danger.text-white
+                                            = exercise.group
+                                    - elsif exercise.group == "Legs"
+                                        %span.badge.badge-success.text-white
+                                            = exercise.group
+                                    - else
+                                        %span.badge.badge-info.text-white
+                                            = exercise.group
+                            %td.align-middle
+                                - link_to '', "/workout/"+exercise.id.to_s, {class: "fa-solid fa-eye btn btn-sm btn-primary"}
+                                = link_to '', "/exercise/edit?id=#{exercise.id.to_s}", {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary"}
+                                // delete link
+                                = link_to '', "/exercise/destroy?id=#{exercise.id.to_s}", data: { confirm: 'Are you sure?' }, class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger"
+                                    
