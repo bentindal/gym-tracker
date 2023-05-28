@@ -54,19 +54,29 @@
                 - day[2].each do |workout|
                     - if workout[1].any?
                         %ti.col-lg-3.col-md-6.col-xs-12
-
                             %strong
                                 = workout[0].name
+
                             - workout[1].each do |set|
-                                %br
                                 - if set.weight != nil && set.repetitions != nil
                                     - if set.weight == 0
-                                        = 'BW ' + workout[0].unit.to_s + ' x ' + set.repetitions.to_s
+                                        - msg = 'BW ' + workout[0].unit.to_s + ' x ' + set.repetitions.to_s
                                     - else
-                                        = set.weight.to_s + ' ' + workout[0].unit.to_s + ' x ' + set.repetitions.to_s
-                                - else
-                                    .text-muted
-                                        [invalid set]
+                                        - msg = set.weight.to_s + ' ' + workout[0].unit.to_s + ' x ' + set.repetitions.to_s
+                                        
+                                    %br
+
+                                    - if set.isFailure
+                                        %span.text-danger.border-bottom.border-danger
+                                            = msg
+                                    - elsif set.isDropset
+                                        %span.text-info.border-bottom.border-info
+                                            = msg
+                                    - else
+                                        %span.text-muted
+                                            = msg
+                                            
+
                                     
 
                     
