@@ -125,27 +125,23 @@
             - else
                 - @exercises.each do |exercise|
                     - @sets = Workout.where(user_id: @user.id, exercise_id: exercise.id)
-                    - @sets = @sets.order(exercise_id: :desc)
+                    // order by date
+                    - @sets = @sets.order(created_at: :desc)
                     // 3-set average
                     - num = 3
                     - @sets = @sets.first(num)
                     - if @sets.length > 0
                         - totalReps = 0
                         - totalWeight = 0
+                        - count = 0
                         %strong
                             = exercise.name + ' (' + exercise.group + '):'
                         - @sets.each do |s|
                             - if s.repetitions != nil && s.weight != nil
                                 - totalReps += s.repetitions
                                 - totalWeight += s.weight
-                                // Display avg weight and reps
-                                - if totalReps > 0
-                                    = (totalWeight / num).round(2).to_s + ' ' + exercise.unit + ' per rep for ' + (totalReps / @sets.length).round(2).to_s
-                                    %br
-                                // Recent 3 sets
-                                - @sets = @sets.first(3)
-                    - else
-                        %p
-                            %strong
-                                = exercise.name + ':'
-                            &nbsp[no sets logged]
+                                - count += 1
+                        // Display avg weight and reps
+                        - if totalReps > 0
+                            = (totalWeight / count).round(2).to_s + ' ' + exercise.unit + ' per rep for ' + (totalReps / count).round(2).to_s
+                        %br
