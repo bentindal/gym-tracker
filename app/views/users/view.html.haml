@@ -135,14 +135,15 @@
                         %strong
                             = exercise.name + ' (' + exercise.group + '):'
                         - @sets.each do |s|
-                            - totalReps += s.repetitions
-                            - totalWeight += s.weight
-                        // Display avg weight and reps
-                        - if totalReps > 0
-                            = (totalWeight / num).round(2).to_s + ' ' + exercise.unit + ' per rep for ' + (totalReps / @sets.length).round(2).to_s
-                            %br
-                        // Recent 3 sets
-                        - @sets = @sets.first(3)
+                            - if s.repetitions != nil && s.weight != nil
+                                - totalReps += s.repetitions
+                                - totalWeight += s.weight
+                                // Display avg weight and reps
+                                - if totalReps > 0
+                                    = (totalWeight / num).round(2).to_s + ' ' + exercise.unit + ' per rep for ' + (totalReps / @sets.length).round(2).to_s
+                                    %br
+                                // Recent 3 sets
+                                - @sets = @sets.first(3)
                     - else
                         %p
                             %strong
