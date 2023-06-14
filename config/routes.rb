@@ -40,5 +40,7 @@ Rails.application.routes.draw do
 
   root "exercise#index"
 
+  match "*path" => redirect("/"), via: :get
+
 
 end
