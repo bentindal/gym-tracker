@@ -8,7 +8,7 @@
             You have no friends yet.
 
     - @friends.each do |friend|
-        .row.justify-content-center.d-flex
+        .row.justify-content-center.d-flex.m-2
             %a.col-md-3.col-sm-6.col-xs-6.border.text-primary.btn.btn-light{href: "/users/view?id=#{friend.id}"}
                 .text-primary
                     = friend.first_name + " " + friend.last_name
@@ -16,6 +16,6 @@
                     = "@#{friend.username}"
             .m-2.align-self-center
                 = link_to "", "/friend/remove?id=#{friend.id}", data: { confirm: "Are you sure?" }, class: "align-self-center fa-solid fa-trash-can btn btn-lg btn-outline-danger"
-        %hr
-    .text-center
+        
+    .text-center.m-3
         %a{href: "/users/find", class: "btn btn-warning text-white btn-lg"} Find new Users
