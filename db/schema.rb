@@ -54,8 +54,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_25_182842) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
-    t.boolean "isFailure", default: false
-    t.boolean "isDropset", default: false
+    t.boolean "isFailure", default: false, null: false
+    t.boolean "isDropset", default: false, null: false
   end
 
 end
