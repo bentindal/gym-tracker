@@ -3,19 +3,54 @@
         Your Friends
     %hr
 
-    - if @friends.empty?
+    
+    - if @pending_followers.empty? == false
+        Incoming:
+        - @pending_followers.each do |p|
+            .row.justify-content-center.d-flex.m-2
+                %a.col-md-3.col-sm-6.col-xs-6.border.text-primary.btn.btn-light{href: "/users/view?id=#{p.id}"}
+                    .text-primary
+                        = p.first_name + " " + p.last_name
+                    .text-muted
+                        = "@#{p.username}"
+                .m-2.align-self-center
+                    = link_to "Accept?", "/friend/confirm?id=#{p.id}", data: { confirm: "Are you sure?" }, class: "align-self-center btn btn-sm btn-outline-success"
+                    = link_to "", "/friend/remove?id=#{p.id}", data: { confirm: "Are you sure?" }, class: "align-self-center fa-solid fa-trash-can btn btn-lg btn-outline-danger"
+    - if @pending_following.empty? == false
+        Outgoing:
+        - @pending_following.each do |p|
+            .row.justify-content-center.d-flex.m-2
+                %a.col-md-3.col-sm-6.col-xs-6.border.text-primary.btn.btn-light{href: "/users/view?id=#{p.id}"}
+                    .text-primary
+                        = p.first_name + " " + p.last_name
+                    .text-muted
+                        = "@#{p.username}"
+    Following:
+    - if @actual_following.empty?
         %p.text-muted
             You have no friends yet.
-
-    - @friends.each do |friend|
-        .row.justify-content-center.d-flex.m-2
-            %a.col-md-3.col-sm-6.col-xs-6.border.text-primary.btn.btn-light{href: "/users/view?id=#{friend.id}"}
-                .text-primary
-                    = friend.first_name + " " + friend.last_name
-                .text-muted
-                    = "@#{friend.username}"
-            .m-2.align-self-center
-                = link_to "", "/friend/remove?id=#{friend.id}", data: { confirm: "Are you sure?" }, class: "align-self-center fa-solid fa-trash-can btn btn-lg btn-outline-danger"
+    - else
+        - @actual_following.each do |friend|
+            .row.justify-content-center.d-flex.m-2
+                %a.col-md-3.col-sm-6.col-xs-6.border.text-primary.btn.btn-light{href: "/users/view?id=#{friend.id}"}
+                    .text-primary
+                        = friend.first_name + " " + friend.last_name
+                    .text-muted
+                        = "@#{friend.username}"
+    Followers:
+    - if @actual_followers.empty?
+        %p.text-muted
+            You have no followers yet.
+    - else
+        - @actual_followers.each do |friend|
+            .row.justify-content-center.d-flex.m-2
+                %a.col-md-3.col-sm-6.col-xs-6.border.text-primary.btn.btn-light{href: "/users/view?id=#{friend.id}"}
+                    .text-primary
+                        = friend.first_name + " " + friend.last_name
+                    .text-muted
+                        = "@#{friend.username}"
+                .m-2.align-self-center
+                    = link_to "", "/friend/remove_follower?id=#{friend.id}", data: { confirm: "Are you sure?" }, class: "align-self-center fa-solid fa-trash-can btn btn-lg btn-outline-danger"
         
     .text-center.m-3
         %a{href: "/users/find", class: "btn btn-warning text-white btn-lg"} Find new Users

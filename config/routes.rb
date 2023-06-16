@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   get 'friend/list'
   get 'friend/add'
   get 'friend/remove'
+  get 'friend/confirm'
+  get 'friend/remove_follower'
 
   post 'workout/create'
   get 'workout/destroy'

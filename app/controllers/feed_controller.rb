@@ -1,6 +1,6 @@
 class FeedController < ApplicationController
   def view
-    list_of_friends_ids = Friend.where(user: current_user.id)
+    list_of_friends_ids = Friend.where(user: current_user.id, confirmed: true)
     viewList = [current_user.id]
     if params[:filter] != "you"
       list_of_friends_ids.each do |friend|

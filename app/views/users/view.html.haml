@@ -1,15 +1,15 @@
 .container.text-center
-
-    - if current_user.id != @user.id && @is_friend == false
-        %h5
-            %strong
-                %a.btn.btn-primary.btn-sm{href: "/friend/add?id=" + @user.id.to_s}
-                    Add Friend
-    - elsif current_user.id != @user.id && @is_friend == true
-        %h5
-            %strong
-                %a.btn.btn-danger.btn-sm{href: "/friend/remove?id=" + @user.id.to_s}
-                    Remove Friend
+    %h5
+        %strong
+        - if current_user.id != @user.id && @is_friend == false && @pending == false
+            %a.btn.btn-primary.btn-sm{href: "/friend/add?id=" + @user.id.to_s}
+                Add Friend
+        - elsif current_user.id != @user.id && @is_friend == false && @pending == true
+            %a.btn.btn-warning.btn-sm{href: "/friend/remove?id=" + @user.id.to_s}
+                Request Pending
+        - elsif current_user.id != @user.id && @is_friend == true
+            %a.btn.btn-danger.btn-sm{href: "/friend/remove?id=" + @user.id.to_s}
+                Remove Friend
     %h1
         %strong
             = @user.first_name + ' ' + @user.last_name + "'s"
@@ -17,131 +17,135 @@
     %strong.text-muted 
         = '@'+@user.username
     %br
-    // Friends vs following
-    - number_of_friends = Friend.where(user: @user.id).count.to_s
-    - number_of_following = Friend.where(follows: @user.id).count.to_s
-    %a.text-primary{href: "/friend/list"}
-        = number_of_following + ' followers | ' + number_of_friends + ' following' 
-    // Get all dates from workouts and count unique dates
-    - @sets = Workout.where(user_id: @user.id)
-    - @dates = []
-    - @sets.each do |workout|
-        - @dates.push(workout.created_at.to_date)
-    - @dates = @dates.uniq
-    %br
-    .text-muted
-        = @dates.length.to_s + ' workouts logged in total'
-    // Display this month as a calendar
-    - @sets = Workout.where(user_id: @user.id)
-    - @dates = []
-    - @sets.each do |workout|
-        - @dates.push(workout.created_at.to_date)
-    - @dates = @dates.uniq
-    - @dates = @dates.sort
-    - @dates = @dates.reverse
-    - @dates = @dates.first(30)
-    // Display all unique set dates on a calendar
-    .row
-        .col-lg-4.col-md-12.col-xs-12
-            %hr
-            %h5
-                %strong
-                    Calendar
-                = Date.today.strftime("(%B)")
-
-            .justify-content-center.d-flex.text-center
-                %table.table.border
-                    %thead.bg-dark.text-light
-                        %tr
-                            %th
-                                M
-                            %th
-                                T
-                            %th
-                                W
-                            %th
-                                T
-                            %th
-                                F
-                            %th
-                                S
-                            %th
-                                S
-                    %tbody.border
-                        - (1..31).each do |dayCount|
-                            - dateFound = false
-                            - if dayCount % 7 == 1
-                                %tr
-                            - @dates.each do |date|
-                                - if dayCount == date.day && date.strftime("%B") == Date.today.strftime("%B")
-                                    - dateFound = true
-                            - if dateFound
-                                %td.bg-success.border.border-light
-                                    = dayCount
-                            - elsif dayCount == Date.today.day && Date.today.strftime("%B") == Date.today.strftime("%B")
-                                %td.bg-warning
-                                    = dayCount
-                            - elsif dayCount < Date.today.day && Date.today.strftime("%B") == Date.today.strftime("%B")
-                                %td.bg-secondary.border.border-light
-                                    = dayCount
-                            - else
-                                %td.border
-                                    = dayCount
-        .col-lg-4.col-md-6.col-xs-12
-            %hr
-            %h5
-                %strong
-                    Recent Sets
-                
-            - @sets = Workout.where(user_id: @user.id)
-            - @sets = @sets.order(created_at: :desc)
-            - @sets = @sets.first(3)
-            - if @sets.length == 0
-                .text-muted
-                    &nbsp[no workouts logged]
-            - else
-                - @sets.each do |set|
+    - if @user.isPublic != false || current_user == @user || @is_friend
+        // Friends vs following
+        - number_of_followers = Friend.where(user: @user.id, confirmed: true).count.to_s
+        - number_of_following = Friend.where(follows: @user.id, confirmed: true).count.to_s
+        %a.text-primary{href: "/friend/list"}
+            = number_of_following + ' followers | ' + number_of_followers + ' following' 
+        // Get all dates from workouts and count unique dates
+        - @sets = Workout.where(user_id: @user.id)
+        - @dates = []
+        - @sets.each do |workout|
+            - @dates.push(workout.created_at.to_date)
+        - @dates = @dates.uniq
+        %br
+        .text-muted
+            = @dates.length.to_s + ' workouts logged in total'
+        // Display this month as a calendar
+        - @sets = Workout.where(user_id: @user.id)
+        - @dates = []
+        - @sets.each do |workout|
+            - @dates.push(workout.created_at.to_date)
+        - @dates = @dates.uniq
+        - @dates = @dates.sort
+        - @dates = @dates.reverse
+        - @dates = @dates.first(30)
+        // Display all unique set dates on a calendar
+        .row
+            .col-lg-4.col-md-12.col-xs-12
+                %hr
+                %h5
                     %strong
-                        = set.created_at.strftime("%B %d, %Y") + ' @ ' + set.created_at.strftime("%I:%M%p").downcase
-                    %br
-                    - @exercise = Exercise.find(set.exercise_id)
-                    = @exercise.name + ':'
-                    %br
-                    - if set.weight != nil && set.repetitions != nil
-                        = set.weight.to_s + ' ' + @exercise.unit + ' for ' + set.repetitions.to_s
-                    - else
-                        = set.repetitions.to_s + ' reps'
-                    %br
-                    %br
-        .col-lg-4.col-md-6.col-xs-12
-            %hr
-            %h5
-                %strong
-                    3-Set Average
-            - @exercises = Exercise.where(user_id: @user.id)
-            - if @exercises.length == 0
-                .text-muted
-                    &nbsp[no workouts logged]
-            - else
-                - @exercises.each do |exercise|
-                    - @sets = Workout.where(user_id: @user.id, exercise_id: exercise.id)
-                    // order by date
-                    - @sets = @sets.order(created_at: :desc)
-                    // 3-set average
-                    - num = 3
-                    - @sets = @sets.first(num)
-                    - if @sets.length > 0
-                        - totalReps = 0
-                        - totalWeight = 0
-                        - count = 0
+                        Calendar
+                    = Date.today.strftime("(%B)")
+
+                .justify-content-center.d-flex.text-center
+                    %table.table.border
+                        %thead.bg-dark.text-light
+                            %tr
+                                %th
+                                    M
+                                %th
+                                    T
+                                %th
+                                    W
+                                %th
+                                    T
+                                %th
+                                    F
+                                %th
+                                    S
+                                %th
+                                    S
+                        %tbody.border
+                            - (1..31).each do |dayCount|
+                                - dateFound = false
+                                - if dayCount % 7 == 1
+                                    %tr
+                                - @dates.each do |date|
+                                    - if dayCount == date.day && date.strftime("%B") == Date.today.strftime("%B")
+                                        - dateFound = true
+                                - if dateFound
+                                    %td.bg-success.border.border-light
+                                        = dayCount
+                                - elsif dayCount == Date.today.day && Date.today.strftime("%B") == Date.today.strftime("%B")
+                                    %td.bg-warning
+                                        = dayCount
+                                - elsif dayCount < Date.today.day && Date.today.strftime("%B") == Date.today.strftime("%B")
+                                    %td.bg-secondary.border.border-light
+                                        = dayCount
+                                - else
+                                    %td.border
+                                        = dayCount
+            .col-lg-4.col-md-6.col-xs-12
+                %hr
+                %h5
+                    %strong
+                        Recent Sets
+                    
+                - @sets = Workout.where(user_id: @user.id)
+                - @sets = @sets.order(created_at: :desc)
+                - @sets = @sets.first(3)
+                - if @sets.length == 0
+                    .text-muted
+                        &nbsp[no workouts logged]
+                - else
+                    - @sets.each do |set|
                         %strong
-                            = exercise.name + ' (' + exercise.group + '):'
-                        - @sets.each do |s|
-                            - if s.repetitions != nil && s.weight != nil
-                                - totalReps += s.repetitions
-                                - totalWeight += s.weight
-                                - count += 1
-                        // Display avg weight and reps
-                        - if totalReps > 0
-                            = (totalWeight / count).round(2).to_s + ' ' + exercise.unit + ' x' + (totalReps / count).round(2).to_s
+                            = set.created_at.strftime("%B %d, %Y") + ' @ ' + set.created_at.strftime("%I:%M%p").downcase
                         %br
+                        - @exercise = Exercise.find(set.exercise_id)
+                        = @exercise.name + ':'
+                        %br
+                        - if set.weight != nil && set.repetitions != nil
+                            = set.weight.to_s + ' ' + @exercise.unit + ' for ' + set.repetitions.to_s
+                        - else
+                            = set.repetitions.to_s + ' reps'
+                        %br
+                        %br
+            .col-lg-4.col-md-6.col-xs-12
+                %hr
+                %h5
+                    %strong
+                        3-Set Average
+                - @exercises = Exercise.where(user_id: @user.id)
+                - if @exercises.length == 0
+                    .text-muted
+                        &nbsp[no workouts logged]
+                - else
+                    - @exercises.each do |exercise|
+                        - @sets = Workout.where(user_id: @user.id, exercise_id: exercise.id)
+                        // order by date
+                        - @sets = @sets.order(created_at: :desc)
+                        // 3-set average
+                        - num = 3
+                        - @sets = @sets.first(num)
+                        - if @sets.length > 0
+                            - totalReps = 0
+                            - totalWeight = 0
+                            - count = 0
+                            %strong
+                                = exercise.name + ' (' + exercise.group + '):'
+                            - @sets.each do |s|
+                                - if s.repetitions != nil && s.weight != nil
+                                    - totalReps += s.repetitions
+                                    - totalWeight += s.weight
+                                    - count += 1
+                            // Display avg weight and reps
+                            - if totalReps > 0
+                                = (totalWeight / count).round(2).to_s + ' ' + exercise.unit + ' x' + (totalReps / count).round(2).to_s
+                            %br
+    - else
+        .text-muted
+            [The following user has a private profile, so you must be friends to view their profile.]
