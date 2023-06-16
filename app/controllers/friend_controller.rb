@@ -38,10 +38,8 @@ class FriendController < ApplicationController
     @friend = Friend.new
     @friend.user = current_user.id
     @friend.follows = params[:id]
-    if User.find_by(params[:id]).isPublic == true
+    if User.find_by(id: params[:id]).isPublic
       @friend.confirmed = true
-    else
-      @friend.confirmed = false
     end
     @friend.save
     redirect_to "/users/view?id=#{params[:id]}"
