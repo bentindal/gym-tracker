@@ -3,13 +3,13 @@
         %strong
         - if current_user.id != @user.id && @is_friend == false && @pending == false
             %a.btn.btn-primary.btn-sm{href: "/friend/add?id=" + @user.id.to_s}
-                Add Friend
+                Follow
         - elsif current_user.id != @user.id && @is_friend == false && @pending == true
             %a.btn.btn-warning.btn-sm{href: "/friend/remove?id=" + @user.id.to_s}
                 Request Pending
         - elsif current_user.id != @user.id && @is_friend == true
             %a.btn.btn-danger.btn-sm{href: "/friend/remove?id=" + @user.id.to_s}
-                Remove Friend
+                Unfollow
     %h1
         %strong
             = @user.first_name + ' ' + @user.last_name + "'s"
