@@ -28,7 +28,7 @@
     Following:
     - if @actual_following.empty?
         %p.text-muted
-            You have no friends yet.
+            You are not following anyone yet.
     - else
         - @actual_following.each do |friend|
             .row.justify-content-center.d-flex.m-2
@@ -53,4 +53,4 @@
                     = link_to "", "/friend/remove_follower?id=#{friend.id}", data: { confirm: "Are you sure?" }, class: "align-self-center fa-solid fa-trash-can btn btn-lg btn-outline-danger"
         
     .text-center.m-3
-        %a{href: "/users/find", class: "btn btn-warning text-white btn-lg"} Find new Users
+        %a{href: "/users/find", class: "btn btn-warning text-white btn-lg"} Discover All Users
