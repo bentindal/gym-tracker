@@ -13,12 +13,15 @@
                 input_html: { autocomplete: "family-name" }%>
     <%= f.input :username,
                 required: true,
-                autofocus: true,
                 input_html: { autocomplete: "off" }%>
     
     <%= f.input :email,
                 required: true,
                 input_html: { autocomplete: "email" }%>
+
+    <h6> Tick to make your profile public (enabled by default) </h6>
+    <%= f.input :isPublic, :as => :boolean, :input_html => { :checked => "checked" } %>
+    
     <%= f.input :password,
                 required: true,
                 hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
