@@ -82,7 +82,7 @@
                                     - if dayCount == date.day && date.strftime("%B") == Date.today.strftime("%B")
                                         - dateFound = true
                                 - if dateFound
-                                    %td.bg-success.border.border-success
+                                    %td.bg-success.border.border-dark
                                         = dayCount
                                 - elsif dayCount == Date.today.day && Date.today.strftime("%B") == Date.today.strftime("%B")
                                     %td.bg-warning.border.border-warning
