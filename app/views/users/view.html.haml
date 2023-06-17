@@ -50,7 +50,7 @@
                         = Date.today.strftime("%B's Calendar")
 
                 .justify-content-center.d-flex.text-center
-                    %table.table.border
+                    %table.table
                         %thead.bg-dark.text-light
                             %tr
                                 %th
@@ -69,7 +69,7 @@
                                     S
                         // Get the first day of the month as a number
                         - @firstDay = Date.today.beginning_of_month.strftime("%u").to_i
-                        %tbody.border
+                        %tbody
                             %tr
                             - (1..@firstDay - 1).each do
                                 %td.bg-light
@@ -82,13 +82,13 @@
                                     - if dayCount == date.day && date.strftime("%B") == Date.today.strftime("%B")
                                         - dateFound = true
                                 - if dateFound
-                                    %td.bg-success.border.border-light
+                                    %td.bg-success.border.border-success
                                         = dayCount
                                 - elsif dayCount == Date.today.day && Date.today.strftime("%B") == Date.today.strftime("%B")
-                                    %td.bg-warning
+                                    %td.bg-warning.border.border-warning
                                         = dayCount
                                 - elsif dayCount < Date.today.day && Date.today.strftime("%B") == Date.today.strftime("%B")
-                                    %td.bg-secondary.border.border-light
+                                    %td.bg-secondary.border.border-dark
                                         = dayCount
                                 - else
                                     %td.border.bg-white
