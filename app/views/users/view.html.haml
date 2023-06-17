@@ -68,11 +68,17 @@
                                     S
                                 %th
                                     S
+                        // Get the first day of the month as a number
+                        - @firstDay = Date.today.beginning_of_month.strftime("%u").to_i
                         %tbody.border
-                            - (1..31).each do |dayCount|
+                            %tr
+                            - (1..@firstDay - 1).each do
+                                %td
+                            - (@firstDay..31).each do |dayCount|
                                 - dateFound = false
                                 - if dayCount % 7 == 1
                                     %tr
+                                - dayCount = dayCount - @firstDay + 1
                                 - @dates.each do |date|
                                     - if dayCount == date.day && date.strftime("%B") == Date.today.strftime("%B")
                                         - dateFound = true
