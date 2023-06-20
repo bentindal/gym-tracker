@@ -14,9 +14,7 @@
         %strong
             = @user.first_name + ' ' + @user.last_name + "'s"
         Profile
-    %strong.text-muted 
-        = '@'+@user.username
-    %br
+    
     - if @user.isPublic != false || current_user == @user || @is_friend
         // Friends vs following
         - number_of_followers = Friend.where(user: @user.id, confirmed: true).count.to_s
@@ -50,7 +48,7 @@
                         = Date.today.strftime("%B's Calendar")
 
                 .justify-content-center.d-flex.text-center
-                    %table.table.border-light.border
+                    %table.table.border
                         %thead.bg-dark.text-light
                             %tr
                                 %th
@@ -82,13 +80,13 @@
                                     - if dayCount == date.day && date.strftime("%B") == Date.today.strftime("%B")
                                         - dateFound = true
                                 - if dateFound
-                                    %td.bg-success.border.border-dark
+                                    %td.bg-success.border
                                         = dayCount
                                 - elsif dayCount == Date.today.day && Date.today.strftime("%B") == Date.today.strftime("%B")
                                     %td.bg-warning.border.border-warning
                                         = dayCount
                                 - elsif dayCount < Date.today.day && Date.today.strftime("%B") == Date.today.strftime("%B")
-                                    %td.bg-secondary.border.border-dark
+                                    %td.bg-secondary.border
                                         = dayCount
                                 - else
                                     %td.border.bg-white
