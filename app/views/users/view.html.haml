@@ -114,7 +114,7 @@
                         = @exercise.name + ':'
                         %br
                         - if set.weight != nil && set.repetitions != nil
-                            = set.weight.to_s + ' ' + @exercise.unit + ' for ' + set.repetitions.to_s
+                            = set.weight.to_s + @exercise.unit + ' for ' + set.repetitions.to_s
                         - else
                             = set.repetitions.to_s + ' reps'
                         %br
@@ -152,9 +152,11 @@
                                 - totalReps = (totalReps / count).round(2).to_s
                                 - if totalWeight == 0
                                     - totalWeight = 'bodyweight'
+                                    = totalWeight + ' x' + totalReps
                                 - else
                                     - totalWeight = (totalWeight / count).round(2).to_s
-                                = totalWeight + ' ' + exercise.unit + ' x' + totalReps
+                                    = totalWeight + ' ' + exercise.unit + ' x' + totalReps
+                                
                             %br
     - else
         .text-muted
