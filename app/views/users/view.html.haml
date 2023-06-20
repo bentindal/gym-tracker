@@ -149,7 +149,12 @@
                                     - count += 1
                             // Display avg weight and reps
                             - if totalReps > 0
-                                = (totalWeight / count).round(2).to_s + ' ' + exercise.unit + ' x' + (totalReps / count).round(2).to_s
+                                - totalReps = (totalReps / count).round(2).to_s
+                                - if totalWeight == 0
+                                    - totalWeight = 'bodyweight'
+                                - else
+                                    - totalWeight = (totalWeight / count).round(2).to_s
+                                = totalWeight + ' ' + exercise.unit + ' x' + totalReps
                             %br
     - else
         .text-muted
