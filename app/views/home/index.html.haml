@@ -14,7 +14,10 @@
             %h5.mb-8.text-light
                 a simple web-based workout tracker & community. It allows you to track your workouts, follow your friends, and see what they're up to.
     .col-6.mx-auto.mb-5
-        = link_to 'Get Started', "users/sign_in", class: 'btn btn-primary btn-block btn-lg border border-white'
+        - if user_signed_in?
+            = link_to 'Get Started', "exercises", class: 'btn btn-primary btn-block btn-lg border border-white'
+        - else
+            = link_to 'Get Started', "users/sign_in", class: 'btn btn-primary btn-block btn-lg border border-white'
 
 .container.px-4.py-5
     .row
