@@ -43,11 +43,12 @@
               Home
               %span.sr-only (current)
           %li.nav-item
-            %a.nav-link{href: "/feed"} Feed
+            %a.nav-link{href: "/exercises"} Log a Set
+          %li.nav-item
+            %a.nav-link{href: "/feed"} View Feed
           %li.nav-item
             %a.nav-link{href: "/friend/list"} Friends
-          %li.nav-item
-            %a.nav-link{href: "/exercises"} Log a Workout
+          
           
         %form.form-inline.mr-auto.mr-sm-5
           - if user_signed_in?
