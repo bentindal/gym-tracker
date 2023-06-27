@@ -15,7 +15,7 @@
                                     GymTracker
     .d-flex.justify-content-center.align-items-center.h-100.mb-2
         .col-md-8.col-12.mx-auto
-            %h5.mb-8.text-light
+            %h5.mb-8.lead.text-white
                 a simple web-based workout tracker & community. It allows you to track your workouts, follow your friends, and see what they're up to.
     .col-6.mx-auto.mb-5
         - if user_signed_in?
@@ -30,20 +30,20 @@
                 %h2
                     %i{class: "fa-solid fa-list", style: "color: #009dff;"}
                     Log your workouts 
-                %p.text-muted
+                %p.lead
                     Track each and every set you do, whether thats to dropset, to failure or even a bodyweight set.
         .col-lg-4.col-sm-6.col-xs-12.py-1.d-flex.align-items-start.text-center
             .text-black
                 %h2
                     %i{class: "fa-solid fa-user-group", style: "color: #009dff;"}
                     Follow your friends
-                %p.text-muted
+                %p.lead
                     See what other users have been up to, if you want you can follow them and view their workouts in your feed.
         .col-lg-4.col-sm-12.col-xs-12.py-1.d-flex.align-items-start.text-center
             .text-black
                 %h2
                     %i{class: "fa-solid fa-chart-bar", style: "color: #009dff;"}
                     Track your Progress
-                %p.text-muted
+                %p.lead
                     Check out your progress over time, and see how you've been improving. You can see how often you've been going to the gym via your profile.
 
