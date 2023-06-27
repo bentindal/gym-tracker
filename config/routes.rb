@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get '/home' => 'home#index'
   get 'friend/list'
   get 'friend/add'
   get 'friend/remove'
@@ -14,7 +15,7 @@ Rails.application.routes.draw do
   get 'exercise/edit'
   post 'exercise/create'
   get 'exercise/new'
-  get '/exercises' => 'exercise#index'
+  get '/exercises' => 'exercise#list'
   get 'exercise/destroy'
 
   get 'users/view'
@@ -40,7 +41,7 @@ Rails.application.routes.draw do
     patch '', action: :update, on: :member
   end
 
-  root "exercise#index"
+  root "home#index"
 
   match "*path" => redirect("/"), via: :get
 

@@ -1,5 +1,5 @@
 class ExerciseController < ApplicationController
-  def index
+  def list
     @exercises = Exercise.where(user_id: current_user.id)
     @exercises = @exercises.order(:group)
     # Get all unique group names
