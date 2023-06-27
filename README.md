@@ -1,10 +1,18 @@
-<div text-align="center">
-<h1> Gym Tracker </h1>
-<p>A lightweight, easy-to-use, web-based Gym Progress Tracker 🏋️ </p>
-<p>Try it out yourself, sign up <a href="http://gymtracker.uk/">here</a></p>
-
-<img src="https://i.imgur.com/4uV08mU.png" alt="Set Tracker" width="36%"/>
-<img src="https://i.imgur.com/dmnfOIE.png" alt="Summary" width="40%"/>
-<img src="https://i.imgur.com/LALyTPp.png" alt="Stats" width="50%"/>
-
+<div text-align="center" justify-content="center">
+  
+  <img src="https://i.imgur.com/zVJFw0g.png" width="100%"/>  
+  
+  <hr>
+  
+  <img src="https://i.imgur.com/6b40TRI.png" alt="Summary" width="33%"/>
+  <img src="https://i.imgur.com/fPi75Pz.png" alt="Summary" width="33%"/>
+  <img src="https://i.imgur.com/GUIueOk.png" alt="Summary" width="33%"/>
+  
+  <hr>
+  
+  <img src="https://i.imgur.com/phCaJMM.png" width="100%"/>
+  <img src="https://i.imgur.com/onlBmr3.png" width="100%"/>  
+  <img src="https://i.imgur.com/ZqR3de5.png" width="100%"/> 
+  <img src="https://i.imgur.com/D99sQVI.png" width="100%"/> 
+  
 </div>
