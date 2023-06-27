@@ -7,8 +7,12 @@
                     %b.text-primary
                         with 
                         %u 
-                            %a{href: "/users/sign_in"}
-                                GymTracker
+                            - if user_signed_in?
+                                %a{href: "/exercises"}
+                                    GymTracker
+                            - else
+                                %a{href: "/users/sign_in"}
+                                    GymTracker
     .d-flex.justify-content-center.align-items-center.h-100.mb-2
         .col-md-8.col-12.mx-auto
             %h5.mb-8.text-light
