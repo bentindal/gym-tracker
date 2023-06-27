@@ -4,9 +4,9 @@
   
   <hr>
   
-  <img src="https://i.imgur.com/6b40TRI.png" alt="Summary" width="33%"/>
-  <img src="https://i.imgur.com/fPi75Pz.png" alt="Summary" width="33%"/>
-  <img src="https://i.imgur.com/GUIueOk.png" alt="Summary" width="33%"/>
+  <img src="https://i.imgur.com/6b40TRI.png" alt="Summary" width="30%"/>
+  <img src="https://i.imgur.com/fPi75Pz.png" alt="Summary" width="30%"/>
+  <img src="https://i.imgur.com/GUIueOk.png" alt="Summary" width="30%"/>
   
   <hr>
   
