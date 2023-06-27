@@ -22,7 +22,7 @@ class ExerciseController < ApplicationController
     @exercise = Exercise.new(exercise_params)
   
     if @exercise.save
-      redirect_to "/", notice: "Exercise created successfully!"
+      redirect_to "/workout/#{@exercise.id}", notice: "Exercise created successfully!"
     else
       render :new, status: :unprocessable_entity
     end
@@ -38,7 +38,7 @@ class ExerciseController < ApplicationController
     @exercise = Exercise.find(params[:id])
     if current_user.id == @exercise.user_id
       if @exercise.update(exercise_params)
-        redirect_to "/", notice: "Exercise updated successfully"
+        redirect_to "/exercises", notice: "Exercise updated successfully"
       else
         puts @exercise.errors.full_messages # Output error messages to the console
         redirect_to edit_exercise_path(@exercise), notice: "Error updating exercise"
