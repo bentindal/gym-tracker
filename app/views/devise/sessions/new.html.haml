@@ -1,0 +1,17 @@
+.container.justify-content-center.d-flex
+  .span
+    %h2.text-center Login
+    = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+      .form-inputs
+        = f.input :email,                       
+          required: false,                      
+          autofocus: true,                      
+          input_html: { autocomplete: "email" } 
+        = f.input :password,                               
+          required: false,                                 
+          input_html: { autocomplete: "current-password" } 
+        = f.input :remember_me, as: :boolean if devise_mapping.rememberable?
+      .form-actions
+        %button{class: "w-100 mb-2 btn btn-primary"} Log in
+        %a.btn.btn-outline-info.w-100.mb-2{href: "/users/sign_up"} Create an Account
+        %a.btn.btn-outline-secondary.w-100{href: "/users/password/new"} Forgot your password?
