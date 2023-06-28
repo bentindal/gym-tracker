@@ -67,15 +67,20 @@
                                     S
                         // Get the first day of the month as a number
                         - @firstDay = Date.today.beginning_of_month.strftime("%u").to_i
+                        // Get number of days in current month
+                        - @daysInMonth = Date.today.end_of_month.strftime("%d").to_i
+                        - rowCount = 0
                         %tbody
                             %tr
                             - (1..@firstDay - 1).each do
                                 %td.bg-light
-                            - (@firstDay..31).each do |dayCount|
+                                - rowCount += 1
+                            - (1..@daysInMonth).each do |dayCount|
+                                - rowCount += 1
                                 - dateFound = false
-                                - if dayCount % 7 == 1
+                                - if rowCount % 7 == 1
                                     %tr
-                                - dayCount = dayCount - @firstDay + 1
+                                
                                 - @dates.each do |date|
                                     - if dayCount == date.day && date.strftime("%B") == Date.today.strftime("%B")
                                         - dateFound = true
@@ -89,10 +94,8 @@
                                     %td.bg-secondary.border
                                         = dayCount
                                 - else
-                                    %td.border.bg-white
+                                    %td.border.bg-light
                                         = dayCount
-                            - (0..7 - @firstDay).each do
-                                %td.bg-light
             .col-lg-4.col-md-6.col-xs-12
                 %hr
                 %h5
