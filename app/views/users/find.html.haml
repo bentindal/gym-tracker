@@ -1,7 +1,8 @@
 .container.text-center.w-100
-    %h1 All Users
+    %h1 All Users 
+    %h6 (Sorted Alphabetically)
     %hr
-.container
+
     - @users.each do |user|
         .row
             %a.col-12.border.text-primary.btn.btn-light.mb-1{href: "/users/view?id=#{user.id}"}
