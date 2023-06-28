@@ -68,11 +68,17 @@
   %body
     %br
     - if notice
-      %p.notice.alert.alert-success
+      %p.notice.alert.alert-success.alert-dismissible.fade.show{role: "alert"}
+        %strong Success!
         = notice
+        %button.close{"aria-label" => "Close", "data-dismiss" => "alert", type: "button"}
+          %span{"aria-hidden" => "true"} ×
     - if alert
-      %p.alert.alert-danger
+      %p.alert.alert-danger.alert-dismissible.fade.show{role: "alert"}
+        %strong Error!
         = alert
+        %button.close{"aria-label" => "Close", "data-dismiss" => "alert", type: "button"}
+          %span{"aria-hidden" => "true"} ×
    
     = yield
 
