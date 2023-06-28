@@ -2,11 +2,12 @@
     .text-right
         = link_to 'Add New', "/exercise/new", {class: "btn btn-sm btn-outline-primary"}
     %h1 All Exercises
-    %hr
-        - if @exercises.empty?
-            %p No exercises have been created yet.
-        - else
-            %span.m-2
+    
+    - if @exercises.empty?
+        %p No exercises have been created yet.
+    - else
+        %span.mb-3
+            .mb-4
                 %a.btn.btn-primary.btn-sm{href: "/"} All
                 - @groups.each do |group|
                     - if group == "Chest"
@@ -17,6 +18,7 @@
                         %a.btn.btn-outline-success.btn-sm{href: "/exercises?group=#{group}"}= group
                     - else
                         %a.btn.btn-outline-info.btn-sm{href: "/exercises?group=#{group}"}= group
+            
             %table.table.table-sm.mt-3{width: "auto"}
                 %thead
                     %tr
