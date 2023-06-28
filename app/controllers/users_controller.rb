@@ -29,5 +29,7 @@ class UsersController < ApplicationController
     end
     def find
         @users = User.all
+        # Sort Alphabetically by First Name
+        @users = @users.sort_by { |user| user.first_name }
     end
 end
