@@ -9,8 +9,7 @@
       <%= f.input :last_name, required: false %>
       <%= f.input :email, required: false%>
 
-      <h6> Tick to make your profile public (enabled by default) </h6>
-      <%= f.input :isPublic, :as => :boolean%>
+      <%= f.input :isPublic, :as => :boolean, :label => "Would you like your profile to be public? (Enabled by default)" %>
       
 
       <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>

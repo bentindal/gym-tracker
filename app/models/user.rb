@@ -4,6 +4,29 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  validates :first_name, :last_name, :email, presence: true
+  validates :email, uniqueness: true
+  validates :password, length: { minimum: 6 }
+  validates :password, confirmation: true
+  validates :password_confirmation, presence: true
+
+  # First name and last name must be at least 2 characters long & only letters
+  validates :first_name, :last_name, length: { minimum: 2 }
+  validates :first_name, :last_name, format: { with: /\A[a-zA-Z]+\z/,
+    message: "only allows letters" }
+  
+  validates :last_name, :last_name, length: { minimum: 2 }
+  validates :last_name, :last_name, format: { with: /\A[a-zA-Z]+\z/,
+    message: "only allows letters" }
+  
+  # Email must be in correct format
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+
+  # Password must be at least 6 characters long, contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character
+  validates :password, length: { minimum: 6 }
+  validates :password, format: { with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[[:^alnum:]])/x,
+    message: "must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character" }
+  
   def exercises
     return Exercise.where(user_id: self.id)
   end
