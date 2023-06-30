@@ -6,9 +6,6 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name, :email, presence: true
   validates :email, uniqueness: true
-  validates :password, length: { minimum: 6 }
-  validates :password, confirmation: true
-  validates :password_confirmation, presence: true
 
   # First name and last name must be at least 2 characters long & only letters
   validates :first_name, :last_name, length: { minimum: 2 }
@@ -23,9 +20,9 @@ class User < ApplicationRecord
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
   # Password must be at least 6 characters long, contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character
-  validates :password, length: { minimum: 6 }
-  validates :password, format: { with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[[:^alnum:]])/x,
-    message: "must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character" }
+  # validates :password, length: { minimum: 6 }
+  #validates :password, format: { with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[[:^alnum:]])/x,
+  #  message: "must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character" }
   
   def exercises
     return Exercise.where(user_id: self.id)
