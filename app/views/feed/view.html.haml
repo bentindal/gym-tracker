@@ -66,23 +66,27 @@
                             %strong
                                 = ex[0].name
                             - ex[1].each do |set|
-                                - if set.weight != nil && set.repetitions != nil
-                                    - if set.weight == 0
-                                        - msg = 'BW ' + set.exercise.unit.to_s + ' x ' + set.repetitions.to_s
-                                    - else
-                                        - msg = set.weight.to_s + ' ' + set.exercise.unit.to_s + ' x ' + set.repetitions.to_s
-                                        
-                                    %br
+                                - if set.weight == nil
+                                    - set.weight = "?"
+                                - if set.repetitions == nil
+                                    - set.repetitions = "?"
+                                - if set.weight == 0
+                                    - msg = 'BW x ' + set.repetitions.to_s
+                                - else
+                                    - msg = set.weight.to_s + ' ' + set.exercise.unit.to_s + ' x ' + set.repetitions.to_s
+                                    
+                                %br
 
-                                    - if set.isFailure
-                                        %span.text-danger.border-bottom.border-danger
-                                            = msg
-                                    - elsif set.isDropset
-                                        %span.text-info.border-bottom.border-info
-                                            = msg
-                                    - else
-                                        %span.text-muted
-                                            = msg
+                                - if set.isFailure
+                                    %span.text-danger.border-bottom.border-danger
+                                        = msg
+                                - elsif set.isDropset
+                                    %span.text-info.border-bottom.border-info
+                                        = msg
+                                - else
+                                    %span.text-muted
+                                        = msg
+                                
                                             
 
                                     
