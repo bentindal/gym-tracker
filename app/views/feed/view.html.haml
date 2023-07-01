@@ -1,7 +1,6 @@
 .container
     %h1.text-center
         My Feed
-    %hr
     
     .text-center.m-2
         - if params[:filter] == "you"
@@ -10,6 +9,7 @@
         - else
             %a.btn.btn-primary.btn-sm{href: "/feed"} You + Friends
             %a.btn.btn-outline-primary.btn-sm{href: "/feed?filter=you"} You
+    %hr
     - prevDate = nil
     - if @feed.length == 0
         .text-muted.text-center
