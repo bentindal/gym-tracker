@@ -1,40 +1,83 @@
 class FeedController < ApplicationController
   def view
-    list_of_friends_ids = Friend.where(user: current_user.id, confirmed: true)
-    viewList = [current_user.id]
-    if params[:filter] != "you"
-      list_of_friends_ids.each do |friend|
-        viewList.push(friend.follows)
-      end
-    end
+    list_of_friends_ids = Friend.where(user: current_user.id, confirmed: true).pluck(:follows)
+    # list_of_friends_ids = []
+    list_of_friends_ids.push(current_user.id)
+    all = []
     @feed = []
-    viewList.each do |userid|
-      @user = User.find(userid)
-      @sets = Workout.where(user_id: @user.id)
-      @dates = []
-      @sets.each do |workout|
-          @dates.push(workout.created_at.to_date)
+    within = 5.hours
+    list_of_friends_ids.each do |userid|
+      user = User.find(userid)
+      # Get all workouts from user
+      user.workouts.each do |workout|
+        all.push(workout)
       end
-      @dates = @dates.uniq.sort.reverse!
-      @exercises = Exercise.where(user_id: @user.id)
-      @dates.each do |date|
-        @list = []
-        @displayedExercises = []
-        @exercises.each do |exercise|
-          @listofsets = @sets.where(exercise_id: exercise.id).where(created_at: date.beginning_of_day..date.end_of_day)
-          if @listofsets.first != nil
-            @list.push([exercise, @listofsets])
-            @displayedExercises.push(exercise.group)
+      
+      all.sort_by! { |workout| workout.created_at }
+      
+      # Get time 5 hours later than the first workout including date
+      if all.first == nil
+        next
+      end
+      time = all.first.created_at + within
+      
+      # Get all workouts from user that are within the next 5 hours of that workout
+      list = []
+      remainder = []
+      groups = []
+      all.each do |workout|
+        if workout.created_at <= time && workout.created_at >= time - within
+          if workout != nil
+            list.push(workout)
+          end
+          if workout.exercise != "n/a"
+            groups.push(workout.exercise.group)
+          end
+        else
+          remainder.push(workout)
+        end
+      end
+      # Combine workouts with the same exercise into one
+      list = list.group_by(&:exercise).map do |exercise, workouts|
+        [exercise, workouts]
+      end
+      # If the user has no workouts, skip
+      if list[1] == nil
+        next
+      end
+      @feed.push([time - within, list[1].first.user, list, groups.uniq])
+      
+      while remainder.length > 0
+        list = []
+        time = remainder.first.created_at + within
+        temp = remainder
+
+        remainder = []
+        groups = []
+        temp.each do |workout|
+          if workout.created_at <= time && workout.created_at >= time - within
+            if workout != nil
+              list.push(workout)
+            end
+            if workout.exercise != "n/a"
+              groups.push(workout.exercise.group)
+            end
+          else
+            remainder.push(workout)
           end
         end
-        @displayedExercises.uniq!
-        # Only if the user has a workout on the date, add it to the feed
-        if @list.first[1].first != nil
-          @feed.push([@list.first[1].first.created_at, @user, @list, @displayedExercises])
+        # Combine workouts with the same exercise into one
+        list = list.group_by(&:exercise).map do |exercise, workouts|
+          [exercise, workouts]
         end
+        if list[1] == nil
+          next
+        end
+        @feed.push([time - within, list[1].first.user, list, groups.uniq])
       end
+      
+      
     end
-    # Order feed by date
-    @feed = @feed.sort_by { |date, user, list| date }.reverse!
+    @feed.reverse!
   end
 end

@@ -60,18 +60,17 @@
             = day[0].strftime("%H:%M")
         .row
             %table
-                - day[2].each do |workout|
-                    - if workout[1].any?
-                        %ti.col-lg-3.col-md-6.col-xs-12
+                - day[2].each do |ex|
+                    %ti.col-lg-3.col-md-6.col-xs-12
+                        - if ex[0] != "n/a"
                             %strong
-                                = workout[0].name
-
-                            - workout[1].each do |set|
+                                = ex[0].name
+                            - ex[1].each do |set|
                                 - if set.weight != nil && set.repetitions != nil
                                     - if set.weight == 0
-                                        - msg = 'BW ' + workout[0].unit.to_s + ' x ' + set.repetitions.to_s
+                                        - msg = 'BW ' + set.exercise.unit.to_s + ' x ' + set.repetitions.to_s
                                     - else
-                                        - msg = set.weight.to_s + ' ' + workout[0].unit.to_s + ' x ' + set.repetitions.to_s
+                                        - msg = set.weight.to_s + ' ' + set.exercise.unit.to_s + ' x ' + set.repetitions.to_s
                                         
                                     %br
 
