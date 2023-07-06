@@ -8,6 +8,7 @@ SitemapGenerator::Sitemap.create do
   add '/feed', :changefreq => 'weekly', :priority => 0.7
   add '/users/sign_in', :changefreq => 'weekly', :priority => 0.8
   add '/users/sign_up', :changefreq => 'weekly', :priority => 0.8
+  add '/users/edit', :changefreq => 'weekly', :priority => 0.8
   add '/users/find', :changefreq => 'weekly', :priority => 0.7
   add '/friends', :changefreq => 'weekly', :priority => 0.7
 end
