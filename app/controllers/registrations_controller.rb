@@ -1,5 +1,9 @@
 class RegistrationsController < Devise::RegistrationsController
-
+    def new
+        @page_title = "Sign Up"
+        @page_description = "Create an account on GymTracker"
+        super
+    end
     private
   
         def sign_up_params
