@@ -1,5 +1,7 @@
 class ExerciseController < ApplicationController
   def list
+    @page_title = "List of Exercises"
+    @page_description = "View all your exercises on GymTracker"
     @exercises = Exercise.where(user_id: current_user.id)
     @exercises = @exercises.order(:group)
     # Get all unique group names
@@ -7,10 +9,6 @@ class ExerciseController < ApplicationController
     if params[:group]
       @exercises = @exercises.where(group: params[:group])
     end
-  end
-
-  def view
-    redirect_to "/exercise/#{params[:id]}"
   end
   
   def new

@@ -1,5 +1,7 @@
 class FeedController < ApplicationController
   def view
+    @page_title = "Feed"
+    @page_description = "View all your & your friends workouts on GymTracker"
     list_of_friends_ids = Friend.where(user: current_user.id, confirmed: true).pluck(:follows)
     # list_of_friends_ids = []
     list_of_friends_ids.push(current_user.id)

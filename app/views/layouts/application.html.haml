@@ -3,7 +3,10 @@
   %head
     %meta{content: "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
     %title 
-      GymTracker
+      - if @page_title.present?
+        = @page_title
+      - else
+        GymTracker
     %meta{content: "width=device-width,initial-scale=1", name: "viewport"}/
     = csrf_meta_tags
     = csp_meta_tag
@@ -11,8 +14,8 @@
     = javascript_importmap_tags
     = favicon_link_tag 'favicon.ico'
     %link{:href => "images/apple-touch-icon.png", :rel => "apple-touch-icon"}
-
-    %meta{name: "description", content: "Minimalistic Gym Workout Tracker. Track your workouts & follow your friends to see what they are up to."}
+    - if @page_description.present?
+      %meta{name: "description", content: @page_description}/
 
     / Google tag (gtag.js)
     %script{async: "", src: "https://www.googletagmanager.com/gtag/js?id=G-MWHGM094KQ"}

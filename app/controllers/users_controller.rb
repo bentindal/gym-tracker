@@ -5,6 +5,8 @@ class UsersController < ApplicationController
         @workouts = Workout.where(user_id: params[:id])
         @is_friend = false
         @pending = false
+        @page_title = @user.first_name + " " + @user.last_name + "'s Profile"
+        @page_description = "View " + @user.first_name + " " + @user.last_name + "'s profile on GymTracker"
         if current_user != nil
             all_friends = Friend.where(user: current_user.id)
             all_friends.each do |friend|
@@ -28,6 +30,8 @@ class UsersController < ApplicationController
         end
     end
     def find
+        @page_title = "All Users"
+        @page_description = "View all users using GymTracker"
         @users = User.all
         # Sort Alphabetically by First Name
         @users = @users.sort_by { |user| user.first_name }

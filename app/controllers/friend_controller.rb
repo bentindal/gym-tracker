@@ -1,5 +1,7 @@
 class FriendController < ApplicationController
   def list
+    @page_title = "Friends"
+    @page_description = "View your friends on GymTracker"
     # Incoming
     pending_followers = Friend.where(follows: current_user.id, confirmed: false)
 

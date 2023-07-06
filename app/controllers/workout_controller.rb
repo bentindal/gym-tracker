@@ -2,6 +2,7 @@ class WorkoutController < ApplicationController
   def show
     @exercise = Exercise.find(params[:id]) # Use exercise_id instead of params[:id]
     if current_user.id == @exercise.user_id  # Check if current user is the owner of the exercise
+      @page_title = @exercise.name + " | Workout"
       @sets = Workout.where(exercise_id: @exercise.id) # Filter by exercise_id
       @sets = @sets.order(created_at: :desc)
     else
