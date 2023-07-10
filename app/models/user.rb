@@ -106,7 +106,11 @@ class User < ApplicationRecord
     user.workouts.each do |workout|
       all.push(workout)
     end
-    
+
+    # Return empty array if no workouts
+    if all == []
+      return []
+    end
     
     # Get time 5 hours later than the first workout including date
     time = all.first.created_at + within
