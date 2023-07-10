@@ -94,5 +94,53 @@ class User < ApplicationRecord
       return "You have a #{self.streak_count} day streak going, keep it up!"
     end
   end
-         
+  
+  def feed
+    @feed = []
+    all = []
+    within = 5.hours
+    
+    user = User.find(self.id)
+    # Get all workouts from user
+
+    user.workouts.each do |workout|
+      all.push(workout)
+    end
+    
+    
+    # Get time 5 hours later than the first workout including date
+    time = all.first.created_at + within
+    
+    # Get all workouts from user that are within the next 5 hours of that workout
+    remainder = all
+
+    # Do the same for the remainder of the workouts
+    while remainder.length > 0
+  
+      time = remainder.first.created_at + within
+      temp = remainder
+      
+      list = []
+      remainder = []
+      groups = []
+      temp.each do |workout|
+        if workout.created_at <= time && workout.created_at >= time - within
+          # List of sets
+          list.push(workout)
+          groups.push(workout.exercise.group)
+        else
+          remainder.push(workout)
+        end
+      end
+      # Combine workouts with the same exercise into one
+      list = list.group_by(&:exercise).map do |exercise, workouts|
+        [exercise, workouts]
+      end
+
+      # Time, User, List of workouts, List of groups
+      @feed.push([time - within, user, list, groups.uniq])
+    end
+    @feed = @feed.sort_by { |a| a[0] }.reverse
+    return @feed
+  end
 end
