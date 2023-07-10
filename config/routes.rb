@@ -26,7 +26,8 @@ Rails.application.routes.draw do
   get 'error/page_not_found' => 'application#page_not_found'
 
   devise_for :users, :controllers => {
-    registrations: 'registrations'
+    registrations: 'registrations',
+    sessions: 'users/sessions'
   }
   devise_scope :user do
     get '/users/sign_out' => 'devise/sessions#destroy'
