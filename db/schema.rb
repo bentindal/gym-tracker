@@ -23,6 +23,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_25_182842) do
   create_table "friends", force: :cascade do |t|
     t.integer "user"
     t.integer "follows"
+    t.boolean "confirmed", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
