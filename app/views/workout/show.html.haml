@@ -1,11 +1,25 @@
 .container
-    .text-right
+    .text-right.mb-1
         = link_to 'Back', "/exercises", {class: "btn btn-sm btn-outline-primary"}
     .d-flex.justify-content-center.text-center
-        %h1
+        %h3
             = @exercise.name
-            .badge.badge-warning
-                = @exercise.group
+        
+            - if @exercise.group == "Back"
+                .badge.badge-danger
+                    = @exercise.group
+            - elsif @exercise.group == "Chest"
+                .badge.badge-primary
+                    = @exercise.group
+            - elsif @exercise.group == "Legs"
+                .badge.badge-success
+                    = @exercise.group
+            - elsif @exercise.group == "Shoulders"
+                .badge.badge-info
+                    = @exercise.group
+            - else
+                .badge.badge-warning 
+                    = @exercise.group
 
     = render 'form'
     
