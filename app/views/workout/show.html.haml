@@ -73,13 +73,13 @@
 
                     - elsif set.isFailure
                         %tr.border.border-danger.text-danger
-                            %td.col-2.align-middle
+                            %td.align-middle
                                 %u
                                     - if set.repetitions == nil
                                         = "?"
                                     - else
                                         = set.repetitions
-                            %td.col-3.align-middle
+                            %td.align-middle
                                 %u
                                     - if set.weight == 0
                                         = "BW"
@@ -87,7 +87,7 @@
                                         = "?"
                                     - else
                                         = set.weight.to_s + " " + @exercise.unit
-                            %td.col-3.align-middle
+                            %td.align-middle
                                 - if set.created_at > Time.now.beginning_of_day
                                     #target.text-danger
                                         = set.created_at.strftime("%H:%M")
@@ -99,19 +99,19 @@
                                     // Output date
                                     .text-danger
                                         = set.created_at.strftime("%d/%m/%Y")
-                            %td.col-3
+                            %td
                                 = link_to '', edit_workout_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
                                 = link_to '', "/workout/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
 
                     - else
                         %tr
-                            %td.col-1.align-middle
+                            %td.align-middle
                                 - if set.repetitions == nil
                                     .text-muted
                                         = "?"
                                 - else
                                     = set.repetitions
-                            %td.col-4.align-middle
+                            %td.align-middle
                                 - if set.weight == 0
                                     = "BW"
                                 - elsif set.weight == nil
@@ -119,7 +119,7 @@
                                         = "?"
                                 - else
                                     = set.weight.to_s + " " + @exercise.unit
-                            %td.col-4.align-middle
+                            %td.align-middle
                                 - if set.created_at > Time.now.beginning_of_day
                                     .text-muted#target
                                         = set.created_at.strftime("%H:%M")
@@ -133,7 +133,7 @@
                                     // Output date
                                     .text-muted
                                         = set.created_at.strftime("%d/%m/%Y")
-                            %td.col-3.align-middle
+                            %td.align-middle
                                 = link_to '', edit_workout_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary"}
                                 = link_to '', "/workout/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger"}
 
