@@ -27,33 +27,61 @@
                 
                 - if day[3].first == "Chest"
                     %a.badge.badge-primary.text-white
-                        - day[3].each do |ex|
-                            - if ex == day[3].last
-                                = ex
-                            - else
-                                = ex + " & "
+                        - if day[3].length == 1
+                            = day[3].first
+                        - elsif day[3].length == 2
+                            = day[3].first + " & " + day[3].last
+                        - else
+                            - day[3].each do |ex|
+                                - if ex == day[3].last
+                                    = ex
+                                - elsif ex != day[3][day[3].length - 2]
+                                    = ex + ", "
+                                - else
+                                    = ex + " & "
                 - elsif day[3].first == "Back"
                     %a.badge.badge-danger.text-white
-                        - day[3].each do |ex|
-                            - if ex == day[3].last
-                                = ex
-                            - else
-                                = ex + " & "
+                        - if day[3].length == 1
+                            = day[3].first
+                        - elsif day[3].length == 2
+                            = day[3].first + " & " + day[3].last
+                        - else
+                            - day[3].each do |ex|
+                                - if ex == day[3].last
+                                    = ex
+                                - elsif ex != day[3][day[3].length - 2]
+                                    = ex + ", "
+                                - else
+                                    = ex + " & "
                 - elsif day[3].first == "Legs"
                     %a.badge.badge-success.text-white
-                        - day[3].each do |ex|
-                            - if ex == day[3].last
-                                = ex
-                            - else
-                                = ex + " & "
+                        - if day[3].length == 1
+                            = day[3].first
+                        - elsif day[3].length == 2
+                            = day[3].first + " & " + day[3].last
+                        - else
+                            - day[3].each do |ex|
+                                - if ex == day[3].last
+                                    = ex
+                                - elsif ex != day[3][day[3].length - 2]
+                                    = ex + ", "
+                                - else
+                                    = ex + " & "
                 - else
                     %a.badge.badge-info.text-white
-                        - day[3].each do |ex|
-                            - if ex == day[3].last
-                                = ex
-                            - else
-                                = ex + " & "
-            
+                        - if day[3].length == 1
+                            = day[3].first
+                        - elsif day[3].length == 2
+                            = day[3].first + " & " + day[3].last
+                        - else
+                            - day[3].each do |ex|
+                                - if ex == day[3].last
+                                    = ex
+                                - elsif ex != day[3][day[3].length - 2]
+                                    = ex + ", "
+                                - else
+                                    = ex + " & "
+
         %h6.text-muted
             = day[0].strftime("%B %d, %Y") + " @ "
             // 24 hour time
