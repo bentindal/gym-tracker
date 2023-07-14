@@ -8,7 +8,7 @@
                         with 
                         %u 
                             - if user_signed_in?
-                                %a{href: "/exercises"}
+                                %a{href: "/dashboard"}
                                     GymTracker
                             - else
                                 %a{href: "/users/sign_in"}
@@ -19,7 +19,7 @@
                 GymTracker is an easy-to-use gym tracker & workout log allowing you to track your workouts, follow your friends, and see what they're up to.
     .col-6.mx-auto.mb-5
         - if user_signed_in?
-            = link_to 'Get Started', "exercises", class: 'btn btn-primary btn-block btn-lg border border-white'
+            = link_to 'Get Started', "dashboard", class: 'btn btn-primary btn-block btn-lg border border-white'
         - else
             = link_to 'Get Started', "users/sign_in", class: 'btn btn-primary btn-block btn-lg border border-white'
 

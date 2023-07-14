@@ -10,7 +10,7 @@
         .text-muted.mb-2
             = current_user.feed.count.to_s + ' workouts logged in total'
         %a.btn.btn-primary{href: "/exercises"} Log a Workout
-.container.border.bg-white.py-2
+.container.container-md.border.bg-white.py-2
     .card.border-top-0.border-bottom-0.justify-content-center.d-flex.text-center
         .row
             .col-12.col-md-4.bg-white
@@ -28,15 +28,18 @@
                     %p.label.py-2.text-success.border.border-success.px-2
                         %b Great Job!
                         = current_user.streak_msg_own
+
                 .row.mb-1.text-center.align-middle.pt-2
                     .col-3
-                        %a.btn.btn-sm.btn-outline-primary{href: "dashboard?month=#{@month - 1}"} <
+                        %a.btn.btn-sm.btn-outline-primary{href: "dashboard?month=#{@month - 1}"}
+                            %strong ◀
                     .col-6
-                        %p.text-center
+                        %h4.text-center
                             %strong.float-center.align-middle
                                 = "#{@month_name} #{Date.today.year}"
                     .col-3
-                        %a.btn.btn-sm.btn-outline-primary{href: "dashboard?month=#{@month + 1}"} >
+                        %a.btn.btn-sm.btn-outline-primary{href: "dashboard?month=#{@month + 1}"}
+                            %strong ▶
             
                 
                 %table.table.table-sm.table-borderless.table-hover
