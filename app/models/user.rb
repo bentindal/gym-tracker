@@ -95,14 +95,33 @@ class User < ApplicationRecord
       return "You have a #{self.streak_count} day streak going, keep it up!"
     end
   end
-  def is_active
+  def midworkout
+    if self.workouts == []
+      return false
+    end
     # get most recent set in self.workouts
-    recent = self.workouts.first
+    recent = self.last_set
     # if it was created less than 5 minutes ago, return true
-    if recent.created_at >= Time.now - 5.minutes
+    if recent == nil
+      return false
+    elsif recent.created_at >= Time.now - 10.minutes
       return true
     else
       return false
+    end
+  end
+  def last_exercise
+    if self.workouts == []
+      return nil
+    else
+      return self.workouts.last.exercise
+    end
+  end
+  def last_set
+    if self.workouts == []
+      return nil
+    else
+      return self.workouts.last
     end
   end
 
