@@ -1,0 +1,34 @@
+.container.pt-1
+  .text-right
+    = link_to "Head Back", :back 
+  %h2.text-center.mb-3
+    = "Edit #{resource_name.to_s.humanize}"
+  
+  .container.bg-white.border.border-rounded.p-3
+    = simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }, data: {turbo: false}) do |f|
+      = f.error_notification
+      .form-inputs
+        = f.input :first_name, required: true, autofocus: true
+        = f.input :last_name, required: false
+        = f.input :email, required: false
+        = f.input :isPublic, :as => :boolean, :label => "Would you like your profile to be public? (Enabled by default)"
+        - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+          %p
+            = "Currently waiting confirmation for: #{resource.unconfirmed_email}"
+        = f.input :password,                                     
+          hint: "leave it blank if you don't want to change it", 
+          required: false,                                       
+          input_html: { autocomplete: "new-password" }           
+        = f.input :password_confirmation,              
+          required: false,                             
+          input_html: { autocomplete: "new-password" } 
+        = f.input :current_password,                                     
+          hint: "we need your current password to confirm your changes", 
+          required: true,                                                
+          input_html: { autocomplete: "current-password" }               
+      .form-actions
+        = f.button :submit, "Update"
+    %br
+    %h3 Cancel my account
+    %p
+      = "Unhappy? #{link_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete}"

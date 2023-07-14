@@ -1,27 +1,28 @@
 .container.justify-content-center.d-flex
   .span
-    %h1.text-center
+    %h1.text-center.mt-3.mb-3
       Sign Up
-    = simple_form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: false }) do |f|
-      = f.error_notification
-      = f.input :first_name,                       
-        required: true,                            
-        autofocus: true,                           
-        input_html: { autocomplete: "given-name" } 
-      = f.input :last_name,                         
-        required: true,                             
-        input_html: { autocomplete: "family-name" } 
-      = f.input :email,                       
-        required: true,                       
-        input_html: { autocomplete: "email" }
-      = f.input :isPublic, :as => :boolean, :input_html => { :checked => "checked" }, :label => "Would you like your profile to be public? (ticked by default)"
-      = f.input :password,                                                                    
-        required: true,                                                                       
-        hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), 
-        input_html: { autocomplete: "new-password" }                                          
-      = f.input :password_confirmation,              
-        required: true,                              
-        input_html: { autocomplete: "new-password" } 
-      .form-actions
-        = f.button :submit, "Sign up", class: "w-100 mb-2 btn btn-primary"
-    = render "devise/shared/links"
+    .container.border.border-rounded.bg-white.p-3
+      = simple_form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: false }) do |f|
+        = f.error_notification
+        = f.input :first_name,                       
+          required: true,                            
+          autofocus: true,                           
+          input_html: { autocomplete: "given-name" } 
+        = f.input :last_name,                         
+          required: true,                             
+          input_html: { autocomplete: "family-name" } 
+        = f.input :email,                       
+          required: true,                       
+          input_html: { autocomplete: "email" }
+        = f.input :isPublic, :as => :boolean, :input_html => { :checked => "checked" }, :label => "Would you like your profile to be public? (ticked by default)"
+        = f.input :password,                                                                    
+          required: true,                                                                       
+          hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), 
+          input_html: { autocomplete: "new-password" }                                          
+        = f.input :password_confirmation,              
+          required: true,                              
+          input_html: { autocomplete: "new-password" } 
+        .form-actions
+          = f.button :submit, "Sign up", class: "w-100 mb-2 btn btn-primary"
+    
