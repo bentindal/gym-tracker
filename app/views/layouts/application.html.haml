@@ -91,7 +91,7 @@
             %strong Keep going!
             You are currently in the middle of a workout.
             %a{href: "/workout/#{current_user.last_exercise.id.to_s}"} 
-              = "Resume '#{current_user.last_exercise.name}'."
+              = "Resume #{current_user.last_exercise.name}"
 
     = yield
 
