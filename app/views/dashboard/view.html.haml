@@ -9,8 +9,8 @@
                 = current_user.followers.count.to_s + ' followers | ' + current_user.following.count.to_s + ' following' 
         .text-muted
             = current_user.feed.count.to_s + ' workouts logged in total'
-.container.border.bg-white.py-2 
-    .container.justify-content-center.d-flex.text-center
+.container.border.bg-white.py-2
+    .card.border-top-0.border-bottom-0.justify-content-center.d-flex.text-center
         .row
             .col-12.col-md-4.bg-white
                 .row.mb-1.text-center.align-middle.pt-2
