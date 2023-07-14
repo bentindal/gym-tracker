@@ -17,9 +17,7 @@
             = @user.streak_msg_own
             %button.close{"aria-label" => "Close", "data-dismiss" => "alert", type: "button"}
                 %span{"aria-hidden" => "true"} ×
-
-
-.container.text-center
+.container.text-center.mb-3.mt-3
     %h5
         %strong
         - if current_user.id != @user.id && @is_friend == false && @pending == false
@@ -31,26 +29,28 @@
         - elsif current_user.id != @user.id && @is_friend == true
             %a.btn.btn-danger.btn-sm{href: "/friend/remove?id=" + @user.id.to_s}
                 Unfollow
-    %h1
-        %strong
-            = @user.first_name + ' ' + @user.last_name + "'s"
-        Profile
-    
+        %h1
+            %strong
+                = @user.first_name + ' ' + @user.last_name + "'s"
+            Profile
+
+    // Friends vs following
+    - number_of_followers = Friend.where(user: @user.id, confirmed: true).count.to_s
+    - number_of_following = Friend.where(follows: @user.id, confirmed: true).count.to_s
+    %a.text-primary{href: "/friend/list"}
+        = number_of_following + ' followers | ' + number_of_followers + ' following' 
+    // Get all dates from workouts and count unique dates
+    - @sets = Workout.where(user_id: @user.id)
+    - @dates = []
+    - @sets.each do |workout|
+        - @dates.push(workout.created_at.to_date)
+    - @dates = @dates.uniq
+    %br
+    .text-muted
+        = @dates.length.to_s + ' workouts logged in total'
+
+.container.text-center.border.border-rounded.bg-white.pt-3
     - if @user.isPublic != false || current_user == @user || @is_friend
-        // Friends vs following
-        - number_of_followers = Friend.where(user: @user.id, confirmed: true).count.to_s
-        - number_of_following = Friend.where(follows: @user.id, confirmed: true).count.to_s
-        %a.text-primary{href: "/friend/list"}
-            = number_of_following + ' followers | ' + number_of_followers + ' following' 
-        // Get all dates from workouts and count unique dates
-        - @sets = Workout.where(user_id: @user.id)
-        - @dates = []
-        - @sets.each do |workout|
-            - @dates.push(workout.created_at.to_date)
-        - @dates = @dates.uniq
-        %br
-        .text-muted
-            = @dates.length.to_s + ' workouts logged in total'
         // Display this month as a calendar
         - @sets = Workout.where(user_id: @user.id)
         - @dates = []
@@ -63,7 +63,7 @@
         // Display all unique set dates on a calendar
         .row
             .col-lg-4.col-md-12.col-xs-12
-                %hr
+                
                 .row.mb-2.text-center.align-middle
                     .col-2
                         %a.btn.btn-sm.btn-outline-primary{href: "view?id=#{params[:id]}&month=#{@month - 1}"} <
@@ -129,7 +129,6 @@
                     - else
                         = @user.streak_msg_other
             .col-lg-4.col-md-6.col-xs-12
-                %hr
                 %h5
                     %strong
                         Recent Sets
@@ -155,7 +154,6 @@
                         %br
                         %br
             .col-lg-4.col-md-6.col-xs-12
-                %hr
                 %h5
                     %strong
                         3-Set Average

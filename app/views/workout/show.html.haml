@@ -1,24 +1,24 @@
 .container
-    .text-right.mb-1
-        = link_to 'Back', "/exercises", {class: "btn btn-sm btn-outline-primary"}
-    .d-flex.justify-content-center.text-center
-        %h3
+    .text-right.mb-1.mt-3
+        = link_to 'Back', "/exercises", {class: "btn btn-outline-primary"}
+    .container.text-center
+        %h1
             = @exercise.name
         
             - if @exercise.group == "Back"
-                .badge.badge-danger
+                .badge.badge-danger.badge-pill
                     = @exercise.group
             - elsif @exercise.group == "Chest"
-                .badge.badge-primary
+                .badge.badge-primary.badge-pill
                     = @exercise.group
             - elsif @exercise.group == "Legs"
-                .badge.badge-success
+                .badge.badge-success.badge-pill
                     = @exercise.group
             - elsif @exercise.group == "Shoulders"
-                .badge.badge-info
+                .badge.badge-warning.text-white.badge-pill
                     = @exercise.group
             - else
-                .badge.badge-warning 
+                .badge.badge-warning.badge-pill
                     = @exercise.group
 
     = render 'form'
@@ -31,14 +31,14 @@
             #restTimer{style: "display: none;"}
                 = @sets.first.created_at.strftime("%H:%M:%S")
             
-        %table.table.text-center
+        %table.table.text-center.bg-white.border.border-rounded.table-sm
             %thead.bg-dark.text-white
                 %tr
                     %th Reps
                     %th Weight
                     %th When
                     %th Options
-            %tbody.bg-light
+            %tbody
                 - @sets.each do |set|
                     - if set.isDropset
                         %tr.text-info.border.border-info

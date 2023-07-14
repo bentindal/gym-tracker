@@ -1,4 +1,4 @@
-.card-body.justify-content-center.d-flex.text-center
+.card-body.justify-content-center.d-flex.text-center.py-1.mb-3
   %form{action: workout_create_path, method: "POST"}
     %input{name: "authenticity_token", type: "hidden", value: form_authenticity_token}
     %input{name: "exercise_id", placeholder: "ExID", value: @exercise.id.to_s, hidden: true}
@@ -19,4 +19,4 @@
       %input.m-1.text-center.w-20{name: "isDropset", type: "checkbox"} 
       %label.text-info Dropset?
 
-    %button.m-1{type: "submit", class: "btn btn-sm w-100 btn-outline-primary"} Add
+    %button{type: "submit", class: "btn btn-sm w-100 btn-primary"} Add Set

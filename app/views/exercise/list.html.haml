@@ -1,52 +1,56 @@
 .container.text-center
-    .text-right
-        = link_to 'Add New', "/exercise/new", {class: "btn btn-sm btn-outline-primary"}
+    .text-right.mt-3
+        = link_to 'Add New', "/exercise/new", {class: "btn btn-outline-primary"}
     %h1 All Exercises
-    
+    %span.mb-3
+        .mb-4
+            %a.btn.btn-primary.btn-sm{href: "/exercises"} All
+            - @groups.each do |group|
+                - if group == "Chest"
+                    %a.btn.btn-primary.btn-sm{href: "/exercises?group=#{group}"}= group
+                - elsif group == "Back"
+                    %a.btn.btn-danger.btn-sm{href: "/exercises?group=#{group}"}= group
+                - elsif group == "Legs"
+                    %a.btn.btn-success.btn-sm{href: "/exercises?group=#{group}"}= group
+                - elsif group == "Shoulders"
+                    %a.btn.btn-warning.btn-sm.text-white{href: "/exercises?group=#{group}"}= group
+                - else
+                    %a.btn.btn-info.btn-sm{href: "/exercises?group=#{group}"}= group
+                
     - if @exercises.empty?
         %p No exercises have been created yet.
     - else
-        %span.mb-3
-            .mb-4
-                %a.btn.btn-primary.btn-sm{href: "/"} All
-                - @groups.each do |group|
-                    - if group == "Chest"
-                        %a.btn.btn-outline-primary.btn-sm{href: "/exercises?group=#{group}"}= group
-                    - elsif group == "Back"
-                        %a.btn.btn-outline-danger.btn-sm{href: "/exercises?group=#{group}"}= group
-                    - elsif group == "Legs"
-                        %a.btn.btn-outline-success.btn-sm{href: "/exercises?group=#{group}"}= group
-                    - else
-                        %a.btn.btn-outline-info.btn-sm{href: "/exercises?group=#{group}"}= group
-            
-            %table.table.table-sm.mt-3{width: "auto"}
-                %thead
+        %table.table.table-sm.border.border-rounded.bg-white
+            %thead.bg-dark.text-white
+                %tr
+                    %th Name
+                    %th Options
+            %tbody
+                - @exercises.each do |exercise|
                     %tr
-                        %th Name
-                        %th.text-muted Options
-                %tbody
-                    - @exercises.each do |exercise|
-                        %tr
-                            %td
-                                %h6
-                                    %a.btn.btn-oultine-secondary{href: "/workout/"+exercise.id.to_s}
-                                        = exercise.name
-                            
-                                    - if exercise.group == "Chest"
-                                        %span.badge.badge-primary.text-white
-                                            = exercise.group
-                                    - elsif exercise.group == "Back"
-                                        %span.badge.badge-danger.text-white
-                                            = exercise.group
-                                    - elsif exercise.group == "Legs"
-                                        %span.badge.badge-success.text-white
-                                            = exercise.group
-                                    - else
-                                        %span.badge.badge-info.text-white
-                                            = exercise.group
-                            %td.align-middle
-                                - link_to '', "/workout/"+exercise.id.to_s, {class: "fa-solid fa-eye btn btn-sm btn-primary"}
-                                = link_to '', "/exercise/edit?id=#{exercise.id.to_s}", {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary"}
-                                // delete link
-                                = link_to '', "/exercise/destroy?id=#{exercise.id.to_s}", data: { confirm: 'Are you sure?' }, class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger"
-                                    
+                        %td
+                            %h6
+                                %a.btn{href: "/workout/"+exercise.id.to_s}
+                                    = exercise.name
+                        
+                                - if exercise.group == "Chest"
+                                    %span.badge.badge-primary.text-white
+                                        = exercise.group
+                                - elsif exercise.group == "Back"
+                                    %span.badge.badge-danger.text-white
+                                        = exercise.group
+                                - elsif exercise.group == "Legs"
+                                    %span.badge.badge-success.text-white
+                                        = exercise.group
+                                - elsif exercise.group == "Shoulders"
+                                    %span.badge.badge-warning.text-white
+                                        = exercise.group
+                                - else
+                                    %span.badge.badge-info.text-white
+                                        = exercise.group
+                        %td.align-middle
+                            - link_to '', "/workout/"+exercise.id.to_s, {class: "fa-solid fa-eye btn btn-sm btn-primary"}
+                            = link_to '', "/exercise/edit?id=#{exercise.id.to_s}", {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary"}
+                            // delete link
+                            = link_to '', "/exercise/destroy?id=#{exercise.id.to_s}", data: { confirm: 'Are you sure?' }, class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger"
+                                

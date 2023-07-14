@@ -4,4 +4,5 @@
     = f.text_field :name, placeholder: "Exercise Name", class: "form-control"
     = f.select :unit, ["kg", "lbs", "kg/db", "lbs/db"], { prompt: "Select Unit" }, class: "form-control"
     = f.select :group, ["Chest", "Back", "Legs", "Shoulders", "Biceps", "Triceps", "Core"], { prompt: "Select Muscle Group" }, class: "form-control"
-    = f.submit "Create", class: "btn btn-primary w-100"
+    .mt-2
+      = f.submit "Create", class: "btn btn-primary w-100"

@@ -1,10 +1,5 @@
-- if current_user.is_active
-    %a.w-100.btn.btn-info.btn.sm{href: "/workout/#{@first_exercise.id}"}
-        Click here to resume 
-        %strong
-            = "#{@first_exercise.name}"
-.container.justify-content-center.d-flex
-    .col-12.text-center.py-2
+.container.justify-content-center.d-flex.mt-3
+    .col-12.text-center.py-2.mb-3
         %h1
             Welcome back 
             %strong
@@ -14,17 +9,11 @@
                 = current_user.followers.count.to_s + ' followers | ' + current_user.following.count.to_s + ' following' 
         .text-muted
             = current_user.feed.count.to_s + ' workouts logged in total'
-        
-        - if current_user.is_active == false
-            .container.mt-3
-                %a.w-100.btn.btn-primary.btn.sm.mb-3{href: "/workout/#{@first_exercise.id}"}
-                    Click here to log a workout!
-.container.border.bg-white
-    
+.container.border.bg-white.py-2 
     .container.justify-content-center.d-flex.text-center
         .row
             .col-12.col-md-4.bg-white
-                .row.mb-1.text-center.align-middle.pt-3
+                .row.mb-1.text-center.align-middle.pt-2
                     .col-3
                         %a.btn.btn-sm.btn-outline-primary{href: "view?id=#{current_user.id.to_s}&month=#{@month - 1}"} <
                     .col-6
@@ -89,6 +78,9 @@
                     [Coming Soon]
                 %hr
             .col-12.col-md-8.bg-white.p-2
+                - if @feed.count == 0
+                    %h4.text-muted
+                        No workouts logged yet! Press the button above to log your first workout!
                 - @feed.each do |day|
                     .mb-2
                         %h4
