@@ -106,7 +106,12 @@
                         %ti.col-6.col-lg-3.col-md-4.col-sm-6.col-xs-12.mb-1
                             - if ex[0] != "n/a"
                                 %strong
-                                    = ex[0].name
+                                    
+                                    - if current_user.id == ex[0].user_id
+                                        %a.text-dark{href: "/workout/#{ex[0].id}"}
+                                            = ex[0].name
+                                    - else
+                                        = ex[0].name
                                 - ex[1].each do |set|
                                     - if set.weight == nil && set.repetitions == nil
                                         - msg = '? x ?'
