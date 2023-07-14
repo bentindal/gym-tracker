@@ -2,24 +2,24 @@
     .text-right.mt-3
         = link_to 'Add New', "/exercise/new", {class: "btn btn-outline-primary"}
     %h1 All Exercises
-    %span.mb-3
-        .mb-4
-            %a.btn.btn-primary.btn-sm{href: "/exercises"} All
-            - @groups.each do |group|
-                - if group == "Chest"
-                    %a.btn.btn-primary.btn-sm{href: "/exercises?group=#{group}"}= group
-                - elsif group == "Back"
-                    %a.btn.btn-danger.btn-sm{href: "/exercises?group=#{group}"}= group
-                - elsif group == "Legs"
-                    %a.btn.btn-success.btn-sm{href: "/exercises?group=#{group}"}= group
-                - elsif group == "Shoulders"
-                    %a.btn.btn-warning.btn-sm.text-white{href: "/exercises?group=#{group}"}= group
-                - else
-                    %a.btn.btn-info.btn-sm{href: "/exercises?group=#{group}"}= group
                 
     - if @exercises.empty?
-        %p No exercises have been created yet.
+        %p.bg-white.border.border-rounded.p-3.text-muted No exercises have been created yet. Use the "Add New" button to create your first exercise.
     - else
+        %span.mb-3
+            .mb-4
+                %a.btn.btn-primary.btn-sm{href: "/exercises"} All
+                - @groups.each do |group|
+                    - if group == "Chest"
+                        %a.btn.btn-primary.btn-sm{href: "/exercises?group=#{group}"}= group
+                    - elsif group == "Back"
+                        %a.btn.btn-danger.btn-sm{href: "/exercises?group=#{group}"}= group
+                    - elsif group == "Legs"
+                        %a.btn.btn-success.btn-sm{href: "/exercises?group=#{group}"}= group
+                    - elsif group == "Shoulders"
+                        %a.btn.btn-warning.btn-sm.text-white{href: "/exercises?group=#{group}"}= group
+                    - else
+                        %a.btn.btn-info.btn-sm{href: "/exercises?group=#{group}"}= group
         %table.table.table-sm.border.border-rounded.bg-white
             %thead.bg-dark.text-white
                 %tr

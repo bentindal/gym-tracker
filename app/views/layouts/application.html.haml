@@ -83,11 +83,12 @@
           %span{"aria-hidden" => "true"} ×
     // If the user is in the middle of a workout and is not already on /workout/(that page), show a warning
     - if user_signed_in?
-      - if current_page?("/workout/#{current_user.last_exercise.id}") == false && current_user.midworkout
-        %p.alert.alert-warning.alert-dismissible.fade.show{role: "alert"}
-          %strong Keep going!
-          You are currently in the middle of a workout.
-          %a{href: "/workout/#{current_user.last_exercise.id.to_s}"} Click here to resume.
+      - if current_user.workouts.count > 0
+        - if current_page?("/workout/#{current_user.last_exercise.id}") == false && current_user.midworkout
+          %p.alert.alert-warning.alert-dismissible.fade.show{role: "alert"}
+            %strong Keep going!
+            You are currently in the middle of a workout.
+            %a{href: "/workout/#{current_user.last_exercise.id.to_s}"} Click here to resume.
 
     = yield
 

@@ -2,7 +2,7 @@
     %h1.mb-3.mt-3
         Your Friends
 
-    .container.bg-white.border.border-rounded
+    .container.bg-white.border.border-rounded.py-3
         - if @pending_followers.empty? == false
             Incoming:
             - @pending_followers.each do |p|
@@ -45,5 +45,5 @@
                     .align-self-center
                         = link_to "", "/friend/remove_follower?id=#{friend.id}", data: { confirm: "Are you sure?" }, class: "align-self-center fa-solid fa-trash-can btn btn-lg btn-outline-danger"
             
-        .text-center.m-3
-            %a{href: "/users/find", class: "btn btn-warning text-white btn-lg"} Discover Users
+        .text-center.m-1
+            %a{href: "/users/find", class: "btn btn-primary btn-lg"} Discover Users
