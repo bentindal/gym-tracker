@@ -88,11 +88,11 @@ class User < ApplicationRecord
   end
   def streak_msg_own
     if self.streak_status == "none"
-      return "You haven't got a streak going yet, start a workout today!"
+      return "You haven't got a streak going yet."
     elsif self.streak_status == "pending"
-      return "You haven't worked out today, but you have a #{self.streak_count} day streak going!"
+      return "You haven't worked out today, but you have a #{self.streak_count} day streak!"
     else
-      return "You have a #{self.streak_count} day streak going, keep it up!"
+      return "You have a #{self.streak_count} day streak!"
     end
   end
   def midworkout

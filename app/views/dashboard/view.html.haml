@@ -15,17 +15,17 @@
         .row
             .col-12.col-md-4.bg-white
                 - if current_user.streak_status == "none"
-                    %p.label.py-2.text-danger.border.border-danger.px-2
+                    %h6.label.py-2.text-danger.border.border-danger.px-2
                         %b Uh oh!
                         = current_user.streak_msg_own
 
                 - elsif current_user.streak_status == "pending"
-                    %p.label.py-2.text-warning.border.border-warning.px-2
+                    %h6.label.py-2.text-warning.border.border-warning.px-2
                         %b Keep it going!
                         = current_user.streak_msg_own
 
                 - else
-                    %p.label.py-2.text-success.border.border-success.px-2
+                    %h6.label.py-2.text-success.border.border-success.px-2
                         %b Great Job!
                         = current_user.streak_msg_own
 
