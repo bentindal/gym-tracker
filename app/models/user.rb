@@ -30,11 +30,12 @@ class User < ApplicationRecord
   def workouts
     return Workout.where(user_id: self.id)
   end
-  def friends
-    return Friend.where(user_id: self.id, confirmed: true)
+  def following
+    return Friend.where(user: self.id, confirmed: true)
   end
-  def friend_requests
-    return Friend.where(follows: self.id, confirmed: false)
+
+  def followers
+    return Friend.where(follows: self.id, confirmed: true)
   end
   def streak_count
     all_workouts = self.workouts
@@ -94,6 +95,17 @@ class User < ApplicationRecord
       return "You have a #{self.streak_count} day streak going, keep it up!"
     end
   end
+  def is_active
+    # get most recent set in self.workouts
+    recent = self.workouts.first
+    # if it was created less than 5 minutes ago, return true
+    if recent.created_at >= Time.now - 5.minutes
+      return true
+    else
+      return false
+    end
+  end
+
   
   def feed
     @feed = []

@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get 'dashboard/view'
+  get 'dashboard' => 'dashboard#view'
+
   get '/home' => 'home#index'
   get 'friend/list'
   get 'friend/add'

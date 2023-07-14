@@ -1,0 +1,189 @@
+- if current_user.is_active
+    %a.w-100.btn.btn-info.btn.sm{href: "/workout/#{@first_exercise.id}"}
+        Click here to resume 
+        %strong
+            = "#{@first_exercise.name}"
+.container.justify-content-center.d-flex
+    .col-12.text-center.py-2
+        %h1
+            Welcome back 
+            %strong
+                = "#{current_user.first_name}!"
+        .text-center
+            %a.text-primary{href: "/friend/list"}
+                = current_user.followers.count.to_s + ' followers | ' + current_user.following.count.to_s + ' following' 
+        .text-muted
+            = current_user.feed.count.to_s + ' workouts logged in total'
+        
+        - if current_user.is_active == false
+            .container.mt-3
+                %a.w-100.btn.btn-primary.btn.sm.mb-3{href: "/workout/#{@first_exercise.id}"}
+                    Click here to log a workout!
+.container.border.bg-white
+    
+    .container.justify-content-center.d-flex.text-center
+        .row
+            .col-12.col-md-4.bg-white
+                .row.mb-1.text-center.align-middle.pt-3
+                    .col-3
+                        %a.btn.btn-sm.btn-outline-primary{href: "view?id=#{current_user.id.to_s}&month=#{@month - 1}"} <
+                    .col-6
+                        %p.text-center
+                            %strong.float-center.align-middle
+                                = "#{@month_name} #{Date.today.year}"
+                    .col-3
+                        %a.btn.btn-sm.btn-outline-primary{href: "view?id=#{current_user.id.to_s}&month=#{@month + 1}"} >
+            
+                
+                %table.table.table-sm.table-borderless.table-hover
+                    %thead.bg-dark.text-light.p-0.m-0
+                        %tr.m-0.p-0
+                            %th.m-0.p-0.ml-0
+                                M
+                            %th.m-0.p-0
+                                T
+                            %th.m-0.p-0
+                                W
+                            %th.m-0.p-0
+                                T
+                            %th.m-0.p-0
+                                F
+                            %th.m-0.p-0
+                                S
+                            %th.m-0.p-0
+                                S
+                    // Get the first day of @month this year
+                    - @firstDay = Date.new(Date.today.year, @month, 1).strftime("%u").to_i
+                    // Get number of days in current month
+                    - @daysInMonth = Date.new(Date.today.year, @month, -1).day
+                    - rowCount = 0
+                    %tbody
+                        %tr
+                        - (1..@firstDay - 1).each do
+                            %td.bg-light
+                            - rowCount += 1
+                        - (1..@daysInMonth).each do |dayCount|
+                            - rowCount += 1
+                            - dateFound = false
+                            - if rowCount % 7 == 1
+                                %tr
+                            
+                            - @dates.each do |date|
+                                - if dayCount == date.day && date.strftime("%B") == Date.new(Date.today.year, @month, -1).strftime("%B")
+                                    - dateFound = true
+                            - if dateFound
+                                %td.bg-success.border
+                                    = dayCount
+                            - elsif dayCount == Date.today.day && Date.today.strftime("%B") == Date.new(Date.today.year, @month, -1).strftime("%B")
+                                %td.bg-warning.border.border-warning
+                                    = dayCount
+                            - elsif dayCount < Date.today.day && Date.today.month == @month || Date.today.month > @month
+                                %td.bg-secondary.border
+                                    = dayCount
+                            - else
+                                %td.border.bg-light
+                                    = dayCount
+                %hr
+                %h4 Statistics
+                %p.text-muted
+                    [Coming Soon]
+                %hr
+            .col-12.col-md-8.bg-white.p-2
+                - @feed.each do |day|
+                    .mb-2
+                        %h4
+                            - if day[3].first == "Chest"
+                                %a.badge.badge-primary.text-white
+                                    - if day[3].length == 1
+                                        = day[3].first
+                                    - elsif day[3].length == 2
+                                        = day[3].first + " & " + day[3].last
+                                    - else
+                                        - day[3].each do |ex|
+                                            - if ex == day[3].last
+                                                = ex
+                                            - elsif ex != day[3][day[3].length - 2]
+                                                = ex + ", "
+                                            - else
+                                                = ex + " & "
+                            - elsif day[3].first == "Back"
+                                %a.badge.badge-danger.text-white
+                                    - if day[3].length == 1
+                                        = day[3].first
+                                    - elsif day[3].length == 2
+                                        = day[3].first + " & " + day[3].last
+                                    - else
+                                        - day[3].each do |ex|
+                                            - if ex == day[3].last
+                                                = ex
+                                            - elsif ex != day[3][day[3].length - 2]
+                                                = ex + ", "
+                                            - else
+                                                = ex + " & "
+                            - elsif day[3].first == "Legs"
+                                %a.badge.badge-success.text-white
+                                    - if day[3].length == 1
+                                        = day[3].first
+                                    - elsif day[3].length == 2
+                                        = day[3].first + " & " + day[3].last
+                                    - else
+                                        - day[3].each do |ex|
+                                            - if ex == day[3].last
+                                                = ex
+                                            - elsif ex != day[3][day[3].length - 2]
+                                                = ex + ", "
+                                            - else
+                                                = ex + " & "
+                            - else
+                                %a.badge.badge-info.text-white
+                                    - if day[3].length == 1
+                                        = day[3].first
+                                    - elsif day[3].length == 2
+                                        = day[3].first + " & " + day[3].last
+                                    - else
+                                        - day[3].each do |ex|
+                                            - if ex == day[3].last
+                                                = ex
+                                            - elsif ex != day[3][day[3].length - 2]
+                                                = ex + ", "
+                                            - else
+                                                = ex + " & "
+
+                        %h6.text-muted
+                            = day[0].strftime("%B %d, %Y") + " @ "
+                            // 24 hour time
+                            = day[0].strftime("%H:%M")
+                        .row
+                            %table
+                                - day[2].each do |ex|
+                                    %ti.col-6.col-lg-3.col-md-4.col-sm-6.col-xs-12.mb-1
+                                        - if ex[0] != "n/a"
+                                            %strong
+                                                = ex[0].name
+                                            - ex[1].each do |set|
+                                                - if set.weight == nil && set.repetitions == nil
+                                                    - msg = '? x ?'
+                                                - elsif set.weight == nil
+                                                    - msg = '? x ' + set.repetitions.to_s
+                                                - elsif set.repetitions == nil
+                                                    - msg = set.weight.to_s + ' ' + set.exercise.unit.to_s + ' x ' + '?'
+                                                - elsif set.weight == 0
+                                                    - msg = 'BW x ' + set.repetitions.to_s
+                                                - else
+                                                    - msg = set.weight.to_s + ' ' + set.exercise.unit.to_s + ' x ' + set.repetitions.to_s
+                                                    
+                                                %br
+
+                                                - if set.isFailure
+                                                    %span.text-danger.border-bottom.border-danger
+                                                        = msg
+                                                - elsif set.isDropset
+                                                    %span.text-info.border-bottom.border-info
+                                                        = msg
+                                                - else
+                                                    %span.text-muted
+                                                        = msg
+                        - if day != @feed.last
+                            %hr
+
+            
