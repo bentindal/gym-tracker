@@ -14,7 +14,6 @@ Rails.application.routes.draw do
   patch 'workout/edit'
   patch 'workout/update'
 
-
   get 'exercise/edit'
   post 'exercise/create'
   get 'exercise/new'
