@@ -88,7 +88,8 @@
           %p.alert.alert-warning.alert-dismissible.fade.show{role: "alert"}
             %strong Keep going!
             You are currently in the middle of a workout.
-            %a{href: "/workout/#{current_user.last_exercise.id.to_s}"} Click here to resume.
+            %a{href: "/workout/#{current_user.last_exercise.id.to_s}"} 
+              = "Resume '#{current_user.last_exercise.name}'."
 
     = yield
 
