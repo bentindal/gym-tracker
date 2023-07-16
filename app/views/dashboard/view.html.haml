@@ -13,7 +13,7 @@
 .container.container-md.border.bg-white.py-2
     .card.border-top-0.border-bottom-0.justify-content-center.d-flex
         .row
-            .col-12.col-md-4.bg-white.text-center
+            .col-12.col-md-4.bg-white.text-center.py-2
                 - if current_user.streak_status == "none"
                     %h6.label.py-2.text-danger.border.border-danger.px-2
                         %b Uh oh!
@@ -99,9 +99,9 @@
                     %h5.text-muted
                         No workouts logged yet! Press the button above to log your first workout!
                 - @feed.each do |day|
-                    .mb-2
+                    .mb-2.px-3
                         .d-flex
-                            %h4.text-center
+                            %h4
                                 - if day[3].first == "Chest"
                                     %a.badge.badge-primary.text-white
                                         - if day[3].length == 1
@@ -158,9 +158,9 @@
                                                     = ex + ", "
                                                 - else
                                                     = ex + " & "
-                            .text-right.ml-auto
-                                %button.btn.btn-dark{"data-target" => "#modal-#{day[0].strftime("%B%d%y%H%M")}", "data-toggle" => "modal", type: "button"}
-                                    %i.fa-solid.fa-chart-column.text-white
+                            
+                            %button.ml-auto.btn.btn-dark{"data-target" => "#modal-#{day[0].strftime("%B%d%y%H%M")}", "data-toggle" => "modal", type: "button"}
+                                %i.fa-solid.fa-chart-column.text-white
 
                                             
                         %h6.text-muted
@@ -168,7 +168,7 @@
                             // 24 hour time
                             = day[0].strftime("%H:%M")
                         
-                        .row.text-center
+                        .row
                             %table
                                 - totalReps = 0
                                 - totalWeight = 0
