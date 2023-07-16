@@ -11,9 +11,9 @@
             = current_user.feed.count.to_s + ' workouts logged in total'
         %a.btn.btn-primary{href: "/exercises"} Log a Workout
 .container.container-md.border.bg-white.py-2
-    .card.border-top-0.border-bottom-0.justify-content-center.d-flex.text-center
+    .card.border-top-0.border-bottom-0.justify-content-center.d-flex
         .row
-            .col-12.col-md-4.bg-white
+            .col-12.col-md-4.bg-white.text-center
                 - if current_user.streak_status == "none"
                     %h6.label.py-2.text-danger.border.border-danger.px-2
                         %b Uh oh!
@@ -100,70 +100,78 @@
                         No workouts logged yet! Press the button above to log your first workout!
                 - @feed.each do |day|
                     .mb-2
-                        %h4
-                            - if day[3].first == "Chest"
-                                %a.badge.badge-primary.text-white
-                                    - if day[3].length == 1
-                                        = day[3].first
-                                    - elsif day[3].length == 2
-                                        = day[3].first + " & " + day[3].last
-                                    - else
-                                        - day[3].each do |ex|
-                                            - if ex == day[3].last
-                                                = ex
-                                            - elsif ex != day[3][day[3].length - 2]
-                                                = ex + ", "
-                                            - else
-                                                = ex + " & "
-                            - elsif day[3].first == "Back"
-                                %a.badge.badge-danger.text-white
-                                    - if day[3].length == 1
-                                        = day[3].first
-                                    - elsif day[3].length == 2
-                                        = day[3].first + " & " + day[3].last
-                                    - else
-                                        - day[3].each do |ex|
-                                            - if ex == day[3].last
-                                                = ex
-                                            - elsif ex != day[3][day[3].length - 2]
-                                                = ex + ", "
-                                            - else
-                                                = ex + " & "
-                            - elsif day[3].first == "Legs"
-                                %a.badge.badge-success.text-white
-                                    - if day[3].length == 1
-                                        = day[3].first
-                                    - elsif day[3].length == 2
-                                        = day[3].first + " & " + day[3].last
-                                    - else
-                                        - day[3].each do |ex|
-                                            - if ex == day[3].last
-                                                = ex
-                                            - elsif ex != day[3][day[3].length - 2]
-                                                = ex + ", "
-                                            - else
-                                                = ex + " & "
-                            - else
-                                %a.badge.badge-info.text-white
-                                    - if day[3].length == 1
-                                        = day[3].first
-                                    - elsif day[3].length == 2
-                                        = day[3].first + " & " + day[3].last
-                                    - else
-                                        - day[3].each do |ex|
-                                            - if ex == day[3].last
-                                                = ex
-                                            - elsif ex != day[3][day[3].length - 2]
-                                                = ex + ", "
-                                            - else
-                                                = ex + " & "
+                        .d-flex
+                            %h4.text-center
+                                - if day[3].first == "Chest"
+                                    %a.badge.badge-primary.text-white
+                                        - if day[3].length == 1
+                                            = day[3].first
+                                        - elsif day[3].length == 2
+                                            = day[3].first + " & " + day[3].last
+                                        - else
+                                            - day[3].each do |ex|
+                                                - if ex == day[3].last
+                                                    = ex
+                                                - elsif ex != day[3][day[3].length - 2]
+                                                    = ex + ", "
+                                                - else
+                                                    = ex + " & "
+                                - elsif day[3].first == "Back"
+                                    %a.badge.badge-danger.text-white
+                                        - if day[3].length == 1
+                                            = day[3].first
+                                        - elsif day[3].length == 2
+                                            = day[3].first + " & " + day[3].last
+                                        - else
+                                            - day[3].each do |ex|
+                                                - if ex == day[3].last
+                                                    = ex
+                                                - elsif ex != day[3][day[3].length - 2]
+                                                    = ex + ", "
+                                                - else
+                                                    = ex + " & "
+                                - elsif day[3].first == "Legs"
+                                    %a.badge.badge-success.text-white
+                                        - if day[3].length == 1
+                                            = day[3].first
+                                        - elsif day[3].length == 2
+                                            = day[3].first + " & " + day[3].last
+                                        - else
+                                            - day[3].each do |ex|
+                                                - if ex == day[3].last
+                                                    = ex
+                                                - elsif ex != day[3][day[3].length - 2]
+                                                    = ex + ", "
+                                                - else
+                                                    = ex + " & "
+                                - else
+                                    %a.badge.badge-info.text-white
+                                        - if day[3].length == 1
+                                            = day[3].first
+                                        - elsif day[3].length == 2
+                                            = day[3].first + " & " + day[3].last
+                                        - else
+                                            - day[3].each do |ex|
+                                                - if ex == day[3].last
+                                                    = ex
+                                                - elsif ex != day[3][day[3].length - 2]
+                                                    = ex + ", "
+                                                - else
+                                                    = ex + " & "
+                            .text-right.ml-auto
+                                %button.btn.btn-dark{"data-target" => "#modal-#{day[0].strftime("%B%d%y%H%M")}", "data-toggle" => "modal", type: "button"}
+                                    %i.fa-solid.fa-chart-column.text-white
 
+                                            
                         %h6.text-muted
                             = day[0].strftime("%B %d, %Y") + " @ "
                             // 24 hour time
                             = day[0].strftime("%H:%M")
-                        .row
+                        
+                        .row.text-center
                             %table
+                                - totalReps = 0
+                                - totalWeight = 0
                                 - day[2].each do |ex|
                                     %ti.col-6.col-lg-3.col-md-4.col-sm-6.col-xs-12.mb-1
                                         - if ex[0] != "n/a"
@@ -181,6 +189,8 @@
                                                 - elsif set.weight == 0
                                                     - msg = 'BW x ' + set.repetitions.to_s
                                                 - else
+                                                    - totalReps += set.repetitions
+                                                    - totalWeight += set.weight
                                                     - msg = set.weight.to_s + ' ' + set.exercise.unit.to_s + ' x ' + set.repetitions.to_s
                                                     
                                                 %br
@@ -194,7 +204,94 @@
                                                 - else
                                                     %span.text-muted
                                                         = msg
+                        .modal.fade{id: "modal-#{day[0].strftime("%B%d%y%H%M")}", "aria-hidden" => "true", "aria-labelledby" => "modal-#{day[0].strftime("%B%d%y%H%M")}", role: "dialog", tabindex: "-1"}
+                            .modal-dialog.modal-lg
+                                .modal-content.text-left.p-2
+                                    .modal-header
+                                        %h2
+                                            - if day[3].first == "Chest"
+                                                %a.badge.badge-primary.text-white
+                                                    - if day[3].length == 1
+                                                        = day[3].first
+                                                    - elsif day[3].length == 2
+                                                        = day[3].first + " & " + day[3].last
+                                                    - else
+                                                        - day[3].each do |ex|
+                                                            - if ex == day[3].last
+                                                                = ex
+                                                            - elsif ex != day[3][day[3].length - 2]
+                                                                = ex + ", "
+                                                            - else
+                                                                = ex + " & "
+                                            - elsif day[3].first == "Back"
+                                                %a.badge.badge-danger.text-white
+                                                    - if day[3].length == 1
+                                                        = day[3].first
+                                                    - elsif day[3].length == 2
+                                                        = day[3].first + " & " + day[3].last
+                                                    - else
+                                                        - day[3].each do |ex|
+                                                            - if ex == day[3].last
+                                                                = ex
+                                                            - elsif ex != day[3][day[3].length - 2]
+                                                                = ex + ", "
+                                                            - else
+                                                                = ex + " & "
+                                            - elsif day[3].first == "Legs"
+                                                %a.badge.badge-success.text-white
+                                                    - if day[3].length == 1
+                                                        = day[3].first
+                                                    - elsif day[3].length == 2
+                                                        = day[3].first + " & " + day[3].last
+                                                    - else
+                                                        - day[3].each do |ex|
+                                                            - if ex == day[3].last
+                                                                = ex
+                                                            - elsif ex != day[3][day[3].length - 2]
+                                                                = ex + ", "
+                                                            - else
+                                                                = ex + " & "
+                                            - else
+                                                %a.badge.badge-info.text-white
+                                                    - if day[3].length == 1
+                                                        = day[3].first
+                                                    - elsif day[3].length == 2
+                                                        = day[3].first + " & " + day[3].last
+                                                    - else
+                                                        - day[3].each do |ex|
+                                                            - if ex == day[3].last
+                                                                = ex
+                                                            - elsif ex != day[3][day[3].length - 2]
+                                                                = ex + ", "
+                                                            - else
+                                                                = ex + " & "
+                                        
+                                        
+                                        %h5.align-middle.text-muted.ml-auto
+                                            = "#{day[0].strftime("%B %d, %Y @ %H:%M")}"
+                                    .modal-body
+                                        %strong
+                                            Total Reps:
+                                        = totalReps.to_s
+                                        %br
+                                        %strong
+                                            Total Weight:
+                                        = totalWeight.to_s
+                                        %br
+                                        %strong
+                                            Estimated Workout Length:
+                                        - length = day[2].last[1].first.created_at - day[2].first[1].first.created_at
+                                        // Convert to date object
+                                        - length = Time.at(length).utc
+                                        // Display in hr min sec
+                                        = length.strftime("%H:%M:%S")
+                                        %br
+                                        %strong
+                                            Estimated Active Time:
+                                        - length = totalReps * 5
+                                        - length = Time.at(length).utc
+                                        = length.strftime("%H:%M:%S")
+                                        %br
+                        
                         - if day != @feed.last
                             %hr
-
-            
