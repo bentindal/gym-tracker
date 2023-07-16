@@ -284,7 +284,9 @@
                                         %br
                                         %strong
                                             Estimated Workout Length:
-                                        - length = day[2].last[1].first.created_at - day[2].first[1].first.created_at
+                                        - end_time = day[2].last[1].last.created_at
+                                        - start_time = day[2].first[1].first.created_at
+                                        - length = end_time - start_time
                                         // Convert to date object
                                         - length = Time.at(length).utc
                                         // Display in hr min sec
