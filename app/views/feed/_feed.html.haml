@@ -31,7 +31,7 @@
             - else
                 .text-info
                     = day[3][1]
-        .row
+        .row.mb-1
             .col-3
                 .font-weight-light.text-muted.text-left Sets 
                 %h5.lead
@@ -49,15 +49,24 @@
                 %h5.lead
                     = day[4]["length"]
 
-        .row.border-top.py-2.pt-3
-            %table
+        .row.border-top.py-1.pt-2#headingOne
+        
+        
+            %button.btn.btn-lin.w-100.text-left.text-primary.bg-white{"aria-controls" => "collapseOne", "aria-expanded" => "true", "data-target" => "#collapse-#{day[0].strftime("%B%d%y%H%M")}", "data-toggle" => "collapse"}
+                Click to view exercises
+        .collapse.collapsed{id: "collapse-#{day[0].strftime("%B%d%y%H%M")}", "aria-labelledby" => "headingOne", "data-parent" => "#accordion"}
+            .row.ml-2.py-2
                 - totalReps = 0
                 - totalWeight = 0
                 - day[2].each do |ex|
                     %ti.col-6.col-lg-3.col-md-4.col-sm-6.col-xs-12.mb-2
                         - if ex[0] != "n/a"
-                            %a.text-dark{href: "/workout/#{ex[0].id}"}
-                                = ex[0].name
+                            - if ex[0].user_id == current_user.id
+                                %a.text-dark{href: "/workout/#{ex[0].id}"}
+                                    = ex[0].name
+                            - else
+                                %a.text-dark
+                                    = ex[0].name
                                 
                             - ex[1].each do |set|
                                 - if set.weight == nil && set.repetitions == nil

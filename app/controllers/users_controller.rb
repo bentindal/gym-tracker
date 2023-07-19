@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
     def view
         @user = User.find(params[:id])
+        @feed = @user.feed
         @exercises = Exercise.where(user_id: params[:id])
         @workouts = Workout.where(user_id: params[:id])
         @is_friend = false
