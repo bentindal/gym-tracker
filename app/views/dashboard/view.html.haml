@@ -90,9 +90,13 @@
                             - else
                                 %td.border.bg-light
                                     = dayCount
-                %hr
+                
                 
 
                 
             .col-12.col-md-8.bg-white.p-2
+                %h4.text-center.font-weight-light.mb-3
+                    %strong
+                        Your Feed
+                - @hide_header = false
                 = render 'feed/feed'

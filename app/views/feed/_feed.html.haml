@@ -5,16 +5,17 @@
         No workouts found yet, try following some friends or start a workout yourself!
 - @feed.each do |day|
     .container.bg-white.border.rounded.mb-3.py-2.pt-3
-        %h5.d-flex
-            .font-weight-bold
-                %a.text-dark{href: "/users/view?id=#{day[1].id}"}
-                    = day[1].name
-            %button.ml-auto.btn.btn-dark{hidden: true, "data-target" => "#modal-#{day[0].strftime("%B%d%y%H%M")}", "data-toggle" => "modal", type: "button"}
-                %i.fa-solid.fa-chart-column.text-white
-        %h6.text-muted.mb-4
-            = day[0].strftime("%B %d, %Y") + " @ "
-            // 24 hour time
-            = day[0].strftime("%H:%M")
+        - if @hide_header == false
+            %h5.d-flex
+                .font-weight-bold
+                    %a.text-dark{href: "/users/view?id=#{day[1].id}"}
+                        = day[1].name
+                %button.ml-auto.btn.btn-dark{hidden: true, "data-target" => "#modal-#{day[0].strftime("%B%d%y%H%M")}", "data-toggle" => "modal", type: "button"}
+                    %i.fa-solid.fa-chart-column.text-white
+            %h6.text-muted.mb-4
+                = day[0].strftime("%B %d, %Y") + " @ "
+                // 24 hour time
+                = day[0].strftime("%H:%M")
         %h4.font-weight-light
             - if day[3][0] == "Chest"
                 .text-primary
