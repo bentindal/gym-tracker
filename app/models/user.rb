@@ -157,13 +157,26 @@ class User < ApplicationRecord
   
       time = remainder.first.created_at + within
       temp = remainder
-      
+      stats = { 
+        "total_repetitions" => 0, 
+        "total_weight" => 0, 
+        "total_sets" => 0, 
+        "total_exercises" => 0,
+        "total_groups" => 0,
+        "length" => nil,
+        "active_time" => nil
+
+      }
       list = []
       remainder = []
       groups = []
       temp.each do |workout|
         if workout.created_at <= time && workout.created_at >= time - within
           # List of sets
+          stats["total_repetitions"] += workout.repetitions.to_i
+          stats["total_weight"] += workout.weight.to_i
+          stats["total_sets"] += 1
+
           list.push(workout)
           groups.push(workout.exercise.group)
         else
@@ -174,10 +187,24 @@ class User < ApplicationRecord
       list = list.group_by(&:exercise).map do |exercise, workouts|
         [exercise, workouts]
       end
-      # Fix groups
-      
-      groups.uniq!
+
       # Change groups to a string consisting of commas and spaces with the last two being 'and'
+      groups.uniq!
+      stats["total_exercises"] = list.length
+      stats["total_groups"] = groups.length
+      # Get estimate length of workout
+      end_time = list.last[1].last.created_at
+      start_time = list.first[1].first.created_at
+      length = end_time - start_time
+      # Convert to date object
+      length = Time.at(length).utc
+      # Display in hr min sec
+      stats["length"] = length.strftime("%H:%M:%S")
+      # Get active length of workout
+      length = stats["total_repetitions"] * 5
+      length = Time.at(length).utc
+      stats["active_time"] = length.strftime("%-Mm %Ss")
+
       if groups.length == 1
         group_title = groups[0]
       elsif groups.length == 2
@@ -187,7 +214,7 @@ class User < ApplicationRecord
       end
 
       # Time, User, List of workouts, List of groups
-      @feed.push([time - within, user, list, [groups.first, group_title]])
+      @feed.push([time - within, user, list, [groups.first, group_title], stats])
     end
     @feed = @feed.sort_by { |a| a[0] }.reverse
     return @feed

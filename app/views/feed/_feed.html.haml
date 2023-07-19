@@ -1,46 +1,64 @@
-.container.bg-white.border.border-rounded.py-3
-    - prevDate = nil
-    - if @feed.length == 0
-        .text-muted.text-center
-            No workouts found yet, try following some friends or start a workout yourself!
-    - @feed.each do |day|
-        %h4
-            %strong
-                %a.badge.badge-secondary.badge-pill{href: "/users/view?id=#{day[1].id}"}
-                    = day[1].name
-                
-                - if day[3][0] == "Chest"
-                    %a.badge.badge-primary.text-white
-                        = day[3][1]
-                - elsif day[3][0] == "Back"
-                    %a.badge.badge-danger.text-white
-                        = day[3][1]
-                - elsif day[3][0] == "Legs"
-                    %a.badge.badge-success.text-white
-                        = day[3][1]
-                - elsif day[3][0] == "Shoulders"
-                    %a.badge.badge-warning.text-white
-                        = day[3]
-                - else
-                    %a.badge.badge-info.text-white
-                        = day[3]
 
-        %h6.text-muted
+- prevDate = nil
+- if @feed.length == 0
+    .text-muted.text-center
+        No workouts found yet, try following some friends or start a workout yourself!
+- @feed.each do |day|
+    .container.bg-white.border.rounded.mb-3.py-2.pt-3
+        %h5.d-flex
+            .font-weight-bold
+                %a.text-dark{href: "/users/view?id=#{day[1].id}"}
+                    = day[1].name
+            %button.ml-auto.btn.btn-dark{hidden: true, "data-target" => "#modal-#{day[0].strftime("%B%d%y%H%M")}", "data-toggle" => "modal", type: "button"}
+                %i.fa-solid.fa-chart-column.text-white
+        %h6.text-muted.mb-4
             = day[0].strftime("%B %d, %Y") + " @ "
             // 24 hour time
             = day[0].strftime("%H:%M")
+        %h4.font-weight-light
+            - if day[3][0] == "Chest"
+                .text-primary
+                    = day[3][1]
+            - elsif day[3][0] == "Back"
+                .text-danger
+                    = day[3][1]
+            - elsif day[3][0] == "Legs"
+                .text-success
+                    = day[3][1]
+            - elsif day[3][0] == "Shoulders"
+                .text-warning
+                    = day[3][1]
+            - else
+                .text-info
+                    = day[3][1]
         .row
+            .col-3
+                .font-weight-light.text-muted.text-left Sets 
+                %h5.lead
+                    = day[4]["total_sets"]
+
+
+            .col-3
+                .font-weight-light.text-muted.text-left Active Time 
+                %h5.lead
+                    = day[4]["active_time"]
+
+            .col-3
+                .font-weight-light.text-muted.text-left
+                    Length 
+                %h5.lead
+                    = day[4]["length"]
+
+        .row.border-top.py-2.pt-3
             %table
+                - totalReps = 0
+                - totalWeight = 0
                 - day[2].each do |ex|
-                    %ti.col-6.col-lg-3.col-md-4.col-sm-6.col-xs-12.mb-1
+                    %ti.col-6.col-lg-3.col-md-4.col-sm-6.col-xs-12.mb-2
                         - if ex[0] != "n/a"
-                            %strong
+                            %a.text-dark{href: "/workout/#{ex[0].id}"}
+                                = ex[0].name
                                 
-                                - if current_user.id == ex[0].user_id
-                                    %a.text-dark{href: "/workout/#{ex[0].id}"}
-                                        = ex[0].name
-                                - else
-                                    = ex[0].name
                             - ex[1].each do |set|
                                 - if set.weight == nil && set.repetitions == nil
                                     - msg = '? x ?'
@@ -51,24 +69,71 @@
                                 - elsif set.weight == 0
                                     - msg = 'BW x ' + set.repetitions.to_s
                                 - else
+                                    - totalReps += set.repetitions
+                                    - totalWeight += set.weight
                                     - msg = set.weight.to_s + ' ' + set.exercise.unit.to_s + ' x ' + set.repetitions.to_s
                                     
                                 %br
-
-                                - if set.isFailure
-                                    %span.text-danger.border-bottom.border-danger
-                                        = msg
-                                - elsif set.isDropset
-                                    %span.text-info.border-bottom.border-info
-                                        = msg
-                                - else
-                                    %span.text-muted
-                                        = msg
-                                
-                                            
-
-                                    
-
+                                %small
+                                    - if set.isFailure
+                                        %span.text-danger.border-bottom.border-danger.font-weight-light
+                                            = msg
+                                    - elsif set.isDropset
+                                        %span.text-info.border-bottom.border-info.font-weight-light
+                                            = msg
+                                    - else
+                                        %span.font-weight-light
+                                            = msg
+        .modal.fade{id: "modal-#{day[0].strftime("%B%d%y%H%M")}", "aria-hidden" => "true", "aria-labelledby" => "modal-#{day[0].strftime("%B%d%y%H%M")}", role: "dialog", tabindex: "-1"}
+            .modal-dialog.modal-lg
+                .modal-content
+                    .modal-header
+                        %h3.modal-title
+                            - if day[3][0] == "Chest"
+                                %a.badge.badge-primary.text-white
+                                    = day[3][1]
+                            - elsif day[3][0] == "Back"
+                                %a.badge.badge-danger.text-white
+                                    = day[3][1]
+                            - elsif day[3][0] == "Legs"
+                                %a.badge.badge-success.text-white
+                                    = day[3][1]
+                            - elsif day[3][0] == "Shoulders"
+                                %a.badge.badge-warning.text-white
+                                    = day[3][1]
+                            - else
+                                %a.badge.badge-info.text-white
+                                    = day[3][1]
+                        
+                        %button.ml-auto.text-right{type: "button", class: "close", "data-dismiss" => "modal", "aria-label" => "Close"}
+                            %span{"aria-hidden" => "true"} ×
                     
-        %hr
-            
+                    .modal-body
+                        %a.text-muted
+                            = "#{day[0].strftime("%B %d, %Y @ %H:%M")}"
+                        %br
+                        %br
+                        %strong
+                            Total Sets:
+                        = day[4]["total_sets"]
+                        %br
+                        %strong
+                            Total Reps:
+                        = day[4]["total_repetitions"]
+                        %br
+                        %strong
+                            Total Weight:
+                        = day[4]["total_weight"]
+                        %br
+                        %strong
+                            Estimated Workout Length:
+                        = day[4]["length"]
+                        %br
+                        %strong
+                            Estimated Active Time:
+                        = day[4]["active_time"]
+                        %br
+                        %strong
+                            Exercises Performed:
+                        = day[4]["total_exercises"]
+                        %br
