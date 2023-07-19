@@ -37,6 +37,9 @@ class User < ApplicationRecord
   def followers
     return Friend.where(follows: self.id, confirmed: true)
   end
+  def name
+    return "#{self.first_name} #{self.last_name}"
+  end
   def streak_count
     all_workouts = self.workouts
     streak_count = 0
@@ -171,9 +174,20 @@ class User < ApplicationRecord
       list = list.group_by(&:exercise).map do |exercise, workouts|
         [exercise, workouts]
       end
+      # Fix groups
+      
+      groups.uniq!
+      # Change groups to a string consisting of commas and spaces with the last two being 'and'
+      if groups.length == 1
+        group_title = groups[0]
+      elsif groups.length == 2
+        group_title = "#{groups[0]} and #{groups[1]}"
+      else
+        group_title = groups[0..-2].join(", ") + " and #{groups[-1]}"
+      end
 
       # Time, User, List of workouts, List of groups
-      @feed.push([time - within, user, list, groups.uniq])
+      @feed.push([time - within, user, list, [groups.first, group_title]])
     end
     @feed = @feed.sort_by { |a| a[0] }.reverse
     return @feed
