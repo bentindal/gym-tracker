@@ -95,13 +95,15 @@
                                 - dateFound = false
                                 - if rowCount % 7 == 1
                                     %tr
-                                
+                                - dateThatWasFound = ""
                                 - @dates.each do |date|
                                     - if dayCount == date.day && date.strftime("%B") == Date.new(Date.today.year, @month, -1).strftime("%B")
                                         - dateFound = true
+                                        - dateThatWasFound = date.strftime("%B%d%y") + current_user.id.to_s
                                 - if dateFound
-                                    %td.bg-success.border
-                                        = dayCount
+                                    %td.bg-success.border.font-decoration-none
+                                        %a{href: "#workout-#{dateThatWasFound}"}
+                                            = dayCount
                                 - elsif dayCount == Date.today.day && Date.today.strftime("%B") == Date.new(Date.today.year, @month, -1).strftime("%B")
                                     %td.bg-warning.border.border-warning
                                         = dayCount

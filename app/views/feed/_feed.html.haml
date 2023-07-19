@@ -4,7 +4,7 @@
     .text-muted.text-center
         No workouts found yet, try following some friends or start a workout yourself!
 - @feed.each do |day|
-    .container.bg-white.border.rounded.mb-3.py-2.pt-3
+    .container.bg-white.border.rounded.mb-3.py-2.pt-3{id: "workout-#{day[0].strftime("%B%d%y")+day[1].id.to_s}"}
         - if @hide_header == false
             %h5.d-flex
                 .font-weight-bold
