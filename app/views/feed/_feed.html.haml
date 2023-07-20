@@ -16,7 +16,7 @@
             = day[0].strftime("%B %d, %Y") + " @ "
             // 24 hour time
             = day[0].strftime("%H:%M")
-        %h4.font-weight-light
+        %h5.font-weight-light
             - if day[3][0] == "Chest"
                 .text-primary
                     = day[3][1]
@@ -39,12 +39,12 @@
                     = day[4]["total_sets"]
 
 
-            .col-3
-                .font-weight-light.text-muted.text-left Active Time 
+            .col-4
+                .font-weight-light.text-muted.text-left Rep Time 
                 %h5.lead
                     = day[4]["active_time"]
 
-            .col-3
+            .col-5
                 .font-weight-light.text-muted.text-left
                     Length 
                 %h5.lead
