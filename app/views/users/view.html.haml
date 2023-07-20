@@ -50,16 +50,16 @@
                             %b Great Job!
                             = current_user.streak_msg_own
 
-                    .row.mb-1.text-center.align-middle.pt-2
+                    .row.mb-1.text-center.align-middle.pt-3
                         .col-3
-                            %a.btn.btn-sm.btn-outline-primary{href: "dashboard?month=#{@month - 1}"}
+                            %a.btn.btn-sm.btn-outline-primary{href: "view?id=#{@user.id.to_s}&month=#{@month - 1}"}
                                 %strong ◀
                         .col-6
                             %h4.text-center
                                 %strong.float-center.align-middle
                                     = "#{@month_name} #{Date.today.year}"
                         .col-3
-                            %a.btn.btn-sm.btn-outline-primary{href: "dashboard?month=#{@month + 1}"}
+                            %a.btn.btn-sm.btn-outline-primary{href: "view?id=#{@user.id.to_s}&month=#{@month + 1}"}
                                 %strong ▶
                 
                     
