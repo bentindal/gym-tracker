@@ -171,7 +171,7 @@ class User < ApplicationRecord
       remainder = []
       groups = []
       temp.each do |workout|
-        if workout.created_at <= time && workout.created_at >= time - within
+        if workout.created_at <= time && workout.created_at >= time - within && workout.isWarmup == false
           # List of sets
           stats["total_repetitions"] += workout.repetitions.to_i
           stats["total_weight"] += workout.weight.to_i
@@ -179,7 +179,7 @@ class User < ApplicationRecord
 
           list.push(workout)
           groups.push(workout.exercise.group)
-        else
+        elsif workout.isWarmup == false
           remainder.push(workout)
         end
       end

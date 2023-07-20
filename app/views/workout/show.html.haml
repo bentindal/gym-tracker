@@ -31,7 +31,7 @@
             #restTimer{style: "display: none;"}
                 = @sets.first.created_at.strftime("%H:%M:%S")
             
-        %table.table.text-center.bg-white.border.border-rounded.table-sm
+        %table.table.text-center.bg-white.table-sm.border
             %thead.bg-dark.text-white
                 %tr
                     %th Reps
@@ -102,7 +102,38 @@
                             %td
                                 = link_to '', edit_workout_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
                                 = link_to '', "/workout/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
-
+                    
+                    - elsif set.isWarmup
+                        %tr.crosshatch
+                            %td.align-middle
+                                %small
+                                    - if set.repetitions == nil
+                                        = "?"
+                                    - else
+                                        = set.repetitions
+                            %td.align-middle
+                                %small
+                                    - if set.weight == 0
+                                        = "BW"
+                                    - elsif set.weight == nil
+                                        = "?"
+                                    - else
+                                        = set.weight.to_s + " " + @exercise.unit
+                            %td.align-middle
+                                %small
+                                    - if set.created_at > Time.now.beginning_of_day
+                                        #target
+                                            = set.created_at.strftime("%H:%M")
+                                    - elsif set.created_at > Time.now.beginning_of_day - 1.day
+                                        = "Yesterday"
+                                    - elsif set.created_at > Time.now.beginning_of_day - 6.days
+                                        = set.created_at.strftime("%A") + " " + set.created_at.strftime("%H:%M")
+                                    - else
+                                        = set.created_at.strftime("%d/%m/%Y")
+                            %td
+                                %small
+                                    = link_to '', edit_workout_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
+                                    = link_to '', "/workout/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
                     - else
                         %tr
                             %td.align-middle
@@ -121,18 +152,15 @@
                                     = set.weight.to_s + " " + @exercise.unit
                             %td.align-middle
                                 - if set.created_at > Time.now.beginning_of_day
-                                    .text-muted#target
+                                    #target
                                         = set.created_at.strftime("%H:%M")
                                 - elsif set.created_at > Time.now.beginning_of_day - 1.day
-                                    .text-muted
-                                        = "Yesterday"
+                                    = "Yesterday"
                                 - elsif set.created_at > Time.now.beginning_of_day - 6.days
-                                    .text-muted
-                                        = set.created_at.strftime("%A") + " " + set.created_at.strftime("%H:%M")
+                                    = set.created_at.strftime("%A") + " " + set.created_at.strftime("%H:%M")
                                 - else
                                     // Output date
-                                    .text-muted
-                                        = set.created_at.strftime("%d/%m/%Y")
+                                    = set.created_at.strftime("%d/%m/%Y")
                             %td.align-middle
                                 = link_to '', edit_workout_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary"}
                                 = link_to '', "/workout/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger"}
