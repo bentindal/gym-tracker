@@ -36,6 +36,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_20_110555) do
     t.datetime "remember_created_at"
     t.string "first_name"
     t.string "last_name"
+    t.string "username"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
@@ -43,7 +44,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_20_110555) do
     t.string "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "isPublic", default: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -55,8 +55,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_20_110555) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
-    t.boolean "isFailure", default: false, null: false
-    t.boolean "isDropset", default: false, null: false
+    t.boolean "isFailure", default: false
+    t.boolean "isDropset", default: false
     t.boolean "isWarmup", default: false
   end
 
