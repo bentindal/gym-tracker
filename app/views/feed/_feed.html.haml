@@ -50,8 +50,6 @@
                     = day[4]["length"]
 
         .row.border-top.py-1.pt-2#headingOne
-        
-        
             %button.btn.btn-lin.w-100.text-left.text-secondary.bg-white{"aria-controls" => "collapseOne", "aria-expanded" => "true", "data-target" => "#collapse-#{day[0].strftime("%B%d%y%H%M")}", "data-toggle" => "collapse"}
                 %i Click to view more information
         .collapse.collapsed{id: "collapse-#{day[0].strftime("%B%d%y%H%M")}", "aria-labelledby" => "headingOne", "data-parent" => "#accordion"}
@@ -67,8 +65,12 @@
                             - else
                                 %a.text-dark
                                     = ex[0].name
-                                
+                            // Display set information
                             - ex[1].each do |set|
+                                // Skip warmup sets
+                                - if set.isWarmup == true
+                                    - next
+
                                 - if set.weight == nil && set.repetitions == nil
                                     - msg = '? x ?'
                                 - elsif set.weight == nil
