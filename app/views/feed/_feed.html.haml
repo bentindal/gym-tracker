@@ -43,11 +43,14 @@
                 %h5.lead
                     = day[4]["total_sets"]
 
-            .col-5
-                .font-weight-light.text-muted.text-left
-                    Length 
-                %h5.lead
-                    = day[4]["length"]
+            // Only display length if it's longer than 10 minutes
+            // This helps to prevent clutter  
+            - if day[4]["length_in_seconds"] > 10.minutes
+                .col-5
+                    .font-weight-light.text-muted.text-left
+                        Length 
+                    %h5.lead
+                        = day[4]["length"]
 
         .row.border-top.py-1.pt-2#headingOne
             %button.btn.btn-lin.w-100.text-left.text-secondary.bg-white{"aria-controls" => "collapseOne", "aria-expanded" => "true", "data-target" => "#collapse-#{day[0].strftime("%B%d%y%H%M")}", "data-toggle" => "collapse"}

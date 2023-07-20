@@ -197,10 +197,11 @@ class User < ApplicationRecord
       end_time = list.last[1].last.created_at
       start_time = list.first[1].first.created_at
       length = end_time - start_time
+      stats["length_in_seconds"] = length
       # Convert to date object
       length = Time.at(length).utc
       # Display in hr min sec
-      stats["length"] = length.strftime("%H:%M:%S")
+      stats["length"] = length.strftime("%-Hh %-Mm %Ss")
       # Get active length of workout
       length = stats["total_repetitions"] * 5
       length = Time.at(length).utc
