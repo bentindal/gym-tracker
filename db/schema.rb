@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_10_162325) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_20_110555) do
   create_table "exercises", force: :cascade do |t|
     t.integer "user_id"
     t.string "name"
@@ -36,7 +36,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_162325) do
     t.datetime "remember_created_at"
     t.string "first_name"
     t.string "last_name"
-    t.string "username"
     t.integer "sign_in_count", default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
@@ -56,8 +55,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_162325) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
-    t.boolean "isFailure", default: false
-    t.boolean "isDropset", default: false
+    t.boolean "isFailure", default: false, null: false
+    t.boolean "isDropset", default: false, null: false
+    t.boolean "isWarmup", default: false
   end
 
 end

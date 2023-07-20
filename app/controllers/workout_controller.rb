@@ -52,10 +52,10 @@ class WorkoutController < ApplicationController
   private
 
   def workout_params
-    params.permit(:exercise_id, :user_id, :repetitions, :weight, :isFailure, :isDropset)
+    params.permit(:exercise_id, :user_id, :repetitions, :weight, :isFailure, :isDropset, :isWarmup)
   end
   def workout_params2
-    params.require(:workout).permit(:exercise_id, :user_id, :repetitions, :weight, :isFailure, :isDropset)
+    params.require(:workout).permit(:exercise_id, :user_id, :repetitions, :weight, :isFailure, :isDropset, :isWarmup)
   end
   
     

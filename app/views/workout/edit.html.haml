@@ -8,9 +8,11 @@
     = f.number_field :weight, class: "form-control", step: "0.25", min: "0", placeholder: "Weight"
     
     %h6.text-center.text-secondary.m-1
-      = f.check_box :isFailure
+      = f.check_box :isFailure, class: "text-danger"
       Failure?
-      = f.check_box :isDropset
+      = f.check_box :isDropset, class: "text-info bg-info"
       Dropset?
+      = f.check_box :isWarmup, class: "text-secondary"
+      Warmup?
       
     = f.submit "Update", class: "btn btn-primary w-100"
