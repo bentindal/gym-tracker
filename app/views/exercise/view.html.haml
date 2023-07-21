@@ -18,13 +18,13 @@
 
         %input.form-control{type: "hidden", name: "id", id: "id", value: @exercise.id}
     
-        %button.btn.btn-primary.mt-2{type: "submit"} Set Date
+        %button.btn.btn-primary.mt-2.w-100{type: "submit"} Submit Date
         
 .container
     .card.mb-3
         - data = @exercise.graph_orm(params[:from], params[:to])
         - if data.values.length == 0
-            %p.bg-white.border.rounded.p-3.text-muted No data available.
+            %p.bg-white.border.rounded.p-3.text-muted Not enough data available.
         - else
             - increase = (data.values.last - data.values.first)
             - gradient = increase / data.values.count
@@ -59,7 +59,7 @@
     .card
         - data = @exercise.graph_total_volume(params[:from], params[:to])
         - if data.values.length == 0
-            %p.bg-white.border.rounded.p-3.text-muted No data available.
+            %p.bg-white.border.rounded.p-3.text-muted Not enough data available.
         - else
             - increase = (data.values.last - data.values.first)
             - gradient = increase / data.values.count
