@@ -17,6 +17,8 @@
     - if @page_description.present?
       %meta{name: "description", content: @page_description}/
 
+    = javascript_include_tag "//www.google.com/jsapi", "chartkick"
+
     / Google tag (gtag.js)
     %script{async: "", src: "https://www.googletagmanager.com/gtag/js?id=G-MWHGM094KQ"}
     :javascript

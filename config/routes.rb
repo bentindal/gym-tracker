@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get 'exercise/new'
   get '/exercises' => 'exercise#list'
   get 'exercise/destroy'
+  get 'exercise/view'
 
   get 'users/view'
   get 'users/find'
@@ -47,7 +48,7 @@ Rails.application.routes.draw do
 
   root "home#index"
 
-  match "*path" => redirect("/"), via: :get
+  #match "*path" => redirect("/"), via: :get
 
 
 end

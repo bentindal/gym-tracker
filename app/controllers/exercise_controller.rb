@@ -10,6 +10,16 @@ class ExerciseController < ApplicationController
       @exercises = @exercises.where(group: params[:group])
     end
   end
+
+  def view
+    @exercise = Exercise.find(params[:id])
+    if params[:from] == nil
+      params[:from] = @exercise.workouts.order(:created_at).first.created_at.strftime("%d/%m/%Y")
+    end
+    if params[:to] == nil
+      params[:to] = @exercise.workouts.order(:created_at).last.created_at.strftime("%d/%m/%Y")
+    end
+  end
   
   def new
     @exercise = Exercise.new
