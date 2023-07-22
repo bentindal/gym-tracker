@@ -8,18 +8,18 @@
             = @exercise.name
 .container.justify-content-center.d-flex.text-center.py-1.mb-2.w-100
     %form.text-center.py-1.w-100{action: exercise_view_path, method: "GET"}
-        .row
-            .col-6
-                %label{for: "from"} From
-                %input.form-control{type: "date", name: "from", id: "from", value: DateTime.parse(params[:from]).strftime("%Y-%m-%d")}
-            .col-6
-                %label{for: "to"} To
-                %input.form-control{type: "date", name: "to", id: "to", value: DateTime.parse(params[:to]).strftime("%Y-%m-%d")}
+        .col-12
+            %label From
+            %input.form-control{type: "date", name: "from", id: "from", value: DateTime.parse(params[:from]).strftime("%Y-%m-%d")}
 
-            %input.form-control{type: "hidden", name: "id", id: "id", value: @exercise.id}
-        .row
-            .col-12
-                %button.btn.btn-primary.mt-2.w-50{type: "submit"} Submit Date
+        .col-12
+            %label To
+            %input.form-control{type: "date", name: "to", id: "to", value: DateTime.parse(params[:to]).strftime("%Y-%m-%d")}
+        
+        %input.form-control{type: "hidden", name: "id", id: "id", value: @exercise.id}
+        
+        .col-12
+            %button.btn.btn-primary.mt-2.w-50{type: "submit"} Submit Date
         
 .container
     .card.mb-3
