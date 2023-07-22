@@ -6,13 +6,13 @@
         %h1 Analysis
         %h5.text-muted
             = @exercise.name
-.justify-content-center.d-flex.text-center.py-1.mb-2
+.container.justify-content-center.d-flex.text-center.py-1.mb-2
     %form.text-center.py-1{action: exercise_view_path, method: "GET"}
         .row
-            .col
+            .col-6
                 %label{for: "from"} From
                 %input.form-control{type: "date", name: "from", id: "from", value: DateTime.parse(params[:from]).strftime("%Y-%m-%d")}
-            .col
+            .col-6
                 %label{for: "to"} To
                 %input.form-control{type: "date", name: "to", id: "to", value: DateTime.parse(params[:to]).strftime("%Y-%m-%d")}
 
