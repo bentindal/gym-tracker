@@ -6,7 +6,7 @@
     %h5.text-muted
         = @exercise.name
 
-.ml-5.mr-5.mb-3
+.mb-3.container
     %form{action: exercise_view_path, method: "GET"}
         .form-group
             %label{for: "from"} From
@@ -15,7 +15,7 @@
             %label{for: "to"} To
             %input.form-control{type: "date", name: "to", id: "to", value: DateTime.parse(params[:to]).strftime("%Y-%m-%d")}
             %input.form-control{type: "hidden", name: "id", id: "id", value: @exercise.id}
-        %button.btn.btn-primary.w-100{type: "submit"} Submit
+        %button.btn.btn-primary.text-center{type: "submit"} Submit
 
         
         
