@@ -6,17 +6,18 @@
     %h5.text-muted
         = @exercise.name
 
-.container.mb-3
-    %form.text-center{action: exercise_view_path, method: "GET"}
+.ml-5.mr-5.mb-3
+    %form{action: exercise_view_path, method: "GET"}
+        .form-group
+            %label{for: "from"} From
+            %input.form-control{type: "date", name: "from", id: "from", value: DateTime.parse(params[:from]).strftime("%Y-%m-%d")}
+        .form-group
+            %label{for: "to"} To
+            %input.form-control{type: "date", name: "to", id: "to", value: DateTime.parse(params[:to]).strftime("%Y-%m-%d")}
+            %input.form-control{type: "hidden", name: "id", id: "id", value: @exercise.id}
+        %button.btn.btn-primary.w-100{type: "submit"} Submit
 
-        %label From
-        %input.form-control{type: "date", name: "from", id: "from", value: DateTime.parse(params[:from]).strftime("%Y-%m-%d")}
-        %br
-        %label To
-        %input.form-control{type: "date", name: "to", id: "to", value: DateTime.parse(params[:to]).strftime("%Y-%m-%d")}
-        %br
-        %input.form-control{type: "hidden", name: "id", id: "id", value: @exercise.id}
-        %button.btn.btn-primary.w-100{type: "submit"} Submit Date
+        
         
 .container
     .card.mb-3
