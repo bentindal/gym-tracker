@@ -1,21 +1,21 @@
 .d-flex
     = link_to "Back", exercises_path, class: "btn btn-outline-primary text-right ml-auto mr-1 mt-2"
 
-.text-center
+.text-center.mb-3
     %h1 Analysis
     %h5.text-muted
         = @exercise.name
 
-.mb-3.container
+.mb-3.container.text-center
     %form{action: exercise_view_path, method: "GET"}
-        .form-group
-            %label{for: "from"} From
-            %input.form-control{type: "date", name: "from", id: "from", value: DateTime.parse(params[:from]).strftime("%Y-%m-%d")}
-        .form-group
-            %label{for: "to"} To
-            %input.form-control{type: "date", name: "to", id: "to", value: DateTime.parse(params[:to]).strftime("%Y-%m-%d")}
-            %input.form-control{type: "hidden", name: "id", id: "id", value: @exercise.id}
-        %button.btn.btn-primary.text-center{type: "submit"} Submit
+        
+        %input{type: "date", name: "from", id: "from", value: DateTime.parse(params[:from]).strftime("%Y-%m-%d")}
+        %label{for: "to"} to
+
+        %input{type: "date", name: "to", id: "to", value: DateTime.parse(params[:to]).strftime("%Y-%m-%d")}
+        %input{type: "hidden", name: "id", id: "id", value: @exercise.id}
+        %br
+        %button.btn.btn-primary.w-50{type: "submit"} Submit
 
         
         
