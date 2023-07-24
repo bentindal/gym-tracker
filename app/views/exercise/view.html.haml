@@ -1,5 +1,7 @@
-.d-flex
-    = link_to "Back", exercises_path, class: "btn btn-outline-primary text-right ml-auto mr-1 mt-2"
+.container
+    .text-right.mb-1.mt-3
+        = link_to 'Dashboard', "/exercises", {class: "btn btn-secondary"}
+        = link_to "Back", exercises_path, {class: "btn btn-outline-primary"}
 
 .text-center.mb-3
     %h1 Analysis
