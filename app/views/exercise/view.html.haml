@@ -85,7 +85,7 @@
                 = line_chart data,
                     ytitle: "Total Volume (#{@exercise.unit})", 
                     min: data.min_by(&:last), 
-                    xtitle: "Date (#{data.first.first} to #{data.keys.last})", 
+                    xtitle: "Date", 
                     empty: "No data available", 
                     discrete: true,
                     library: { colors: ['rgb(100,100,100)'] }
