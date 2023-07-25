@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get 'dashboard' => 'dashboard#view'
 
   get '/home' => 'home#index'
+  get '/home/index' => 'home#home'
+
   get 'friend/list'
   get 'friend/add'
   get 'friend/remove'

@@ -1,0 +1,46 @@
+.position-relative.p-3.p-md-5.text-center.bg-primary
+    .col-md-6.p-lg-5.mx-auto.my-5
+        .d-flex.justify-content-center.align-items-center.h-100
+            %h1.display-1.text-white
+                Track, Share & Improve
+
+        .d-flex.justify-content-center.align-items-center.h-100.mb-2
+            .col-md-12.col-12.mx-auto
+                %h5.mb-8.lead.text-white
+                    GymTracker is an easy-to-use gym tracker & workout log allowing you to track your workouts, follow your friends, and see what they're up to.
+        .col-6.mx-auto.mb-5
+            - if user_signed_in?
+                = link_to 'Get Started', "dashboard", class: 'btn btn-outline-primary btn-lg btn-block border border-white bg-primary text-white'
+            - else
+                = link_to 'Get Started', "users/sign_in", class: 'btn btn-outline-primary btn-lg btn-block border border-white bg-primary text-white'
+        %br
+        %br
+
+.bg-dark.text-white
+    .bg-body-tertiary.me-md-3.pt-3.px-3.pt-md-5.px-md-5.text-center.overflow-hidden
+        .my-3.p-3
+            %h2.display-5
+                %i{class: "fa-solid fa-list", style: "color: #009dff;"}
+                Log your workouts 
+            %p.lead Track each and every set you do, whether thats a dropset, to failure or even a bodyweight set.
+        .bg-white.shadow-sm.mx-auto{style: "width: 400px; height: 300px; border-radius: 21px 21px 0 0;"}
+
+
+.bg-white
+    .bg-body-tertiary.me-md-3.pt-3.px-3.pt-md-5.px-md-5.text-center.overflow-hidden
+        .my-3.p-3
+            %h2.display-5
+                %i{class: "fa-solid fa-user-group", style: "color: #009dff;"}
+                Follow your friends
+            %p.lead See what other users have been up to, if you want you can follow them and view their workouts in your feed.
+        .bg-dark.shadow-sm.mx-auto{style: "width: 400px; height: 300px; border-radius: 21px 21px 0 0;"}
+
+            
+.bg-dark.text-white
+    .bg-body-tertiary.me-md-3.pt-3.px-3.pt-md-5.px-md-5.text-center.overflow-hidden
+        .my-3.p-3
+            %h2.display-5
+                %i{class: "fa-solid fa-chart-bar", style: "color: #009dff;"}
+                Track your Progress
+            %p.lead Check out your progress over time, and see how you've been improving. You can see how often you've been going to the gym via your profile.
+        .bg-white.shadow-sm.mx-auto{style: "width: 400px; height: 300px; border-radius: 21px 21px 0 0;"}
