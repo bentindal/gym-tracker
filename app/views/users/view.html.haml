@@ -38,17 +38,17 @@
                     - if current_user.streak_status == "none"
                         %h6.label.py-2.text-danger.border.border-danger.px-2
                             %b Uh oh!
-                            = current_user.streak_msg_own
+                            = current_user.streak_msg_other
 
                     - elsif current_user.streak_status == "pending"
                         %h6.label.py-2.text-warning.border.border-warning.px-2
                             %b Keep it going!
-                            = current_user.streak_msg_own
+                            = current_user.streak_msg_other
 
                     - else
                         %h6.label.py-2.text-success.border.border-success.px-2
                             %b Great Job!
-                            = current_user.streak_msg_own
+                            = current_user.streak_msg_other
 
                     .row.mb-1.text-center.align-middle.pt-3
                         .col-3
