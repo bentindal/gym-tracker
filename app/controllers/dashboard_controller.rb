@@ -18,7 +18,7 @@ class DashboardController < ApplicationController
       end
     end
     
-    @feed = @feed.sort_by { |a| a[0] }.reverse
+    @feed = @feed.sort_by { |a| a[0] }.reverse[0..2]
 
     # Other information
     @dates = []
