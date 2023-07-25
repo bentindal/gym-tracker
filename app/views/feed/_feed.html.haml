@@ -18,7 +18,7 @@
                         
                         - if day[1].streak_count >= 2 && day[0].beginning_of_day == Date.today.beginning_of_day
                             .badge.badge-pill.badge-dark.px-2.font-weight.ml-1
-                                🔥 #{day[1].streak_count} Days
+                                🔥 #{day[1].streak_count} days
 
                         - if day[2].last.second.last.created_at >= 10.minutes.ago
                             %span.badge.badge-pill.badge-danger.text-white.ml-1
