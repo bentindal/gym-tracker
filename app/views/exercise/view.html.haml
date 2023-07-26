@@ -1,7 +1,7 @@
 .container
     .text-right.mb-1.mt-3
         = link_to 'Dashboard', "/dashboard", {class: "btn btn-secondary"}
-        = link_to "Back", exercises_path, {class: "btn btn-outline-primary"}
+        = link_to "Back", "/workout/#{@exercise.id}", {class: "btn btn-outline-primary"}
 
 .text-center.mb-3
     %h1 Analysis
