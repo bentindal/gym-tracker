@@ -14,49 +14,49 @@
 
 
 .bg-dark.text-white.text-center.overflow-hidden
-    .row.py-5
+    .py-5.d-flex.align-items-center
         .col-lg-6.col-sm-12.d-flex.align-items-center
-            .row.ml-5.mx-auto
-                .col-12
+            .row.mx-auto
+                .col-12.ml-5
                     %h2.display-5
                         %i{class: "fa-solid fa-list", style: "color: #009dff;"}
                         Log your workouts 
-                .col-12
+                .col-12.ml-5
                     %p.lead Track each and every set you do, whether thats a dropset, to failure or even a bodyweight set.
         .col-6.col-md-6.d-flex.align-items-center.justify-content-center.mx-auto
             %img.border.border-dark.border-5{src: "#{asset_url 'sets-image.png'}", style: "width: 248px; height: 508px; border-radius: 21px 21px 21px 21px;"}
 
 
 .bg-navy.text-white.text-center.overflow-hidden
-    .row.py-5
+    .py-5.d-flex.align-items-center
         .col-lg-6.col-sm-12.d-flex.align-items-center
             .row.ml-5.mx-auto
-                .col-12
+                .col-12.ml-5
                     %h2.display-5
                         %i{class: "fa-solid fa-user-group", style: "color: #009dff;"}
                         Follow your friends
-                .col-12
+                .col-12.ml-5
                     %p.lead See what other users have been up to, if you want you can follow them and view their workouts in your feed.
         .col-6.col-md-6.d-flex.align-items-center.justify-content-center.mx-auto
             %img.border-dark.border-bottom-5.border-bottom{src: "#{asset_url 'feed-image.png'}", style: "width: 248px; height: 508px; border-radius: 21px 21px 21px 21px;"}
         
 
 .bg-dark.text-white.text-center.overflow-hidden
-    .row.py-5
+    .py-5.d-flex.align-items-center
         .col-lg-6.col-sm-12.d-flex.align-items-center
             .row.ml-5.mx-auto
-                .col-12
+                .col-12.ml-5
                     %h2.display-5
                         %i{class: "fa-solid fa-chart-bar", style: "color: #009dff;"}
                         Track your Progress
-                .col-12
+                .col-12.ml-5
                     %p.lead Check out your progress over time, and see how you've been improving. You can see how often you've been going to the gym via your profile.
         .col-6.col-md-6.d-flex.align-items-center.justify-content-center.mx-auto
             %img.border-dark.border-bottom-5.border-bottom{src: "#{asset_url 'analysis-image.png'}", style: "width: 248px; height: 508px; border-radius: 21px 21px 21px 21px;"}
 
 .bg-navy.d-flex
-    .row.mx-auto.py-4
+    .row.mx-auto.py-4.text-center
         .col-6
-            = link_to 'Get Started', "users/sign_in", class: 'btn px-5 btn-primary btn-lg btn-block border border-white text-white'
+            = link_to 'Get Started', "users/sign_in", class: 'btn px-5 btn-primary btn-lg btn-block border'
         .col-6
-            = link_to 'Back to Top', "#top", class: 'btn px-5 btn-secondary btn-lg btn-block border border-white text-white'
+            = link_to 'Back to Top', "#top", class: 'btn px-5 btn-secondary btn-lg btn-block border'
