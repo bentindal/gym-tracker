@@ -99,9 +99,9 @@
                 = "Resume #{current_user.last_exercise.name}"
 
     = yield
-
-  %footer.text-center.bg-light.pt-3.pb-2.border-top.mt-3
-    %p
-      %strong Ben's Gym Tracker,
-      made by Ben Tindal
+  - if @page_title != "Free Online Gym Tracker & Workout Log"
+    %footer.text-center.bg-light.pt-3.pb-2.border-top.mt-3
+      %p
+        %strong Ben's Gym Tracker,
+        made by Ben Tindal
       
