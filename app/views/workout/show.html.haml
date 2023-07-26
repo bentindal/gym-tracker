@@ -1,11 +1,11 @@
 .container
-    .text-right.mb-1.mt-3
+    .text-right.mb-1.mt-3.mb-2
         = link_to 'Dashboard', "/dashboard", {class: "btn btn-secondary"}
         = link_to 'Back', "/exercises", {class: "btn btn-outline-primary"}
     .container.text-center
-        %h1
+        %h2.display-5
             = @exercise.name
-        
+        %h4
             - if @exercise.group == "Back"
                 .badge.badge-danger.badge-pill
                     = @exercise.group
