@@ -1,6 +1,8 @@
 .container-fluid.text-center
-    %h1.mb-3.mt-3
+    %h1.mt-3
         Your Friends
+    .text-center.mb-3
+        %a{href: "/users/find", class: "btn btn-primary w-100"} Add Users
 
     .container.bg-white.border.border-rounded.py-3
         - if @pending_followers.empty? == false
@@ -27,23 +29,41 @@
             %p.text-muted
                 You are not following anyone yet.
         - else
-            - @actual_following.each do |friend|
-                .row.justify-content-center.d-flex.m-2
-                    %a.col-md-3.col-sm-6.col-xs-6.border.text-primary.btn.btn-light{href: "/users/view?id=#{friend.id}"}
-                        .text-primary
-                            = friend.first_name + " " + friend.last_name
+            .container.text-center
+                - @actual_following.each do |friend|
+                    .justify-content-center.d-flex.m-2
+                        %a.border.text-primary.btn.btn-light.w-100{href: "/users/view?id=#{friend.id}"}
+                            .d-flex
+                                .text-primary
+                                    = friend.first_name + " " + friend.last_name
+                                - if friend.streak_count > 1
+                                    %span
+                                        .badge.badge-pill.badge-dark.px-2.font-weight-bold.ml-1
+                                            🔥 #{friend.streak_count}
+                                - if friend.midworkout
+                                    %span
+                                        .badge.badge-pill.badge-success.px-2.font-weight-light.ml-1
+                                            Online
+        %br
         Followers:
         - if @actual_followers.empty?
             %p.text-muted
                 You have no followers yet.
         - else
-            - @actual_followers.each do |friend|
-                .row.justify-content-center.d-flex.m-1
-                    %a.col-md-3.col-sm-6.col-xs-6.border.text-primary.btn.btn-light{href: "/users/view?id=#{friend.id}"}
-                        .text-primary
-                            = friend.first_name + " " + friend.last_name
-                    .align-self-center
-                        = link_to "", "/friend/remove_follower?id=#{friend.id}", data: { confirm: "Are you sure?" }, class: "align-self-center fa-solid fa-trash-can btn btn-lg btn-outline-danger"
-            
-        .text-center.m-1
-            %a{href: "/users/find", class: "btn btn-primary btn-lg"} Discover Users
+            .container.text-center
+                - @actual_followers.each do |friend|
+                    .d-flex.mb-1.text-center
+                        %a.border.text-primary.btn.btn-light.w-100{href: "/users/view?id=#{friend.id}"}
+                            .d-flex
+                                .text-primary
+                                    = friend.first_name + " " + friend.last_name
+                                - if friend.streak_count > 1
+                                    %span
+                                        .badge.badge-pill.badge-dark.px-2.font-weight-bold.ml-1
+                                            🔥 #{friend.streak_count}
+                                - if friend.midworkout
+                                    %span
+                                        .badge.badge-pill.badge-success.px-2.font-weight-light.ml-1
+                                            Online
+                        .align-self-center.ml-3
+                            = link_to "", "/friend/remove_follower?id=#{friend.id}", data: { confirm: "Are you sure?" }, class: "align-self-center fa-solid fa-trash-can btn btn-lg btn-outline-danger"
