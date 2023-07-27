@@ -229,7 +229,7 @@ class User < ApplicationRecord
     gapsUsed = 0
     streakEnded = false
     
-    while streakEnded == false 
+    while streakEnded == false || self.workouts == []
       if worked_out_on_date(datePointer.day, datePointer.month, datePointer.year) == true
         #puts "worked out on #{datePointer.day.to_s}/#{datePointer.month.to_s}/#{datePointer.year.to_s}"
         streakCount += 1
