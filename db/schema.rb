@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_20_110555) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_27_123625) do
   create_table "exercises", force: :cascade do |t|
     t.integer "user_id"
     t.string "name"
@@ -60,4 +60,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_20_110555) do
     t.boolean "isWarmup", default: false
   end
 
+  add_foreign_key "workouts", "exercises", on_delete: :cascade
 end
