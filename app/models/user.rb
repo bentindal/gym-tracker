@@ -120,6 +120,50 @@ class User < ApplicationRecord
       return self.workouts.last
     end
   end
+  def last_seen
+    if self.workouts == []
+      return nil
+    else
+      last = self.last_set.created_at
+      # If greater than a month, print > 1 month
+      if last <= Time.now - 1.month
+        return "over a month ago"
+      # elsif greater than a week, print how many weeks ago
+      elsif last <= Time.now - 1.week
+        weeks = ((Time.now - last) / 1.week).round
+        if weeks == 1
+          return "#{weeks} week ago"
+        else
+          return "#{weeks} weeks ago"
+        end
+
+      # elsif greater than a day, print how many days ago
+      elsif last <= Time.now - 1.day
+        days = ((Time.now - last) / 1.day).round
+        if days == 1
+          return "#{days} day ago"
+        else
+          return "#{days} days ago"
+        end
+      # elsif greater than an hour, print how many hours ago
+      elsif last <= Time.now - 1.hour
+        hours = ((Time.now - last) / 1.hour).round
+        if hours == 1
+          return "#{hours} hour ago"
+        else
+          return "#{hours} hours ago"
+        end
+      # else, print in minutes
+      else
+        minutes = ((Time.now - last) / 1.minute).round
+        if minutes == 1
+          return "#{minutes} minute ago"
+        else
+          return "#{minutes} minutes ago"
+        end
+      end
+    end
+  end
 
   
   def feed
