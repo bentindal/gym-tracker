@@ -40,27 +40,6 @@ class User < ApplicationRecord
   def name
     return "#{self.first_name} #{self.last_name}"
   end
-  def streak_count
-    all_workouts = self.workouts
-    streak_count = 0
-
-    streak_ended = false
-    while streak_ended == false
-      streak_ended = true
-      all_workouts.each do |workout|
-        if workout.created_at.strftime("%d/%m") == (Date.yesterday - streak_count).strftime("%d/%m")
-          streak_ended = false
-        end
-      end
-      if streak_ended == false
-        streak_count += 1
-      end
-    end
-    if has_worked_out_today == true
-      streak_count += 1
-    end
-    return streak_count
-  end
   def streak_status
     streak_count = self.streak_count
     if has_worked_out_today == false && streak_count == 0
@@ -221,4 +200,51 @@ class User < ApplicationRecord
     @feed = @feed.sort_by { |a| a[0] }.reverse
     return @feed
   end
+  def worked_out_on_date(day, month, year)
+    all_workouts = self.workouts
+    # Pad day and month values with a 0 if they are less than 10
+    if day.to_i < 10
+      day = "0#{day}"
+    end
+    if month.to_i < 10
+      month = "0#{month}"
+    end
+
+    all_workouts.each do |workout|
+      if workout.created_at.strftime("%d/%m/%Y") == "#{day.to_s}/#{month.to_s}/#{year.to_s}"
+        return true
+      end
+    end
+    return false
+  end 
+  def streak_count
+    if self.has_worked_out_today
+      datePointer = Date.today
+    else
+      datePointer = Date.yesterday
+    end
+    
+    workedOutToday = false
+    streakCount = 0
+    gapsUsed = 0
+    streakEnded = false
+    
+    while streakEnded == false 
+      if worked_out_on_date(datePointer.day, datePointer.month, datePointer.year) == true
+        #puts "worked out on #{datePointer.day.to_s}/#{datePointer.month.to_s}/#{datePointer.year.to_s}"
+        streakCount += 1
+        datePointer = datePointer - 1
+        gapsUsed = 0
+      elsif gapsUsed == 0
+        #puts "did not workout out, 1 gap used #{datePointer.day.to_s}/#{datePointer.month.to_s}/#{datePointer.year.to_s}"
+        datePointer = datePointer - 1
+        gapsUsed += 1
+      else
+        #puts "didn't work out on #{datePointer.day.to_s}/#{datePointer.month.to_s}/#{datePointer.year.to_s}"
+        streakEnded = true
+      end
+    end
+
+    return streakCount
+  end 
 end
