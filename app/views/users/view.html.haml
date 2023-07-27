@@ -35,18 +35,18 @@
         .card.border-top-0.border-bottom-0.justify-content-center.d-flex
             .row
                 .col-12.col-md-4.bg-white.text-center.py-2
-                    - if @user.streak_status == "none"
-                        %h6.label.py-2.text-danger.border.border-danger.px-2
+                    - if current_user.streak_status == "none"
+                        %h6.label.py-2.bg-danger.border.border-dark.px-2.text-dark.font-weight-light
                             %b Uh oh!
                             = @user.streak_msg_other
 
-                    - elsif current_user.streak_status == "pending"
-                        %h6.label.py-2.text-warning.border.border-warning.px-2
+                    - elsif current_user.streak_status == "pending" || current_user.streak_status == "at_risk"
+                        %h6.label.py-2.label-warning.border.border-dark.px-2.bg-warning.font-weight-light
                             %b Keep it going!
                             = @user.streak_msg_other
 
                     - else
-                        %h6.label.py-2.text-success.border.border-success.px-2
+                        %h6.label.py-2.bg-success.border.border-dark.px-2.text-dark.font-weight-light
                             %b Great Job!
                             = @user.streak_msg_other
 
