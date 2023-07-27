@@ -44,16 +44,21 @@ class User < ApplicationRecord
     streak_count = self.streak_count
     two_days_ago = Date.today.day - 2
     one_day_ago = Date.today.day - 1
-    if has_worked_out_today == false && streak_count == 0
-      return "none"
-    # Not today or yesterday but did workout the day before
-    elsif has_worked_out_today == false && self.worked_out_on_date(one_day_ago.day, one_day_ago.month, one_day_ago.year) == false && streak_count > 0
-      return "at_risk"
-    elsif has_worked_out_today == false && streak_count > 0
-      return "pending"
-    else
+
+    # Worked out today
+    if has_worked_out_today
       return "active"
+    # Didnt workout today but did yesterday
+    elsif has_worked_out_today == false && worked_out_on_date(Date.yesterday.day, Date.yesterday.month, Date.yesterday.year)
+      return "pending"
+    # Didnt workout today or yesterday but did workout the day before
+    elsif has_worked_out_today == false && worked_out_on_date(Date.yesterday.yesterday.day, Date.yesterday.yesterday.month, Date.yesterday.yesterday.year)
+      return "at_risk"
+    # Didnt workout today or yesterday and didnt workout the day before
+    else
+      return "none"
     end
+    
   end
   def has_worked_out_today
     all_workouts = self.workouts
@@ -70,7 +75,7 @@ class User < ApplicationRecord
     elsif self.streak_status == "pending"
       return "#{self.first_name} hasn't worked out today, but has a #{self.streak_count} day streak going!"
     elsif self.streak_status == "at_risk"
-      return "#{self.first_name} had a day off yesterday, workout today to keep the streak going or it will be reset!"
+      return "#{self.first_name} had a day off yesterday, workout today to keep the #{self.streak_count} day streak going or it will be reset!"
     else
       return "#{self.first_name} has a #{self.streak_count} day streak going!"
     end
@@ -81,7 +86,7 @@ class User < ApplicationRecord
     elsif self.streak_status == "pending"
       return "You haven't worked out today, but you have a #{self.streak_count} day streak!"
     elsif self.streak_status == "at_risk"
-      return "You had a day off yesterday, workout today to keep the streak going or it will be reset!"
+      return "#{self.first_name} had a day off yesterday, workout today to keep the #{self.streak_count} day streak going or it will be reset!"
     else
       return "You have a #{self.streak_count} day streak!"
     end
