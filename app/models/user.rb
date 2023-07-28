@@ -86,7 +86,7 @@ class User < ApplicationRecord
     elsif self.streak_status == "pending"
       return "You haven't worked out today, but you have a #{self.streak_count} day streak!"
     elsif self.streak_status == "at_risk"
-      return "#{self.first_name} had a day off yesterday, workout today to keep the #{self.streak_count} day streak going or it will be reset!"
+      return "You had a day off yesterday, workout today to keep the #{self.streak_count} day streak going or it will be reset!"
     else
       return "You have a #{self.streak_count} day streak!"
     end
