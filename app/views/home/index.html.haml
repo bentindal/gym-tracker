@@ -20,10 +20,10 @@
                 .mx-auto.w-75
                     .col-12
                         %h2.display-5
-                            %i{class: "fa-solid fa-list", style: "color: #009dff;"}
+                            %i.mr-1{class: "fa-solid fa-list", style: "color: #009dff;"}
                             Log your workouts 
                     .col-12
-                        %p.lead Track each and every set you do, whether thats a dropset, to failure or even a bodyweight set.
+                        %p.lead Say goodbye to the hassle of jotting down your workouts on paper or using multiple apps to track different exercises. GymTracker lets you seamlessly log every set you do, whether it's a challenging dropset, pushing yourself to failure, or simply just you warming up. With our intuitive interface, you can effortlessly keep a comprehensive record of your workout sessions.
         .col-lg-4.col-sm-12.align-items-center.justify-content-center.mx-auto
             %img.border.border-dark.border-5{src: "#{asset_url 'sets-image.png'}", style: "width: 248px; height: 508px; border-radius: 21px 21px 21px 21px;"}
 
@@ -35,10 +35,10 @@
                 .mx-auto.w-75
                     .col-12
                         %h2.display-5
-                            %i{class: "fa-solid fa-user-group", style: "color: #009dff;"}
-                            Follow your friends
+                            %i.mr-1{class: "fa-solid fa-user-group", style: "color: #009dff;"}
+                            Insights from Friends
                     .col-12
-                        %p.lead See what other users have been up to, if you want you can follow them and view their workouts in your feed.
+                        %p.lead Fitness is more fun when it's shared! Connect with friends on GymTracker and gain insight into their workout routines. You can follow your gym buddies and keep tabs on their progress in real-time. Motivate each other, celebrate achievements, and even challenge your friends 🏋️‍♀️. Together, you'll reach new heights and break through plateaus!
         .col-lg-4.col-sm-12.align-items-center.justify-content-center.mx-auto
             %img.border-dark.border-bottom-5.border-bottom{src: "#{asset_url 'feed-image.png'}", style: "width: 248px; height: 508px; border-radius: 21px 21px 21px 21px;"}
         
@@ -50,16 +50,30 @@
                 .mx-auto.w-75
                     .col-12
                         %h2.display-5
-                            %i{class: "fa-solid fa-chart-bar", style: "color: #009dff;"}
+                            %i.mr-1{class: "fa-solid fa-chart-bar", style: "color: #009dff;"}
                             Track your Progress
                     .col-12
-                        %p.lead Check out your progress over time, and see how you've been improving. You can see how often you've been going to the gym via your profile.
+                        %p.lead Seeing progress is the best source of motivation. With GymTracker, you can easily visualize your fitness journey over time. Our advanced analytics provide you with in-depth data on your workouts, allowing you to see how you've improved in specific exercises, track your strength gains, and monitor your consistency at the gym. Celebrate every milestone and set new personal records! 🏆
         .col-lg-4.col-sm-12.align-items-center.justify-content-center.mx-auto
             %img.border-dark.border-bottom-5.border-bottom{src: "#{asset_url 'analysis-image.png'}", style: "width: 248px; height: 508px; border-radius: 21px 21px 21px 21px;"}
 
-.bg-navy.d-flex
-    .row.mx-auto.py-4.text-center
-        .col-6.text-center
-            = link_to 'Get Started', "users/sign_in", class: 'btn px-5 btn-primary btn-lg btn-block border'
-        .col-6.text-center
-            = link_to 'Back to Top', "#top", class: 'btn px-5 btn-secondary btn-lg btn-block border'
+.bg-navy.text-white.text-center.overflow-hidden.py-5
+    .container
+        .row
+            .col-12
+                %h2.display-5
+                    %p.mr-1{class: "fa-solid", style: "color: #009dff;"} 🔒
+                    Your Data, Your Choice
+            .col-12
+                %p.lead We respect your privacy and value the trust you place in us. At GymTracker, we ensure that your data is securely stored and used only to enhance your fitness experience. You have full control over your account settings and can choose to share your progress with others only if you wish by selecting your account to be public or private, you can do this upon your intial registration or at anytime you wish through the 'Edit my Details' section of your account.
+        
+.bg-dark.text-white.text-center.overflow-hidden.pt-5.pb-5
+    .container
+        %h6.row.font-weight-light
+            %h2 Sign up to GymTracker Today! 🎉
+            %p Sign up now and embark on a fitness journey like no other. Experience the power of tracking, analyzing, and improving your workouts with GymTracker. Take your gym sessions to the next level and see results that will leave you amazed. It's time to unlock your full potential with GymTracker!
+        .row.mx-auto.py-4.text-center.d-flex
+            .col-6.text-center
+                = link_to 'Get Started', "users/sign_in", class: 'btn px-5 btn-primary btn-lg btn-block border text-white'
+            .col-6.text-center
+                = link_to 'Back to Top', "#top", class: 'btn px-5 btn-secondary btn-lg btn-block border text-white'
