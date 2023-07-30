@@ -27,8 +27,8 @@ class User < ApplicationRecord
   def exercises
     return Exercise.where(user_id: self.id)
   end
-  def workouts
-    return Workout.where(user_id: self.id)
+  def sets
+    return Allset.where(user_id: self.id)
   end
   def following
     return Friend.where(user: self.id, confirmed: true)
@@ -61,7 +61,7 @@ class User < ApplicationRecord
     
   end
   def has_worked_out_today
-    all_workouts = self.workouts
+    all_workouts = self.sets
     all_workouts.each do |workout|
       if workout.created_at.strftime("%d/%m") == Date.today.strftime("%d/%m")
         return true
@@ -92,7 +92,7 @@ class User < ApplicationRecord
     end
   end
   def midworkout
-    if self.workouts == []
+    if self.sets == []
       return false
     end
     # get most recent set in self.workouts
@@ -107,21 +107,21 @@ class User < ApplicationRecord
     end
   end
   def last_exercise
-    if self.workouts == []
+    if self.sets == []
       return nil
     else
-      return self.workouts.last.exercise
+      return self.sets.last.exercise
     end
   end
   def last_set
-    if self.workouts == []
+    if self.sets == []
       return nil
     else
-      return self.workouts.last
+      return self.sets.last
     end
   end
   def last_seen
-    if self.workouts == []
+    if self.sets == []
       return nil
     else
       last = self.last_set.created_at
@@ -174,7 +174,7 @@ class User < ApplicationRecord
     user = User.find(self.id)
     # Get all workouts from user
 
-    user.workouts.each do |workout|
+    user.sets.each do |workout|
       all.push(workout)
     end
 
@@ -259,7 +259,7 @@ class User < ApplicationRecord
     return @feed
   end
   def worked_out_on_date(day, month, year)
-    all_workouts = self.workouts
+    all_workouts = self.sets
     # Pad day and month values with a 0 if they are less than 10
     if day.to_i < 10
       day = "0#{day}"
@@ -276,7 +276,7 @@ class User < ApplicationRecord
     return false
   end 
   def streak_count
-    if self.workouts == []
+    if self.sets == []
       return 0
     end
 

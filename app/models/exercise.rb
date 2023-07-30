@@ -2,14 +2,14 @@ class Exercise < ApplicationRecord
     def user
         return User.find(self.user_id)
     end
-    def workouts
-        return Workout.where(exercise_id: self.id)
+    def sets
+        return Allset.where(exercise_id: self.id)
     end
     def workouts_in_range(from, to)
-        return Workout.where(exercise_id: self.id, created_at: from..to, isWarmup: false)
+        return Allset.where(exercise_id: self.id, created_at: from..to, isWarmup: false)
     end
     def workouts_on_date(date)
-        return Workout.where(exercise_id: self.id, created_at: date.beginning_of_day..date.end_of_day, isWarmup: false)
+        return Allset.where(exercise_id: self.id, created_at: date.beginning_of_day..date.end_of_day, isWarmup: false)
     end
     def graph_total_volume(from, to)
         graph_data = {}

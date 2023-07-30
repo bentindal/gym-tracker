@@ -3,7 +3,7 @@ class UsersController < ApplicationController
         @user = User.find(params[:id])
         @feed = @user.feed
         @exercises = Exercise.where(user_id: params[:id])
-        @workouts = Workout.where(user_id: params[:id])
+        @workouts = Allset.where(user_id: params[:id])
         @is_friend = false
         @pending = false
         @page_title = @user.first_name + " " + @user.last_name + "'s Profile"

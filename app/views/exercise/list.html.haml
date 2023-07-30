@@ -31,7 +31,7 @@
                     %tr
                         %td
                             %h6
-                                %a.btn{href: "/workout/"+exercise.id.to_s}
+                                %a.btn{href: "/allset/"+exercise.id.to_s}
                                     = exercise.name
                         
                                 - if exercise.group == "Chest"
@@ -51,7 +51,7 @@
                                         = exercise.group
                         %td.align-middle
                             = link_to '', "/exercise/view?id=#{exercise.id.to_s}", {class: "fa-solid fa-chart-line btn btn-sm btn-outline-success"}
-                            - link_to '', "/workout/"+exercise.id.to_s, {class: "fa-solid fa-eye btn btn-sm btn-primary"}
+                            - link_to '', allset_path(exercise), {class: "fa-solid fa-eye btn btn-sm btn-primary"}
                             = link_to '', "/exercise/edit?id=#{exercise.id.to_s}", {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary"}
                             // delete link
                             = link_to '', "/exercise/destroy?id=#{exercise.id.to_s}", data: { confirm: 'Are you sure?' }, class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger"

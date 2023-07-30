@@ -14,12 +14,12 @@ class ExerciseController < ApplicationController
   def view
     @exercise = Exercise.find(params[:id])
     if @exercise.user_id == current_user.id
-      if @exercise.workouts.count > 0
+      if @exercise.sets.count > 0
         if params[:from] == nil
-          params[:from] = @exercise.workouts.order(:created_at).first.created_at.strftime("%d/%m/%Y")
+          params[:from] = @exercise.sets.order(:created_at).first.created_at.strftime("%d/%m/%Y")
         end
         if params[:to] == nil
-          params[:to] = @exercise.workouts.order(:created_at).last.created_at.strftime("%d/%m/%Y")
+          params[:to] = @exercise.sets.order(:created_at).last.created_at.strftime("%d/%m/%Y")
         end
       else
         params[:from] = DateTime.now.strftime("%d/%m/%Y")
@@ -39,7 +39,7 @@ class ExerciseController < ApplicationController
     @exercise = Exercise.new(exercise_params)
   
     if @exercise.save
-      redirect_to "/workout/#{@exercise.id}", notice: "Exercise created successfully!"
+      redirect_to "/allsets/#{@exercise.id}", notice: "Exercise created successfully!"
     else
       render :new, status: :unprocessable_entity
     end

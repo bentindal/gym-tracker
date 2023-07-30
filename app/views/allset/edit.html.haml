@@ -1,7 +1,7 @@
 %h1.text-center
   Update Set
 .card-body.justify-content-center.d-flex
-  = form_with model: @workout, url: "/workout/update?id=#{@workout.id}", method: :patch, local: true do |f|
+  = form_with model: @workout, url: "/allset/update?id=#{@workout.id}", method: :patch, local: true do |f|
     = f.hidden_field :exercise_id
     = f.hidden_field :user_id
     = f.number_field :repetitions, class: "form-control", step: "1", min: "0", max: "100", placeholder: "Reps"

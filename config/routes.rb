@@ -11,10 +11,10 @@ Rails.application.routes.draw do
   get 'friend/confirm'
   get 'friend/remove_follower'
 
-  post 'workout/create'
-  get 'workout/destroy'
-  patch 'workout/edit'
-  patch 'workout/update'
+  post 'allset/create'
+  get 'allset/destroy'
+  patch 'allset/edit'
+  patch 'allset/update'
 
   get 'exercise/edit'
   post 'exercise/create'
@@ -42,7 +42,7 @@ Rails.application.routes.draw do
   resources :exercise, except: [:show] # Use plural 'exercises' for the resource name
   resource :exercise, only: [:show] # Use singular 'exercise' for the resource name
 
-  resources :workout, except: [:update] do
+  resources :allset, except: [:update] do
     get 'show', on: :member
     get 'edit', on: :member
     patch '', action: :update, on: :member

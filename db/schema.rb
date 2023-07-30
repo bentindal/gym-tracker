@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_27_123625) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_30_211509) do
+  create_table "allsets", force: :cascade do |t|
+    t.integer "exercise_id"
+    t.integer "repetitions"
+    t.decimal "weight"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.boolean "isFailure", default: false, null: false
+    t.boolean "isDropset", default: false, null: false
+    t.boolean "isWarmup", default: false
+  end
+
   create_table "exercises", force: :cascade do |t|
     t.integer "user_id"
     t.string "name"
@@ -48,17 +60,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_27_123625) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table "workouts", force: :cascade do |t|
-    t.integer "exercise_id"
-    t.integer "repetitions"
-    t.decimal "weight"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "user_id"
-    t.boolean "isFailure", default: false, null: false
-    t.boolean "isDropset", default: false, null: false
-    t.boolean "isWarmup", default: false
-  end
-
-  add_foreign_key "workouts", "exercises", on_delete: :cascade
+  add_foreign_key "allsets", "exercises", on_delete: :cascade
 end

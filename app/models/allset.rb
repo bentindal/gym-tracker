@@ -1,8 +1,8 @@
-class Workout < ApplicationRecord
+class Allset < ApplicationRecord
     def user
         return User.find(self.user_id)
     end
     def exercise
-        Exercise.find(self.exercise_id)
+        return Exercise.find(self.exercise_id)
     end
 end

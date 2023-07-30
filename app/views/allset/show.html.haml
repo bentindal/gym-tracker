@@ -69,8 +69,8 @@
                                     // Output date
                                     = set.created_at.strftime("%d/%m/%Y")
                             %td
-                                = link_to '', edit_workout_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
-                                = link_to '', "/workout/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
+                                = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
+                                = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
 
                     - elsif set.isFailure
                         %tr.border.border-danger.text-danger
@@ -101,8 +101,8 @@
                                     .text-danger
                                         = set.created_at.strftime("%d/%m/%Y")
                             %td
-                                = link_to '', edit_workout_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
-                                = link_to '', "/workout/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
+                                = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
+                                = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
                     
                     - elsif set.isWarmup
                         %tr.crosshatch
@@ -133,8 +133,8 @@
                                         = set.created_at.strftime("%d/%m/%Y")
                             %td
                                 %small
-                                    = link_to '', edit_workout_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
-                                    = link_to '', "/workout/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
+                                    = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
+                                    = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
                     - else
                         %tr
                             %td.align-middle
@@ -163,8 +163,8 @@
                                     // Output date
                                     = set.created_at.strftime("%d/%m/%Y")
                             %td.align-middle
-                                = link_to '', edit_workout_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary"}
-                                = link_to '', "/workout/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger"}
+                                = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary"}
+                                = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger"}
 
     
     

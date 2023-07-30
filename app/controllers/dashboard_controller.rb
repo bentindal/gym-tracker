@@ -22,7 +22,7 @@ class DashboardController < ApplicationController
 
     # Other information
     @dates = []
-    current_user.workouts.each do |workout|
+    current_user.sets.each do |workout|
         @dates.push(workout.created_at.to_date)
     end
     @dates = @dates.uniq

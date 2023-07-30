@@ -21,7 +21,7 @@
     %a.text-primary{href: "/friend/list"}
         = number_of_following + ' followers | ' + number_of_followers + ' following' 
     // Get all dates from workouts and count unique dates
-    - @sets = Workout.where(user_id: @user.id)
+    - @sets = Allset.where(user_id: @user.id)
     - @dates = []
     - @sets.each do |workout|
         - @dates.push(workout.created_at.to_date)

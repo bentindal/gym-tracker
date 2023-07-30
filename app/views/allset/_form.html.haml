@@ -1,5 +1,5 @@
 .card-body.justify-content-center.d-flex.text-center.py-1.mb-3
-  %form{action: workout_create_path, method: "POST"}
+  %form{action: allset_create_path, method: "POST"}
     %input{name: "authenticity_token", type: "hidden", value: form_authenticity_token}
     %input{name: "exercise_id", placeholder: "ExID", value: @exercise.id.to_s, hidden: true}
     %input{name: "user_id", placeholder: "UserID", value: @exercise.user_id.to_s, hidden: true}
