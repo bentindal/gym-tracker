@@ -6,7 +6,7 @@ task :assign_workouts => :environment do
       @unassigned_sets = Allset.where(user_id: user.id, belongs_to_workout: nil).group_by(&:exercise)
       @sets = Allset.where(user_id: user.id, belongs_to_workout: nil)
       
-      if @unassigned_sets.length > 0 && @sets.last.created_at >= Time.now - 1.hour
+      if @unassigned_sets.length > 0 && @sets.last.created_at <= Time.now - 1.hour
           @workout = Workout.new
           @workout.user_id = user.id
           @workout.started_at = @sets.first.created_at
