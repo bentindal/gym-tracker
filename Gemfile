@@ -48,6 +48,7 @@ gem 'uglifier'
 
 gem 'execjs'
 
+gem 'mini_racer'
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 
