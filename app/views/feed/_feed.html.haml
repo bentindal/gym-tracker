@@ -5,6 +5,12 @@
         No workouts found yet, try following some friends or start a workout yourself!
 - else
     - @feed.each do |day|
+        - @empty = false
+        - if day[2].length < 1
+            - @empty = true
+            .container.bg-white.border.rounded.mb-3.py-2.pt-3{id: "workout-#{day[0].strftime("%B%d%y")+day[1].id.to_s}"}
+                .text-muted No exercises found for this workout, user may have deleted them.
+            - next
         .container.bg-white.border.rounded.mb-3.py-2.pt-3{id: "workout-#{day[0].strftime("%B%d%y")+day[1].id.to_s}"}
             - if @hide_header == false
                 %h5.d-flex
@@ -21,9 +27,9 @@
                                 🔥 #{day[1].streak_count} days
 
                         - if day[2].last.second.last.created_at >= 10.minutes.ago
-                            %span.badge.badge-pill.badge-danger.text-white.ml-1
+                            %span.badge.badge-pill.badge-warning.text-white.ml-1
                                 %i.fa-solid.fa-eye
-                                Live
+                                Just Added
                     %button.ml-auto.btn.btn-dark{hidden: true, "data-target" => "#modal-#{day[0].strftime("%B%d%y%H%M")}", "data-toggle" => "modal", type: "button"}
                         %i.fa-solid.fa-chart-column.text-white
             %h6.text-muted.mb-4

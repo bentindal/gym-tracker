@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'workout/list'
+  get '/workout' => 'workout#list'
+  get 'workout/finish'
+
   get 'dashboard/view'
   get 'dashboard' => 'dashboard#view'
 

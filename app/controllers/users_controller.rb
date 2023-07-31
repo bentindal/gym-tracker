@@ -1,7 +1,17 @@
 class UsersController < ApplicationController
     def view
         @user = User.find(params[:id])
-        @feed = @user.feed
+        @feed = []
+        userList = [current_user]
+    
+        userList.each do |user|
+            all_workouts = Workout.where(user_id: user.id)
+            all_workouts.each do |workout|
+                @feed.push(workout.feed)
+            end
+        end
+        @feed = @feed.sort_by { |a| a[0] }.reverse
+
         @exercises = Exercise.where(user_id: params[:id])
         @workouts = Allset.where(user_id: params[:id])
         @is_friend = false

@@ -2,6 +2,21 @@ class Exercise < ApplicationRecord
     def user
         return User.find(self.user_id)
     end
+    def group_colour
+        if self.group == "Chest"
+            return "primary"
+        elsif self.group == "Back"
+            return "danger"
+        elsif self.group == "Legs"
+            return "success"
+        elsif self.group == "Shoulders"
+            return "warning"
+        elsif self.group == "Triceps" || self.group == "Biceps"
+            return "info"
+        else
+            return "info"
+        end
+    end
     def sets
         return Allset.where(exercise_id: self.id)
     end

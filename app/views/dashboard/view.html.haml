@@ -13,29 +13,18 @@
 .container.container-md.border.bg-white.py-2
     .card.border-top-0.border-bottom-0.justify-content-center.d-flex
         .row
-            .col-12.col-md-4.bg-white.text-center.py-2
-                - if current_user.streak_status == "none"
-                    %h6.label.py-2.bg-danger.border.px-2.text-dark.font-weight-light
-                        %b Uh oh!
-                        = current_user.streak_msg_own
-
-                - elsif current_user.streak_status == "pending" || current_user.streak_status == "at_risk"
-                    %h6.label.py-2.label-warning.border.px-2.bg-warning.font-weight-light
-                        %b Keep it going!
-                        = current_user.streak_msg_own
-
-                - else
-                    %h6.label.py-2.bg-success.border.px-2.text-dark.font-weight-light
-                        %b Great Job!
-                        = current_user.streak_msg_own
-
+            .col-12.col-md-4.bg-white.p-2.text-center
+                = render 'workout/summary'
+                %hr
+                
+                
                 .row.mb-1.text-center.align-middle.pt-3
                     .col-3
                         %a.btn.btn-sm.btn-outline-primary{href: "dashboard?month=#{@month - 1}"}
                             %strong ◀
                     .col-6
-                        %h4.text-center
-                            %strong.float-center.align-middle
+                        %h4.text-center.font-weight-light.mb-3
+                            %strong
                                 = "#{@month_name} #{Date.today.year}"
                     .col-3
                         %a.btn.btn-sm.btn-outline-primary{href: "dashboard?month=#{@month + 1}"}
@@ -93,19 +82,33 @@
                             - else
                                 %td.border.bg-light
                                     = dayCount
-            
-                
+                %span
+                    - if current_user.streak_status == "none"
+                        .label.py-2.bg-danger.border.rounded.px-1.text-dark.font-weight-light
+                            %b Uh oh!
+                            = current_user.streak_msg_own
+
+                    - elsif current_user.streak_status == "pending" || current_user.streak_status == "at_risk"
+                        .label.py-2.label-warning.border.rounded.px-1.bg-warning.font-weight-light
+                            %b Keep it going!
+                            = current_user.streak_msg_own
+
+                    - else
+                        .label.py-2.bg-success.border.rounded.px-1.text-dark.font-weight-light
+                            %b Great Job!
+                            = current_user.streak_msg_own
+                    %hr
                 
 
                 
+            
             .col-12.col-md-8.bg-white.p-2
                 %h4.text-center.font-weight-light.mb-3
                     %strong
                         Recent Workouts
                 - @hide_header = false
                 = render 'feed/feed'
-                %br
                 .d-flex
-                    = link_to "View More on Feed", "/feed", {class: "btn btn-info btn w-100"}
-                    = link_to "Add a Friend", "/friend/list", {class: "btn btn-primary btn w-50 ml-1"}
+                    = link_to "View More on Feed", "/feed", {class: "btn btn-info btn-lg w-100"}
+                    = link_to "Add a Friend", "/friend/list", {class: "btn btn-primary btn-lg w-50 ml-1"}
         

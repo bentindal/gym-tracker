@@ -308,5 +308,26 @@ class User < ApplicationRecord
     end
 
     return streakCount
-  end 
+  end
+  def manually_end_workout
+    @unassigned_sets = Allset.where(user_id: self.id, belongs_to_workout: nil).group_by(&:exercise)
+    @sets = Allset.where(user_id: self.id, belongs_to_workout: nil)
+    
+    if @unassigned_sets.length > 0
+      @workout = Workout.new
+      @workout.user_id = self.id
+      @workout.started_at = @sets.first.created_at
+      @workout.ended_at = @sets.last.created_at
+      @workout.save
+
+      @sets.each do |item|
+        item.belongs_to_workout = @workout.id
+        item.save
+      end
+
+      puts "#{@sets.length} sets assigned to workout #{@workout.id} successfully for user #{self.id}"
+    else
+      puts "Cannot end a workout with no sets."
+    end
+  end
 end
