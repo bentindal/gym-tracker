@@ -35,7 +35,7 @@
     // Font Awesome
     %script{crossorigin: "anonymous", src: "https://kit.fontawesome.com/d0da524149.js"}
   
-  - if @page_title != "Free Online Gym Tracker & Workout Log"
+  - if @page_title != "Free Online Gym Tracker & Workout Diary"
     %header
       %nav.navbar.navbar-expand-lg.navbar-light.bg-white.border-bottom
         %a.navbar-brand{href: "/"} 
@@ -75,7 +75,7 @@
      
   
   %body.bg-light
-    - if @page_title != "Free Online Gym Tracker & Workout Log"
+    - if @page_title != "Free Online Gym Tracker & Workout Diary"
       - if notice
         %p.notice.alert.alert-success.alert-dismissible.fade.show{role: "alert"}
           %strong Success!
@@ -99,7 +99,7 @@
                 = "Resume #{current_user.last_exercise.name}"
 
     = yield
-  - if @page_title != "Free Online Gym Tracker & Workout Log"
+  - if @page_title != "Free Online Gym Tracker & Workout Diary"
     %footer.text-center.bg-light.pt-3.pb-2.border-top.mt-3
       %p
         %strong Ben's Gym Tracker,

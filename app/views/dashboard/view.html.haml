@@ -9,7 +9,7 @@
                 = current_user.followers.count.to_s + ' followers | ' + current_user.following.count.to_s + ' following' 
         .text-muted.mb-2
             = current_user.feed.count.to_s + ' workouts logged in total'
-        %a.btn.btn-primary{href: "/exercises"} Log a Workout
+        %a.btn.btn-primary{hidden: true, href: "/exercises"} Log a Workout
 .container.container-md.border.bg-white.py-2
     .card.border-top-0.border-bottom-0.justify-content-center.d-flex
         .row
