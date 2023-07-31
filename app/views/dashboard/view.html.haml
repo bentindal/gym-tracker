@@ -103,12 +103,45 @@
                 
             
             .col-12.col-md-8.bg-white.p-2
-                %h4.text-center.font-weight-light.mb-3
-                    %strong
-                        Recent Workouts
-                - @hide_header = false
-                = render 'feed/feed'
-                .d-flex
-                    = link_to "View More on Feed", "/feed", {class: "btn btn-info btn-lg w-100"}
-                    = link_to "Add a Friend", "/friend/list", {class: "btn btn-primary btn-lg w-50 ml-1"}
+                - if @feed != []
+                    %h4.text-center.font-weight-light.mb-3
+                        %strong
+                            Recent Workouts
+                    - @hide_header = false
+                    = render 'feed/feed'
+                    .d-flex
+                        = link_to "View More on Feed", "/feed", {class: "btn btn-info btn-lg w-100"}
+                        = link_to "Add a Friend", "/friend/list", {class: "btn btn-primary btn-lg w-50 ml-1"}
+                - else
+                    %h4.text-center.font-weight-light.mb-3
+                        %strong
+                            Getting Started
+                    %h5 Welcome to your Dashboard!
+                    .py-3
+                        To add your first workout follow these steps:
+                        %br
+                        %br
+                        %strong 1)
+                        Head to the 
+                        %a{href: "/exercises"} exercises page
+                        and press the 'Add New' button at the top.
+                        %br
+                        %strong 2)
+                        Fill in the form and start logging your sets, this will automatically fill in your workout for the day here on your dashboard.
+                        %br
+                        %strong 3)
+                        Add some more exercises and continue, you can check a summary of your workout and other information such as the duration here on this page.
+                        %br
+                        %strong 4)
+                        Once done, hit the 'finish workout' button on this page and you're done!
+                        %br
+                        %br
+                        %strong Tip:
+                        Don't worry if you forget to end your workout! Inactive workouts will automatically be ended after an hour of inactivity.
+                        %hr
+                        If you'd like to see what other people are doing, head to the
+
+                        %a{href: "/friend/list"} friend list page,
+                        follow some users and watch their workouts appear here!
+                        
         
