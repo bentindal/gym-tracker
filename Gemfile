@@ -43,6 +43,11 @@ gem 'sitemap_generator'
 # Chartkick
 gem 'chartkick', '~> 5.0', '>= 5.0.2'
 
+# Uglifier for js minification
+gem 'uglifier'
+
+gem 'execjs'
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 
