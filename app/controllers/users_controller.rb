@@ -2,7 +2,7 @@ class UsersController < ApplicationController
     def view
         @user = User.find(params[:id])
         @feed = []
-        userList = [current_user]
+        userList = [@user]
     
         userList.each do |user|
             all_workouts = Workout.where(user_id: user.id)
