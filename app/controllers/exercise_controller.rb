@@ -39,7 +39,7 @@ class ExerciseController < ApplicationController
     @exercise = Exercise.new(exercise_params)
   
     if @exercise.save
-      redirect_to "/allsets/#{@exercise.id}", notice: "Exercise created successfully!"
+      redirect_to allset_path(@exercise), notice: "Exercise created successfully!"
     else
       render :new, status: :unprocessable_entity
     end
