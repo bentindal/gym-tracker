@@ -3,8 +3,6 @@ class FeedController < ApplicationController
     @page_title = "Feed"
     @page_description = "View all your & your friends workouts on GymTracker"
 
-    from = 0
-    to = 10
     userList = [current_user]
     if params[:filter] != 'you'
       list_of_ids = Friend.where(user: current_user.id, confirmed: true).pluck(:follows)
@@ -14,17 +12,18 @@ class FeedController < ApplicationController
     end
 
     @feed = []
-    if params[:from] != nil && params[:to] != nil
-      from = params[:from].to_i
-      to = params[:to].to_i
-      all_workouts = Workout.where(user_id: userList).order(:created_at).reverse_order[from...to]
-    else
-      all_workouts = Workout.where(user_id: userList).order(:created_at).reverse_order
+    all_workouts = Workout.where(user_id: userList).order(:created_at).reverse_order
+    @max = all_workouts.count.floor
+
+    if params[:tab] == nil || params[:tab].to_i < 0
+      params[:tab] = 0
     end
+    
+    params[:tab] = params[:tab].to_i
 
     @workouts_processed = 0
 
-    all_workouts.each do |workout|
+    all_workouts[params[:tab]...params[:tab]+30].each do |workout|
       @feed.push(workout.feed)
       @workouts_processed += 1
     end
