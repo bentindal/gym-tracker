@@ -8,8 +8,8 @@ class WorkoutController < ApplicationController
     if @unassigned_sets.length > 0
       @workout = Workout.new
       @workout.user_id = current_user.id
-      @workout.started_at = @unassigned_sets.first[1].first.created_at
-      @workout.ended_at = Time.now
+      @workout.started_at = @sets.first.created_at
+      @workout.ended_at = @sets.last.created_at
       @workout.save
 
       @sets.each do |item|
