@@ -95,16 +95,10 @@ class User < ApplicationRecord
     if self.sets == []
       return false
     end
-    # get most recent set in self.workouts
-    recent = self.last_set
-    # if it was created less than 5 minutes ago, return true
-    if recent == nil
-      return false
-    elsif recent.created_at >= Time.now - 10.minutes
+    if self.last_set.belongs_to_workout == nil
       return true
-    else
-      return false
     end
+    return false
   end
   def last_exercise
     if self.sets == []
