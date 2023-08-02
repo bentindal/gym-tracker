@@ -20,15 +20,10 @@
     - number_of_following = Friend.where(follows: @user.id, confirmed: true).count.to_s
     %a.text-primary{href: "/friend/list"}
         = number_of_following + ' followers | ' + number_of_followers + ' following' 
-    // Get all dates from workouts and count unique dates
-    - @sets = Allset.where(user_id: @user.id)
-    - @dates = []
-    - @sets.each do |workout|
-        - @dates.push(workout.created_at.to_date)
-    - @dates = @dates.uniq
+    
     %br
     .text-muted
-        = @dates.length.to_s + ' workouts logged in total'
+        = @user.workout_count.to_s + ' workouts logged in total'
 
 - if @user.isPublic != false || current_user == @user || @is_friend
     .container.container-md.border.bg-white.py-2
@@ -46,70 +41,8 @@
                     - else
                         %h6.label.py-2.bg-success.border.px-2.text-dark.font-weight-light
                             = @user.streak_msg_other
-
-                    .row.mb-1.text-center.align-middle.pt-3
-                        .col-3
-                            %a.btn.btn-sm.btn-outline-primary{href: "view?id=#{@user.id.to_s}&month=#{@month - 1}"}
-                                %strong ◀
-                        .col-6
-                            %h4.text-center
-                                %strong.float-center.align-middle
-                                    = "#{@month_name} #{Date.today.year}"
-                        .col-3
-                            %a.btn.btn-sm.btn-outline-primary{href: "view?id=#{@user.id.to_s}&month=#{@month + 1}"}
-                                %strong ▶
-                
                     
-                    %table.table.table-sm.table-borderless.table-hover
-                        %thead.bg-dark.text-light.p-0.m-0
-                            %tr.m-0.p-0
-                                %th.m-0.p-0.ml-0
-                                    M
-                                %th.m-0.p-0
-                                    T
-                                %th.m-0.p-0
-                                    W
-                                %th.m-0.p-0
-                                    T
-                                %th.m-0.p-0
-                                    F
-                                %th.m-0.p-0
-                                    S
-                                %th.m-0.p-0
-                                    S
-                        // Get the first day of @month this year
-                        - @firstDay = Date.new(Date.today.year, @month, 1).strftime("%u").to_i
-                        // Get number of days in current month
-                        - @daysInMonth = Date.new(Date.today.year, @month, -1).day
-                        - rowCount = 0
-                        %tbody
-                            %tr
-                            - (1..@firstDay - 1).each do
-                                %td.bg-light
-                                - rowCount += 1
-                            - (1..@daysInMonth).each do |dayCount|
-                                - rowCount += 1
-                                - dateFound = false
-                                - if rowCount % 7 == 1
-                                    %tr
-                                - dateThatWasFound = ""
-                                - @dates.each do |date|
-                                    - if dayCount == date.day && date.strftime("%B") == Date.new(Date.today.year, @month, -1).strftime("%B")
-                                        - dateFound = true
-                                        - dateThatWasFound = date.strftime("%B%d%y") + @user.id.to_s
-                                - if dateFound
-                                    %td.bg-success.border.font-decoration-none
-                                        %a{href: "#workout-#{dateThatWasFound}"}
-                                            = dayCount
-                                - elsif dayCount == Date.today.day && Date.today.strftime("%B") == Date.new(Date.today.year, @month, -1).strftime("%B")
-                                    %td.bg-warning.border.border-warning
-                                        = dayCount
-                                - elsif dayCount < Date.today.day && Date.today.month == @month || Date.today.month > @month
-                                    %td.bg-secondary.border
-                                        = dayCount
-                                - else
-                                    %td.border.bg-light
-                                        = dayCount
+                    = render 'feed/calendar'
                     %hr
                     
 

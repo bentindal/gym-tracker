@@ -8,7 +8,7 @@
             %a.text-primary{href: "/friend/list"}
                 = current_user.followers.count.to_s + ' followers | ' + current_user.following.count.to_s + ' following' 
         .text-muted.mb-2
-            = current_user.feed.count.to_s + ' workouts logged in total'
+            = current_user.workout_count.to_s + ' workouts logged in total'
         %a.btn.btn-primary{hidden: true, href: "/exercises"} Log a Workout
 .container.container-md.border.bg-white.py-2
     .card.border-top-0.border-bottom-0.justify-content-center.d-flex
@@ -16,72 +16,8 @@
             .col-12.col-md-4.bg-white.p-2.text-center
                 = render 'workout/summary'
                 %hr
-                
-                
-                .row.mb-1.text-center.align-middle.pt-3
-                    .col-3
-                        %a.btn.btn-sm.btn-outline-primary{href: "dashboard?month=#{@month - 1}"}
-                            %strong ◀
-                    .col-6
-                        %h4.text-center.font-weight-light.mb-3
-                            %strong
-                                = "#{@month_name} #{Date.today.year}"
-                    .col-3
-                        %a.btn.btn-sm.btn-outline-primary{href: "dashboard?month=#{@month + 1}"}
-                            %strong ▶
-            
-                
-                %table.table.table-sm.table-borderless.table-hover
-                    %thead.bg-dark.text-light.p-0.m-0
-                        %tr.m-0.p-0
-                            %th.m-0.p-0.ml-0
-                                M
-                            %th.m-0.p-0
-                                T
-                            %th.m-0.p-0
-                                W
-                            %th.m-0.p-0
-                                T
-                            %th.m-0.p-0
-                                F
-                            %th.m-0.p-0
-                                S
-                            %th.m-0.p-0
-                                S
-                    // Get the first day of @month this year
-                    - @firstDay = Date.new(Date.today.year, @month, 1).strftime("%u").to_i
-                    // Get number of days in current month
-                    - @daysInMonth = Date.new(Date.today.year, @month, -1).day
-                    - rowCount = 0
-                    %tbody
-                        %tr
-                        - (1..@firstDay - 1).each do
-                            %td.bg-light
-                            - rowCount += 1
-                        - (1..@daysInMonth).each do |dayCount|
-                            - rowCount += 1
-                            - dateFound = false
-                            - dateThatWasFound = ""
-                            - if rowCount % 7 == 1
-                                %tr
-                            
-                            - @dates.each do |date|
-                                - if dayCount == date.day && date.strftime("%B") == Date.new(Date.today.year, @month, -1).strftime("%B")
-                                    - dateFound = true
-                                    - dateThatWasFound = date.strftime("%B%d%y") + current_user.id.to_s
-                            - if dateFound
-                                %td.bg-success.border.font-decoration-none
-                                    %a{href: "#workout-#{dateThatWasFound }"}
-                                        = dayCount
-                            - elsif dayCount == Date.today.day && Date.today.strftime("%B") == Date.new(Date.today.year, @month, -1).strftime("%B")
-                                %td.bg-warning.border.border-warning
-                                    = dayCount
-                            - elsif dayCount < Date.today.day && Date.today.month == @month || Date.today.month > @month
-                                %td.bg-secondary.border
-                                    = dayCount
-                            - else
-                                %td.border.bg-light
-                                    = dayCount
+                - @user = current_user
+                = render 'feed/calendar'
                 %span
                     - if current_user.streak_status == "none"
                         .label.py-2.bg-danger.border.rounded.px-1.text-dark.font-weight-light

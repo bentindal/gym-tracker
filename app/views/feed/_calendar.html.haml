@@ -1,0 +1,66 @@
+// Calender
+// Get all dates from workouts and count unique dates
+- @dates = Workout.where(user_id: @user.id).pluck(:started_at).uniq
+.row.mb-1.text-center.align-middle.pt-3
+    .col-2
+        %a.btn.btn-sm.btn-outline-primary{href: "?id=#{@user.id}&month=#{@month - 1}"}
+            %strong ◀
+    .col-8
+        %h5.text-center
+            %strong.float-center.align-middle
+                = "#{@month_name} #{Date.today.year}"
+    .col-2
+        %a.btn.btn-sm.btn-outline-primary{href: "?id=#{@user.id}&month=#{@month + 1}"}
+            %strong ▶
+
+
+%table.table.table-sm.table-borderless.table-hover
+    %thead.bg-dark.text-light.p-0.m-0
+        %tr.m-0.p-0
+            %th.m-0.p-0.ml-0
+                M
+            %th.m-0.p-0
+                T
+            %th.m-0.p-0
+                W
+            %th.m-0.p-0
+                T
+            %th.m-0.p-0
+                F
+            %th.m-0.p-0
+                S
+            %th.m-0.p-0
+                S
+    // Get the first day of @month this year
+    - @firstDay = Date.new(Date.today.year, @month, 1).strftime("%u").to_i
+    // Get number of days in current month
+    - @daysInMonth = Date.new(Date.today.year, @month, -1).day
+    - rowCount = 0
+    %tbody
+        %tr
+        - (1..@firstDay - 1).each do
+            %td.bg-light
+            - rowCount += 1
+        - (1..@daysInMonth).each do |dayCount|
+            - rowCount += 1
+            - dateFound = false
+            - if rowCount % 7 == 1
+                %tr
+            - dateThatWasFound = ""
+            - @dates.each do |date|
+                - if dayCount == date.day && date.strftime("%B") == Date.new(Date.today.year, @month, -1).strftime("%B")
+                    - dateFound = true
+                    - dateThatWasFound = date.strftime("%B%d%y") + @user.id.to_s
+            - if dateFound
+                %td.bg-success.border.font-decoration-none
+                    %a{href: "#workout-#{dateThatWasFound}"}
+                        = dayCount
+            - elsif dayCount == Date.today.day && Date.today.strftime("%B") == Date.new(Date.today.year, @month, -1).strftime("%B")
+                %td.bg-warning.border.border-warning
+                    = dayCount
+            - elsif dayCount < Date.today.day && Date.today.month == @month || Date.today.month > @month
+                %td.bg-secondary.border
+                    = dayCount
+            - else
+                %td.border.bg-light
+                    = dayCount
