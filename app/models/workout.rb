@@ -33,4 +33,17 @@ class Workout < ApplicationRecord
         statistics = {"total_exercises" => all_sets_by_exercise.length, "total_groups" => groups.uniq.length, "total_sets" => all_sets.length, "length" => length, "length_in_seconds" => (self.ended_at - self.started_at).to_i}
         return [self.started_at, User.find(self.user_id), all_sets_by_exercise, groups.first, statistics]
     end
+    def likes_count
+        return Like.where(workout_id: self.id).length
+    end
+    def liked_by
+        # List of users who liked this workout as their names
+        @liked_by = []
+        likes = Like.where(workout_id: self.id)
+        likes.each do |like|
+            @liked_by.push(like.name)
+        end
+        return @liked_by
+
+    end
 end

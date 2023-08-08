@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'likes/create'
+  get 'likes/destroy'
   get 'settings/connections'
   get 'strava' => 'settings#connections'
 

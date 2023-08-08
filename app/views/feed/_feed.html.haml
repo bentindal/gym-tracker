@@ -119,3 +119,27 @@
                                         - else
                                             %span.font-weight-light
                                                 = msg
+            .row.border-top.align-items-center.float-center.pt-2
+                - count = @workout.likes_count
+                - if Like.where(user_id: current_user.id, workout_id: @workout.id).count > 0
+                    %a{href: likes_create_path(workout_id: @workout.id, back: "feed"), class: "btn btn-danger btn-sm ml-3 mr-2"}
+                        %i.fa-solid.fa-heart.text-white
+                        %strong
+                            = count
+                - else
+                    %a{href: likes_create_path(workout_id: @workout.id, back: "feed"), class: "btn btn-outline-danger btn-sm ml-3 mr-2"}
+                        %i.fa-solid.fa-heart.text-danger
+                        %strong
+                            = count
+                - liked_by = @workout.liked_by
+                .text-muted 
+                    - if count == 0
+                        = str = "No one has liked this workout yet."
+                    - else
+                        - str = ""
+                        - liked_by.each do |name|
+                            - if name == liked_by.first
+                                - str += name
+                            - else
+                                - str +=  ", #{name}"
+                        Liked by: #{str}
