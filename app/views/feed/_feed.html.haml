@@ -13,29 +13,28 @@
                 .text-muted No exercises found for this workout, user may have deleted them.
             - next
         .container.bg-white.border.rounded.mb-3.py-2.pt-3{id: "workout-#{day[0].strftime("%B%d%y")+day[1].id.to_s}"}
-            - if @hide_header == false
-                %h5.d-flex
-                    .font-weight-bold
-                        - if day[1] == current_user
-                            %a.text-dark{href: "/users/view?id=#{day[1].id}"}
-                                = day[1].name
-                        - else
-                            %a.text-dark{href: "/users/view?id=#{day[1].id}"}
-                                = day[1].name
-                        
-                        - if day[1].streak_count >= 2 && day[0].beginning_of_day == Date.today.beginning_of_day
-                            .badge.badge-pill.badge-dark.px-2.font-weight.ml-1
-                                🔥 #{day[1].streak_count} days
-
-                        - if day[2].last.second.last.created_at >= 3.hours.ago
-                            %span.badge.badge-pill.badge-warning.text-white.ml-1
-                                %i.fa-solid.fa-eye
-                                Just Added
+            %h5.d-flex
+                .font-weight-bold
                     - if day[1] == current_user
-                        %a.ml-auto.btn.btn-dark.p-0.px-2{href: "/workout/edit?id=#{@workout.id}", type: "button"}
-                            %i.fa-solid.fa-pencil.text-white 
-                    %button.ml-auto.btn.btn-dark{hidden: true, "data-target" => "#modal-#{day[0].strftime("%B%d%y%H%M")}", "data-toggle" => "modal", type: "button"}
-                        %i.fa-solid.fa-chart-column.text-white
+                        %a.text-dark{href: "/users/view?id=#{day[1].id}"}
+                            = day[1].name
+                    - else
+                        %a.text-dark{href: "/users/view?id=#{day[1].id}"}
+                            = day[1].name
+                    
+                    - if day[1].streak_count >= 2 && day[0].beginning_of_day == Date.today.beginning_of_day
+                        .badge.badge-pill.badge-dark.px-2.font-weight.ml-1
+                            🔥 #{day[1].streak_count} days
+
+                    - if day[2].last.second.last.created_at >= 3.hours.ago
+                        %span.badge.badge-pill.badge-warning.text-white.ml-1
+                            %i.fa-solid.fa-eye
+                            Just Added
+                - if day[1] == current_user
+                    %a.ml-auto.btn.btn-dark.p-0.px-2{href: "/workout/edit?id=#{@workout.id}", type: "button"}
+                        %i.fa-solid.fa-pencil.text-white 
+                %button.ml-auto.btn.btn-dark{hidden: true, "data-target" => "#modal-#{day[0].strftime("%B%d%y%H%M")}", "data-toggle" => "modal", type: "button"}
+                    %i.fa-solid.fa-chart-column.text-white
             %h6.text-muted.mb-4
                 = day[0].strftime("%B %d, %Y") + " @ "
                 // 24 hour time
