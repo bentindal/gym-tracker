@@ -13,7 +13,7 @@ class DashboardController < ApplicationController
       @feed.push(workout.feed)
     end
     
-    @feed = @feed.sort_by { |a| a[0] }.reverse[0..2]
+    @feed = @feed.sort_by { |a| a[0] }.reverse[0...5]
 
     # Other information
     @dates = []
