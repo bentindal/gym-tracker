@@ -3,9 +3,12 @@ class DashboardController < ApplicationController
     @page_title = "Dashboard"
     @page_description = "View your dashboard on GymTracker"
     @location = "dashboard"
+
+    userList = [current_user]
+    list_of_ids = Friend.where(user: current_user.id, confirmed: true).pluck(:follows)
     # Feed
     @feed = []
-    all_workouts = Workout.where(user_id: current_user.id)
+    all_workouts = Workout.where(user_id: list_of_ids) + Workout.where(user_id: current_user.id)
     all_workouts.each do |workout|
       @feed.push(workout.feed)
     end
