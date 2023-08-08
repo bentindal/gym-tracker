@@ -2,7 +2,7 @@ class DashboardController < ApplicationController
   def view
     @page_title = "Dashboard"
     @page_description = "View your dashboard on GymTracker"
-    
+    @location = "dashboard"
     # Feed
     @feed = []
     all_workouts = Workout.where(user_id: current_user.id)

@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
     def view
         @user = User.find(params[:id])
+        @location = "dashboard"
         @feed = []
         userList = [@user]
     

@@ -2,7 +2,8 @@ class FeedController < ApplicationController
   def view
     @page_title = "Feed"
     @page_description = "View all your & your friends workouts on GymTracker"
-
+    @location = "feed"
+    
     userList = [current_user]
     if params[:filter] != 'you'
       list_of_ids = Friend.where(user: current_user.id, confirmed: true).pluck(:follows)
@@ -28,6 +29,6 @@ class FeedController < ApplicationController
       @workouts_processed += 1
     end
     
-    @feed = @feed.sort_by { |a| a[0] }.reverse[0..0]
+    @feed = @feed.sort_by { |a| a[0] }.reverse
   end
 end
