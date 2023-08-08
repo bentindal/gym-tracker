@@ -11,7 +11,7 @@ class UsersController < ApplicationController
                 @feed.push(workout.feed)
             end
         end
-        @feed = @feed.sort_by { |a| a[0] }.reverse
+        @feed = @feed.sort_by { |a| a[0] }.reverse[0..10]
 
         @exercises = Exercise.where(user_id: params[:id])
         @workouts = Allset.where(user_id: params[:id])

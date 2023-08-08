@@ -50,6 +50,7 @@
                 .col-12.col-md-8.bg-white.p-2
                     - @hide_header = true
                     = render 'feed/feed'
+                    = link_to "View More on Feed", "/feed", {class: "btn btn-info btn-lg w-100"}
 - else
     .text-muted.text-center
         [The following user has a private profile, so you must be friends to view their profile.]
