@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
+  get 'settings/connections'
+  get 'strava' => 'settings#connections'
+
   get 'workout/list'
   get '/workout' => 'workout#list'
   get 'workout/finish'
+  get 'workout/edit'
+  patch 'workout/update'
 
   get 'dashboard/view'
   get 'dashboard' => 'dashboard#view'

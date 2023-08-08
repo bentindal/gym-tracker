@@ -1,4 +1,7 @@
 class Workout < ApplicationRecord
+    def allsets
+        return Allset.where(belongs_to_workout: self.id)
+    end
     def feed
         # Put into feed format [date, user, [[exercises, sets]]]
         @feed = []
@@ -42,5 +45,29 @@ class Workout < ApplicationRecord
         end
         statistics = {"total_exercises" => all_sets_by_exercise.length, "total_groups" => groups.uniq.length, "total_sets" => all_sets.length, "length" => length, "length_in_seconds" => (self.ended_at - self.started_at).to_i}
         return [self.started_at, User.find(self.user_id), all_sets_by_exercise, [groups.first, group_title], statistics]
+    end
+    def publish_to_strava
+        require 'strava-ruby-client'
+
+        client = Strava::Api::Client.new(
+            access_token: "debd4962e868ac440bd22449c592471d57e67b33"
+        )
+        # 9570226026
+
+        # client id 111616
+        # http://www.strava.com/oauth/authorize?client_id=111616&response_type=code&redirect_uri=http://localhost/exchange_token&approval_prompt=force&scope=read
+
+        activity = client.create_activity(
+            name: 'Afternoon Run',
+            sport_type: 'Run',
+            start_date_local: Time.now,
+            elapsed_time: 1234, # in seconds
+            description: 'Test run.',
+            distance: 1000 # in meters
+        )
+        
+        activity.name # => 'Afternoon Run'
+        activity.strava_url # => 'https://www.strava.com/activities/1982980795'
+
     end
 end

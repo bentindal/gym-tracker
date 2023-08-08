@@ -5,6 +5,7 @@
         No workouts found yet, try following some friends or start a workout yourself!
 - else
     - @feed.each do |day|
+        - @workout = Workout.find(day[2].first[1].first.belongs_to_workout)
         - @empty = false
         - if day[2].length < 1
             - @empty = true
@@ -30,6 +31,9 @@
                             %span.badge.badge-pill.badge-warning.text-white.ml-1
                                 %i.fa-solid.fa-eye
                                 Just Added
+                    - if day[1] == current_user
+                        %a.ml-auto.btn.btn-dark.p-0.px-2{href: "/workout/edit?id=#{@workout.id}", type: "button"}
+                            %i.fa-solid.fa-pencil.text-white 
                     %button.ml-auto.btn.btn-dark{hidden: true, "data-target" => "#modal-#{day[0].strftime("%B%d%y%H%M")}", "data-toggle" => "modal", type: "button"}
                         %i.fa-solid.fa-chart-column.text-white
             %h6.text-muted.mb-4
@@ -39,19 +43,19 @@
             %h5.font-weight-light
                 - if day[3][0] == "Chest"
                     .text-primary
-                        = day[3][1]
+                        = @workout.title
                 - elsif day[3][0] == "Back"
                     .text-danger
-                        = day[3][1]
+                        = @workout.title
                 - elsif day[3][0] == "Legs"
                     .text-success
-                        = day[3][1]
+                        = @workout.title
                 - elsif day[3][0] == "Shoulders"
                     .text-warning
-                        = day[3][1]
+                        = @workout.title
                 - else
                     .text-info
-                        = day[3][1]
+                        = @workout.title
             .row.mb-1
                 .col-4
                     .font-weight-light.text-muted.text-left Exercises
@@ -125,19 +129,19 @@
                             %h3.modal-title
                                 - if day[3][0] == "Chest"
                                     %a.badge.badge-primary.text-white
-                                        = day[3][1]
+                                        = @workout.title
                                 - elsif day[3][0] == "Back"
                                     %a.badge.badge-danger.text-white
-                                        = day[3][1]
+                                        = @workout.title
                                 - elsif day[3][0] == "Legs"
                                     %a.badge.badge-success.text-white
-                                        = day[3][1]
+                                        = @workout.title
                                 - elsif day[3][0] == "Shoulders"
                                     %a.badge.badge-warning.text-white
-                                        = day[3][1]
+                                        = @workout.title
                                 - else
                                     %a.badge.badge-info.text-white
-                                        = day[3][1]
+                                        = @workout.title
                             
                             %button.ml-auto.text-right{type: "button", class: "close", "data-dismiss" => "modal", "aria-label" => "Close"}
                                 %span{"aria-hidden" => "true"} ×
