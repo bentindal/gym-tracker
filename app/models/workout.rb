@@ -25,6 +25,11 @@ class Workout < ApplicationRecord
         else
             length = "#{minutes}m #{seconds}s"
         end
+        groups = []
+        all_sets_by_exercise.each do |exercise|
+            groups.push(exercise[0].group)
+        end
+        groups.uniq!
         statistics = {"total_exercises" => all_sets_by_exercise.length, "total_groups" => groups.uniq.length, "total_sets" => all_sets.length, "length" => length, "length_in_seconds" => (self.ended_at - self.started_at).to_i}
         return [self.started_at, User.find(self.user_id), all_sets_by_exercise, groups.first, statistics]
     end
