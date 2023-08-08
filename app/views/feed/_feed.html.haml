@@ -40,16 +40,16 @@
                 // 24 hour time
                 = day[0].strftime("%H:%M")
             %h5.font-weight-light
-                - if day[3][0] == "Chest"
+                - if day[3] == "Chest"
                     .text-primary
                         = @workout.title
-                - elsif day[3][0] == "Back"
+                - elsif day[3] == "Back"
                     .text-danger
                         = @workout.title
-                - elsif day[3][0] == "Legs"
+                - elsif day[3] == "Legs"
                     .text-success
                         = @workout.title
-                - elsif day[3][0] == "Shoulders"
+                - elsif day[3] == "Shoulders"
                     .text-warning
                         = @workout.title
                 - else
@@ -126,16 +126,16 @@
                     .modal-content
                         .modal-header
                             %h3.modal-title
-                                - if day[3][0] == "Chest"
+                                - if day[3] == "Chest"
                                     %a.badge.badge-primary.text-white
                                         = @workout.title
-                                - elsif day[3][0] == "Back"
+                                - elsif day[3] == "Back"
                                     %a.badge.badge-danger.text-white
                                         = @workout.title
-                                - elsif day[3][0] == "Legs"
+                                - elsif day[3] == "Legs"
                                     %a.badge.badge-success.text-white
                                         = @workout.title
-                                - elsif day[3][0] == "Shoulders"
+                                - elsif day[3] == "Shoulders"
                                     %a.badge.badge-warning.text-white
                                         = @workout.title
                                 - else
