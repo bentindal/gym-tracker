@@ -33,8 +33,6 @@
                 - if day[1] == current_user
                     %a.ml-auto.btn.btn-dark.p-0.px-2{href: "/workout/edit?id=#{@workout.id}", type: "button"}
                         %i.fa-solid.fa-pencil.text-white 
-                %button.ml-auto.btn.btn-dark{hidden: true, "data-target" => "#modal-#{day[0].strftime("%B%d%y%H%M")}", "data-toggle" => "modal", type: "button"}
-                    %i.fa-solid.fa-chart-column.text-white
             %h6.text-muted.mb-4
                 = day[0].strftime("%B %d, %Y") + " @ "
                 // 24 hour time
@@ -121,56 +119,3 @@
                                         - else
                                             %span.font-weight-light
                                                 = msg
-            .modal.fade{id: "modal-#{day[0].strftime("%B%d%y%H%M")}", "aria-hidden" => "true", "aria-labelledby" => "modal-#{day[0].strftime("%B%d%y%H%M")}", role: "dialog", tabindex: "-1"}
-                .modal-dialog.modal-lg
-                    .modal-content
-                        .modal-header
-                            %h3.modal-title
-                                - if day[3] == "Chest"
-                                    %a.badge.badge-primary.text-white
-                                        = @workout.title
-                                - elsif day[3] == "Back"
-                                    %a.badge.badge-danger.text-white
-                                        = @workout.title
-                                - elsif day[3] == "Legs"
-                                    %a.badge.badge-success.text-white
-                                        = @workout.title
-                                - elsif day[3] == "Shoulders"
-                                    %a.badge.badge-warning.text-white
-                                        = @workout.title
-                                - else
-                                    %a.badge.badge-info.text-white
-                                        = @workout.title
-                            
-                            %button.ml-auto.text-right{type: "button", class: "close", "data-dismiss" => "modal", "aria-label" => "Close"}
-                                %span{"aria-hidden" => "true"} ×
-                        
-                        .modal-body
-                            %a.text-muted
-                                = "#{day[0].strftime("%B %d, %Y @ %H:%M")}"
-                            %br
-                            %br
-                            %strong
-                                Total Sets:
-                            = day[4]["total_sets"]
-                            %br
-                            %strong
-                                Total Reps:
-                            = day[4]["total_repetitions"]
-                            %br
-                            %strong
-                                Total Weight:
-                            = day[4]["total_weight"]
-                            %br
-                            %strong
-                                Estimated Workout Length:
-                            = day[4]["length"]
-                            %br
-                            %strong
-                                Estimated Active Time:
-                            = day[4]["active_time"]
-                            %br
-                            %strong
-                                Exercises Performed:
-                            = day[4]["total_exercises"]
-                            %br
