@@ -2,7 +2,10 @@
   Edit Workout
 .card-body.justify-content-center.d-flex
   = form_with model: @workout, url: "/workout/update?id=#{@workout.id}", method: :patch, local: true do |f|
+    = f.label :custom_Title, class: "font-weight-bold"
+    add a custom title to your workout
+
     = f.text_field :title, value: @workout.title, class: "form-control"
 
     .mt-2
-      = f.submit "Update", class: "btn btn-primary w-100"
+      = f.submit "Update Workout", class: "btn btn-primary w-100"
