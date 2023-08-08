@@ -24,7 +24,7 @@ class FeedController < ApplicationController
 
     @workouts_processed = 0
 
-    all_workouts[params[:tab]...params[:tab]+30].each do |workout|
+    all_workouts[params[:tab]...params[:tab]+5].each do |workout|
       @feed.push(workout.feed)
       @workouts_processed += 1
     end

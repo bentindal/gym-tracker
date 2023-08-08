@@ -3,27 +3,23 @@
         My Feed
     %nav{"aria-label" => "Page navigation for feed"}
         %ul.pagination.justify-content-center
-            - if params[:tab] < 30
+            - if params[:tab] < 5
                 %li.page-item.disabled
-                    %a.page-link{href: "#", tabindex: "-1"} Previous
+                    %a.page-link{href: "#", tabindex: "-1"} <<
             - else
-                %li.page-item
-                    %a.page-link{href: "?from=#{params[:from].to_i - 30}"} Previous
+                %li.page-item.active
+                    %a.page-link{href: "?from=#{params[:from].to_i - 5}"} <<
 
-            - for i in (1..(@max / 30) + 1)
-                - if params[:tab] == (i - 1) * 30
-                    %li.page-item.active
-                        %a.page-link{href: "?tab=#{(i - 1) * 30}"} #{i}
-                - else
-                    %li.page-item
-                        %a.page-link{href: "?tab=#{(i - 1) * 30}"} #{i}
+            %li.page-item
+                %a.page-link #{params[:tab] / 5 + 1}
+                
 
-            - if params[:tab] >= @max - 30
+            - if params[:tab] >= @max - 5
                 %li.page-item.disabled
-                    %a.page-link{href: "#", tabindex: "-1"} Next
+                    %a.page-link{href: "#", tabindex: "-1"} >>
             - else
-                %li.page-item
-                    %a.page-link{href: "/feed?tab=#{params[:tab] + 30}"} Next
+                %li.page-item.active
+                    %a.page-link{href: "/feed?tab=#{params[:tab] + 5}"} >>
     .text-center.mb-3
         - if params[:filter] == "you"
             %a.btn.btn-outline-primary.btn-sm{href: "/feed"} You + Friends
