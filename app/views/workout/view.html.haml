@@ -14,7 +14,7 @@
                 - if @sets.last.second.last.created_at >= 3.hours.ago
                     %span.badge.badge-pill.badge-warning.text-white.ml-1
                         %i.fa-solid.fa-eye
-                        Just Added
+                        New
 
             - if @owner == current_user
                 %a.ml-auto.btn.btn-lg.p-0.px-2{hidden: true, href: "/workout/edit?id=#{@workout.id}", type: "button"}
