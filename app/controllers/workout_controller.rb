@@ -11,7 +11,7 @@ class WorkoutController < ApplicationController
     @workout = Workout.find(params[:id])
     if current_user.id == @workout.user_id
       if @workout.update(workout_params)
-        redirect_to "/dashboard", notice: "Workout updated successfully"
+        redirect_to "/workout/view?id=#{@workout.id}", notice: "Workout updated successfully"
       else
         puts @workout.errors.full_messages # Output error messages to the console
         redirect_to edit_workout_path(@workout), notice: "Error updating workout"
@@ -40,7 +40,7 @@ class WorkoutController < ApplicationController
         item.save
       end
 
-      redirect_to "/dashboard", notice: "Workout successfully ended."
+      redirect_to "/workout/view?id=#{@workout.id}", notice: "Workout successfully ended."
     else
       redirect_to "/workout/list", alert: "Cannot end a workout with no sets."
     end
