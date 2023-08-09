@@ -21,11 +21,11 @@
                         %a.text-dark{href: "/users/view?id=#{@owner.id}"}
                             = @owner.name
                         - if @owner.streak_count >= 2
-                            .badge.badge-pill.badge-dark.px-2.font-weight.ml-1
+                            .badge.badge-pill.badge-dark.px-1.font-weight.ml-1
                                 🔥 #{@owner.streak_count} days
 
                         - if @sets.last.second.last.created_at >= 3.hours.ago
-                            %span.badge.badge-pill.badge-warning.text-white.ml-1
+                            %span.badge.badge-pill.badge-warning.text-white
                                 %i.fa-solid.fa-eye
                                 New
 
