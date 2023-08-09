@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_30_223142) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_09_123906) do
   create_table "allsets", force: :cascade do |t|
     t.integer "exercise_id"
     t.integer "repetitions"
@@ -41,6 +41,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_30_223142) do
     t.boolean "confirmed", default: false
   end
 
+  create_table "likes", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "workout_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "name"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -67,6 +75,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_30_223142) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.string "title"
+    t.integer "exercises_used"
+    t.integer "sets_completed"
   end
 
   add_foreign_key "allsets", "exercises", on_delete: :cascade
