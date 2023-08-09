@@ -1,0 +1,128 @@
+- @workout = Workout.find(params[:id])
+- @owner = @workout.user
+- @sets = @workout.feed
+.container.bg-white.border.rounded.my-3.pt-3{id: "workout-#{@workout.started_at.strftime("%B%d%y")+@owner.id.to_s}"}
+    .row
+        .col-12
+            %h5.font-weight-bold
+                %a.text-dark{href: "/users/view?id=#{@owner.id}"}
+                    = @owner.name
+                - if @owner.streak_count >= 2
+                    .badge.badge-pill.badge-dark.px-2.font-weight.ml-1
+                        🔥 #{@owner.streak_count} days
+
+                - if @sets.last.second.last.created_at >= 3.hours.ago
+                    %span.badge.badge-pill.badge-warning.text-white.ml-1
+                        %i.fa-solid.fa-eye
+                        Just Added
+
+            - if @owner == current_user
+                %a.ml-auto.btn.btn-lg.p-0.px-2{hidden: true, href: "/workout/edit?id=#{@workout.id}", type: "button"}
+                    %i.fa-solid.fa-pencil.text-dark
+        
+        
+    .row
+        .col-12
+            %h6.text-muted.pb-3
+                = @workout.started_at.strftime("%B %d, %Y") + " @ "
+                // 24 hour time
+                = @workout.started_at.strftime("%H:%M")
+    .row
+        .col-12 
+            %h5.font-weight-light.d-flex
+                - if @owner == current_user
+                    %a{href: "/workout/edit?id=#{@workout.id}", type: "button", class: "text-#{@workout.group_colour}"}
+                        = @workout.title
+                    %a.btn.p-0.px-2{href: "/workout/edit?id=#{@workout.id}", type: "button"}
+                        %i.fa-solid.fa-pencil.text-dark
+                - else
+                    %span{class: "text-#{@workout.group_colour}"}
+                        = @workout.title
+    .row
+        .col-4
+            .font-weight-light.text-muted Exercises
+            %h5.lead
+                = @workout.exercises_used
+
+        .col-3
+            .font-weight-light.text-muted Sets 
+            %h5.lead
+                = @workout.sets_completed
+
+        // Only display length if it's longer than 10 minutes
+        // This helps to prevent clutter  
+        - if (@workout.ended_at - @workout.started_at) > 10.minutes
+            .col-5
+                .font-weight-light.text-muted
+                    Length 
+                %h5.lead
+                    = @workout.length_string
+    
+    .row.border-top.pt-3
+        - totalReps = 0
+        - totalWeight = 0
+        - @sets.each do |ex|
+            .col-6.col-lg-3.col-md-4.col-sm-6.col-xs-12.pb-5
+                - if ex[0] != "n/a"
+                    - if ex[0].user_id == current_user.id
+                        %a.text-dark{href: "/allset/#{ex[0].id}"}
+                            = ex[0].name
+                    - else
+                        %a.text-dark
+                            = ex[0].name
+                    // Display set information
+                    - ex[1].each do |set|
+                        // Skip warmup sets
+                        - if set.isWarmup == true
+                            - next
+
+                        - if set.weight == nil && set.repetitions == nil
+                            - msg = '? x ?'
+                        - elsif set.weight == nil
+                            - msg = '? x ' + set.repetitions.to_s
+                        - elsif set.repetitions == nil
+                            - msg = set.weight.to_s + ' ' + set.exercise.unit.to_s + ' x ' + '?'
+                        - elsif set.weight == 0
+                            - msg = 'BW x ' + set.repetitions.to_s
+                        - else
+                            - totalReps += set.repetitions
+                            - totalWeight += set.weight
+                            - msg = set.weight.to_s + ' ' + set.exercise.unit.to_s + ' x ' + set.repetitions.to_s
+                            
+                        %br
+                        %small
+                            - if set.isFailure
+                                %span.text-danger.border-bottom.border-danger.font-weight-light
+                                    = msg
+                            - elsif set.isDropset
+                                %span.text-info.border-bottom.border-info.font-weight-light
+                                    = msg
+                            - else
+                                %span.font-weight-light
+                                    = msg
+
+    .row.border-top.pt-2.pb-2
+        .col-12.d-flex
+            - count = @workout.likes_count
+            - liked_by = @workout.liked_by
+            - if Like.where(user_id: current_user.id, workout_id: @workout.id).count > 0
+                %a{href: likes_create_path(workout_id: @workout.id, back: "#{@location}"), class: "btn btn-danger btn-sm mr-2"}
+                    %i.fa-solid.fa-heart.text-white
+                    %strong
+                        = count
+            - else
+                %a{href: likes_create_path(workout_id: @workout.id, back: "#{@location}"), class: "btn btn-outline-danger btn-sm mr-2"}
+                    %i.fa-solid.fa-heart.text-danger
+                    %strong
+                        = count
+            .text-muted.align-self-center
+                - if count == 0
+                    = str = "No one has liked this workout yet."
+                - else
+                    - str = ""
+                    - liked_by.each do |name|
+                        - if name == liked_by.first
+                            - str += name
+                        - else
+                            - str +=  ", #{name}"
+                    Liked by #{str}

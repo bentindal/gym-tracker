@@ -2,16 +2,10 @@ class UsersController < ApplicationController
     def view
         @user = User.find(params[:id])
         @location = "dashboard"
-        @feed = []
+        
         userList = [@user]
     
-        userList.each do |user|
-            all_workouts = Workout.where(user_id: user.id)
-            all_workouts.each do |workout|
-                @feed.push(workout.feed)
-            end
-        end
-        @feed = @feed.sort_by { |a| a[0] }.reverse[0...5]
+        @feed = Workout.where(user_id: userList).order(:started_at).reverse_order
 
         @exercises = Exercise.where(user_id: params[:id])
         @workouts = Allset.where(user_id: params[:id])

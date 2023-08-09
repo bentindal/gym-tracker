@@ -12,23 +12,18 @@ class FeedController < ApplicationController
       end
     end
 
-    @feed = []
-    all_workouts = Workout.where(user_id: userList).order(:created_at).reverse_order
-    @max = all_workouts.count.floor
+    
+    
     
     if params[:tab] == nil || params[:tab].to_i < 0
       params[:tab] = 0
     end
     
     params[:tab] = params[:tab].to_i
-
-    @workouts_processed = 0
-
-    all_workouts[params[:tab]...params[:tab]+5].each do |workout|
-      @feed.push(workout.feed)
-      @workouts_processed += 1
-    end
+    all_workouts = Workout.where(user_id: userList).order(:started_at).reverse_order
     
-    @feed = @feed.sort_by { |a| a[0] }.reverse
+    @feed = all_workouts[params[:tab]...params[:tab]+5]
+
+    @max = all_workouts.count.floor
   end
 end

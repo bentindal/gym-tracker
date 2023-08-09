@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   get 'workout/finish'
   get 'workout/edit'
   patch 'workout/update'
+  get 'workout/view'
 
   get 'dashboard/view'
   get 'dashboard' => 'dashboard#view'

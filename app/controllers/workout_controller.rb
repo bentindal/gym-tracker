@@ -31,6 +31,8 @@ class WorkoutController < ApplicationController
       @workout.ended_at = @sets.last.created_at
       # Get the title from unique group names seperated by commas and last being "and"
       @workout.title = @unassigned_sets.keys.map(&:group).uniq.join(", ").reverse.sub(",", "& ").reverse
+      @workout.exercises_used = @unassigned_sets.length
+      @workout.sets_completed = @sets.length
       @workout.save
 
       @sets.each do |item|
