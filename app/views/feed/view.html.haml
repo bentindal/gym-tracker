@@ -1,6 +1,15 @@
 .container
     %h1.text-center.mt-3
         My Feed
+
+    .text-center.mb-3
+        - if params[:filter] == "you"
+            %a.btn.btn-outline-primary.btn-sm{href: "/feed"} You + Friends
+            %a.btn.btn-primary.btn-sm{href: "/feed?filter=you"} You
+        - else
+            %a.btn.btn-primary.btn-sm{href: "/feed"} You + Friends
+            %a.btn.btn-outline-primary.btn-sm{href: "/feed?filter=you"} You
+
     %nav{"aria-label" => "Page navigation for feed"}
         %ul.pagination.justify-content-center
             - if params[:tab] < 10
@@ -11,7 +20,7 @@
                     %a.page-link{href: "?from=#{params[:from].to_i - 10}"} <<
 
             %li.page-item
-                %a.page-link #{params[:tab] / 10 + 1}
+                %a.page-link Page #{params[:tab] / 10 + 1}
                 
 
             - if params[:tab] >= @max - 10
@@ -20,12 +29,29 @@
             - else
                 %li.page-item.active
                     %a.page-link{href: "/feed?tab=#{params[:tab] + 10}"} >>
-    .text-center.mb-3
-        - if params[:filter] == "you"
-            %a.btn.btn-outline-primary.btn-sm{href: "/feed"} You + Friends
-            %a.btn.btn-primary.btn-sm{href: "/feed?filter=you"} You
-        - else
-            %a.btn.btn-primary.btn-sm{href: "/feed"} You + Friends
-            %a.btn.btn-outline-primary.btn-sm{href: "/feed?filter=you"} You
+    
+    
+    
+
 - @hide_header = false
 = render 'feed/feed'
+
+%nav.mt-3{"aria-label" => "Page navigation for feed"}
+    %ul.pagination.justify-content-center
+        - if params[:tab] < 10
+            %li.page-item.disabled
+                %a.page-link{href: "#", tabindex: "-1"} <<
+        - else
+            %li.page-item.active
+                %a.page-link{href: "?from=#{params[:from].to_i - 10}"} <<
+
+        %li.page-item
+            %a.page-link Page #{params[:tab] / 10 + 1}
+            
+
+        - if params[:tab] >= @max - 10
+            %li.page-item.disabled
+                %a.page-link{href: "#", tabindex: "-1"} >>
+        - else
+            %li.page-item.active
+                %a.page-link{href: "/feed?tab=#{params[:tab] + 10}"} >>
