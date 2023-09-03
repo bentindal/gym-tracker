@@ -41,7 +41,7 @@ class User < ApplicationRecord
     return "#{self.first_name} #{self.last_name}"
   end
   def streak_status
-    streak_count = self.streak_count
+    streak_count = self.streakcount
     two_days_ago = Date.today.day - 2
     one_day_ago = Date.today.day - 1
 
@@ -73,22 +73,22 @@ class User < ApplicationRecord
     if self.streak_status == "none"
       return "#{self.first_name} hasn't worked out yet today!"
     elsif self.streak_status == "pending"
-      return "#{self.first_name} hasn't worked out today, but has a #{self.streak_count} day streak going!"
+      return "#{self.first_name} hasn't worked out today, but has a #{self.streakcount} day streak going!"
     elsif self.streak_status == "at_risk"
-      return "#{self.first_name} had a day off yesterday, workout today to keep the #{self.streak_count} day streak going or it will be reset!"
+      return "#{self.first_name} had a day off yesterday, workout today to keep the #{self.streakcount} day streak going or it will be reset!"
     else
-      return "#{self.first_name} has a #{self.streak_count} day streak going!"
+      return "#{self.first_name} has a #{self.streakcount} day streak going!"
     end
   end
   def streak_msg_own
     if self.streak_status == "none"
       return "You haven't got a streak going yet."
     elsif self.streak_status == "pending"
-      return "You haven't worked out today, but you have a #{self.streak_count} day streak!"
+      return "You haven't worked out today, but you have a #{self.streakcount} day streak!"
     elsif self.streak_status == "at_risk"
-      return "You had a day off yesterday, workout today to keep the #{self.streak_count} day streak going or it will be reset!"
+      return "You had a day off yesterday, workout today to keep the #{self.streakcount} day streak going or it will be reset!"
     else
-      return "You have a #{self.streak_count} day streak!"
+      return "You have a #{self.streakcount} day streak!"
     end
   end
   def midworkout
