@@ -8,10 +8,10 @@
             .d-flex.border.text-primary.btn.btn-white.mb-1.bg-white
                 %a{href: "/users/view?id=#{user.id}"}
                     = user.first_name + " " + user.last_name
-                - if user.streak_count > 1
+                - if user.streakcount > 1
                     %span
                         .badge.badge-pill.badge-dark.px-2.font-weight-bold.ml-2
-                            🔥 #{user.streak_count}
+                            🔥 #{user.streakcount}
                 - if user.midworkout
                     %span
                         .badge.badge-pill.badge-success.px-2.font-weight-light.ml-2

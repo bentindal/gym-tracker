@@ -36,10 +36,10 @@
                             .d-flex
                                 .text-primary
                                     = friend.first_name + " " + friend.last_name
-                                - if friend.streak_count > 1
+                                - if friend.streakcount > 1
                                     %span
                                         .badge.badge-pill.badge-dark.px-2.font-weight-bold.ml-1
-                                            🔥 #{friend.streak_count}
+                                            🔥 #{friend.streakcount}
                                 - if friend.midworkout
                                     %span
                                         .badge.badge-pill.badge-success.px-2.font-weight-light.ml-1
@@ -57,10 +57,10 @@
                             .d-flex
                                 .text-primary
                                     = friend.first_name + " " + friend.last_name
-                                - if friend.streak_count > 1
+                                - if friend.streakcount > 1
                                     %span
                                         .badge.badge-pill.badge-dark.px-2.font-weight-bold.ml-1
-                                            🔥 #{friend.streak_count}
+                                            🔥 #{friend.streakcount}
                                 - if friend.midworkout
                                     %span
                                         .badge.badge-pill.badge-success.px-2.font-weight-light.ml-1
