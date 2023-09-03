@@ -3,23 +3,23 @@
         My Feed
     %nav{"aria-label" => "Page navigation for feed"}
         %ul.pagination.justify-content-center
-            - if params[:tab] < 5
+            - if params[:tab] < 10
                 %li.page-item.disabled
                     %a.page-link{href: "#", tabindex: "-1"} <<
             - else
                 %li.page-item.active
-                    %a.page-link{href: "?from=#{params[:from].to_i - 5}"} <<
+                    %a.page-link{href: "?from=#{params[:from].to_i - 10}"} <<
 
             %li.page-item
-                %a.page-link #{params[:tab] / 5 + 1}
+                %a.page-link #{params[:tab] / 10 + 1}
                 
 
-            - if params[:tab] >= @max - 5
+            - if params[:tab] >= @max - 10
                 %li.page-item.disabled
                     %a.page-link{href: "#", tabindex: "-1"} >>
             - else
                 %li.page-item.active
-                    %a.page-link{href: "/feed?tab=#{params[:tab] + 5}"} >>
+                    %a.page-link{href: "/feed?tab=#{params[:tab] + 10}"} >>
     .text-center.mb-3
         - if params[:filter] == "you"
             %a.btn.btn-outline-primary.btn-sm{href: "/feed"} You + Friends

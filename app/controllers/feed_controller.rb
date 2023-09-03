@@ -22,7 +22,7 @@ class FeedController < ApplicationController
     params[:tab] = params[:tab].to_i
     all_workouts = Workout.where(user_id: userList).order(:started_at).reverse_order
     
-    @feed = all_workouts[params[:tab]...params[:tab]+30]
+    @feed = all_workouts[params[:tab]...params[:tab]+10]
 
     @max = all_workouts.count.floor
   end
