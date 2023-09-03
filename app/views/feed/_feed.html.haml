@@ -45,12 +45,12 @@
                 .col-12 
                     %h5.font-weight-light.d-flex
                         - if @owner == current_user
-                            %a{href: "/workout/edit?id=#{@workout.id}", type: "button", class: "text-#{@workout.group_colour}"}
+                            %a{href: "/workout/view?id=#{@workout.id}", type: "button", class: "text-#{@workout.group_colour}"}
                                 = @workout.title
                             %a.btn.p-0.px-2{href: "/workout/edit?id=#{@workout.id}", type: "button"}
                                 %i.fa-solid.fa-pencil.text-dark
                         - else
-                            %span{class: "text-#{@workout.group_colour}"}
+                            %span{href: "/workout/view?id=#{@workout.id}", type: "button", class: "text-#{@workout.group_colour}"}
                                 = @workout.title
             .row
                 .col-4
