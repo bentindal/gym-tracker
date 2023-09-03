@@ -20,9 +20,9 @@
                     .font-weight-bold
                         %a.text-dark{href: "/users/view?id=#{@owner.id}"}
                             = @owner.name
-                        - if @owner.streak_count >= 2
+                        - if @owner.streakcount >= 2
                             .badge.badge-pill.badge-dark.px-1.font-weight
-                                🔥 #{@owner.streak_count} days
+                                🔥 #{@owner.streakcount} days
 
                         - if @sets.last.second.last.created_at >= 3.hours.ago
                             %span.badge.badge-pill.badge-warning.text-white
