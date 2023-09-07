@@ -38,7 +38,7 @@ class Exercise < ApplicationRecord
             total_volume = 0
             sets.each do |set|
                 # Skip any sets that have nil values
-                if set.weight.nil? || set.repetitions.nil?
+                if set.weight.nil? || set.repetitions.nil? || set.isWarmup == true
                     next
                 end
                 total_volume += set.weight * set.repetitions
@@ -72,7 +72,7 @@ class Exercise < ApplicationRecord
             sets.each do |set|
                 orm = 0
                 # Skip any sets that have nil values
-                if set.weight.nil? || set.repetitions.nil?
+                if set.weight.nil? || set.repetitions.nil? || set.isWarmup
                     next
                 end
                 orm = set.weight * (1 + (set.repetitions / 30.0))
@@ -87,7 +87,7 @@ class Exercise < ApplicationRecord
             if highest_orm != 0
                 graph_data[startPoint.strftime("%d/%m")] = highest_orm
             #else
-            #    graph_data[startPoint]
+            #    graph_data[startPoint] = 0
             end
             
             # Iterate to next day and continue
