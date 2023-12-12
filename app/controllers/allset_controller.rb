@@ -5,6 +5,8 @@ class AllsetController < ApplicationController
       @page_title = @exercise.name + " | Workout"
       @sets = Allset.where(exercise_id: @exercise.id) # Filter by exercise_id
       @sets = @sets.order(created_at: :desc)
+      # Sort sets by uniq date
+      @setss = @sets.group_by { |set| set.created_at.to_date }
     else
       redirect_to "/error/permission"
     end

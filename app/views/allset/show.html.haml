@@ -31,144 +31,98 @@
         - if @sets.first.created_at > Time.now.beginning_of_day
             #restTimer{style: "display: none;"}
                 = @sets.first.created_at.strftime("%H:%M:%S")
-            
-        %table.table.text-center.bg-white.table-sm.border
-            %thead.bg-dark.text-white
-                %tr
-                    %th Weight
-                    %th Reps
-                    %th When
-                    %th Options
-            %tbody
-                - @sets.each do |set|
-                    - if set.isDropset
-                        %tr.text-info.border.border-info
-                            %td.align-middle
-                                %u
+        
+        - @setss.each do |info|
+            .text-muted
+                - if info[0] > Time.now.beginning_of_day - 10.minutes
+                    #target
+                - elsif info[0] > Time.now.beginning_of_day - 1.day
+                    = "Today"
+                - elsif info[0] > Time.now.beginning_of_day - 2.day
+                    = "Yesterday"
+                - elsif info[0] > Time.now.beginning_of_day - 6.days
+                    = info[0].strftime("%A")
+                - else
+                    // Output date in Day, Month format e.g 1st September
+                    = info[0].strftime("%d %B, %Y")
+            %table.table.text-center.bg-white.table-sm.border
+                %tbody
+                    - info[1].each do |set|
+                        - if set.isFailure
+                            %tr.text-danger
+                                %td
+                                    %u
+                                        - if set.weight == 0
+                                            = "BW"
+                                        - elsif set.weight == nil
+                                            = "?"
+                                        - else
+                                            = set.weight.to_s + @exercise.unit
+                                    x
+                                    %u 
+                                        - if set.repetitions == nil
+                                            = "?"
+                                        - else
+                                            = set.repetitions
+                                %td
+                                    %small
+                                        = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
+                                        = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
+                        - elsif set.isDropset
+                            %tr.text-info
+                                %td
                                     - if set.weight == 0
                                         = "BW"
                                     - elsif set.weight == nil
                                         = "?"
                                     - else
-                                        = set.weight.to_s + " " + @exercise.unit
-                            %td.align-middle
-                                %u
+                                        = set.weight.to_s + @exercise.unit
+                                    x
                                     - if set.repetitions == nil
                                         = "?"
                                     - else
                                         = set.repetitions
-                            %td.align-middle.text-info
-                                - if set.created_at > Time.now.beginning_of_day
-                                    #target
-                                        = set.created_at.strftime("%H:%M")
-                                - elsif set.created_at > Time.now.beginning_of_day - 1.day
-                                    = "Yesterday"
-                                - elsif set.created_at > Time.now.beginning_of_day - 6.days
-                                    = set.created_at.strftime("%A") + " " + set.created_at.strftime("%H:%M")
-                                - else
-                                    // Output date
-                                    = set.created_at.strftime("%d/%m/%Y")
-                            %td
-                                = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
-                                = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
+                                %td
+                                    %small
+                                        = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
+                                        = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
+                        - elsif set.isWarmup
+                            %tr.small.text-muted
+                                %td
+                                    - if set.weight == 0
+                                        = "BW"
+                                    - elsif set.weight == nil
+                                        = "?"
+                                    - else
+                                        = set.weight.to_s + @exercise.unit
+                                    x
+                                    - if set.repetitions == nil
+                                        = "?"
+                                    - else
+                                        = set.repetitions
+                                %td
+                                    %small
+                                        = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
+                                        = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
+                        - else
+                            %tr
+                                %td
+                                    - if set.weight == 0
+                                        = "BW"
+                                    - elsif set.weight == nil
+                                        = "?"
+                                    - else
+                                        = set.weight.to_s + @exercise.unit
+                                    x
+                                    - if set.repetitions == nil
+                                        = "?"
+                                    - else
+                                        = set.repetitions
+                                %td
+                                    %small
+                                        = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
+                                        = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
 
-                    - elsif set.isFailure
-                        %tr.border.border-danger.text-danger
-                            %td.align-middle
-                                %u
-                                    - if set.weight == 0
-                                        = "BW"
-                                    - elsif set.weight == nil
-                                        = "?"
-                                    - else
-                                        = set.weight.to_s + " " + @exercise.unit
-                            %td.align-middle
-                                %u
-                                    - if set.repetitions == nil
-                                        = "?"
-                                    - else
-                                        = set.repetitions
-                            %td.align-middle
-                                - if set.created_at > Time.now.beginning_of_day
-                                    #target.text-danger
-                                        = set.created_at.strftime("%H:%M")
-                                - elsif set.created_at > Time.now.beginning_of_day - 1.day
-                                    = "Yesterday"
-                                - elsif set.created_at > Time.now.beginning_of_day - 6.days
-                                    = set.created_at.strftime("%A") + " " + set.created_at.strftime("%H:%M")
-                                - else
-                                    // Output date
-                                    .text-danger
-                                        = set.created_at.strftime("%d/%m/%Y")
-                            %td
-                                = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
-                                = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
-                    
-                    - elsif set.isWarmup
-                        %tr.crosshatch
-                            %td.align-middle
-                                %small
-                                    - if set.weight == 0
-                                        = "BW"
-                                    - elsif set.weight == nil
-                                        = "?"
-                                    - else
-                                        = set.weight.to_s + " " + @exercise.unit
-                            %td.align-middle
-                                %small
-                                    - if set.repetitions == nil
-                                        = "?"
-                                    - else
-                                        = set.repetitions
-                            %td.align-middle
-                                %small
-                                    - if set.created_at > Time.now.beginning_of_day
-                                        #target
-                                            = set.created_at.strftime("%H:%M")
-                                    - elsif set.created_at > Time.now.beginning_of_day - 1.day
-                                        = "Yesterday"
-                                    - elsif set.created_at > Time.now.beginning_of_day - 6.days
-                                        = set.created_at.strftime("%A") + " " + set.created_at.strftime("%H:%M")
-                                    - else
-                                        = set.created_at.strftime("%d/%m/%Y")
-                            %td
-                                %small
-                                    = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
-                                    = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
-                    - else
-                        %tr
-                            %td.align-middle
-                                - if set.weight == 0
-                                    = "BW"
-                                - elsif set.weight == nil
-                                    .text-muted
-                                        = "?"
-                                - else
-                                    = set.weight.to_s + " " + @exercise.unit
-                            %td.align-middle
-                                - if set.repetitions == nil
-                                    .text-muted
-                                        = "?"
-                                - else
-                                    = set.repetitions
-                            %td.align-middle
-                                - if set.created_at > Time.now.beginning_of_day
-                                    #target
-                                        = set.created_at.strftime("%H:%M")
-                                - elsif set.created_at > Time.now.beginning_of_day - 1.day
-                                    = "Yesterday"
-                                - elsif set.created_at > Time.now.beginning_of_day - 6.days
-                                    = set.created_at.strftime("%A") + " " + set.created_at.strftime("%H:%M")
-                                - else
-                                    // Output date
-                                    = set.created_at.strftime("%d/%m/%Y")
-                            %td.align-middle
-                                = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary"}
-                                = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger"}
-
-    
-    
-    %br
         
     :javascript
         var timer = document.getElementById("restTimer");

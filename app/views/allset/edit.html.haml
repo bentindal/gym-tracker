@@ -14,5 +14,6 @@
       Dropset?
       = f.check_box :isWarmup, class: "text-secondary"
       Warmup?
-      
-    = f.submit "Update", class: "btn btn-primary w-100"
+    .d-flex
+      = f.submit "Update", class: "btn btn-sm w-100 btn-primary"
+      = link_to '', "/allset/destroy?id="+@workout.id.to_s, {class: "ml-1 fa-solid fa-trash-can btn btn-sm btn-danger"}
