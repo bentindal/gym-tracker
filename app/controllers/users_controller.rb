@@ -5,7 +5,7 @@ class UsersController < ApplicationController
         
         userList = [@user]
     
-        @feed = Workout.where(user_id: userList).order(:started_at).reverse_order
+        @feed = Workout.where(user_id: userList).order(:started_at).reverse_order[0...3]
 
         @exercises = Exercise.where(user_id: params[:id])
         @workouts = Allset.where(user_id: params[:id])
