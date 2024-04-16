@@ -39,6 +39,9 @@ Rails.application.routes.draw do
   get 'users/find'
   get 'feed' => 'feed#view'
 
+  get "/service-worker.js" => "service_worker#service_worker"
+  get "/manifest.json" => "service_worker#manifest"
+
   get 'error/permission' => 'application#no_permission'
   get 'error/page_not_found' => 'application#page_not_found'
 

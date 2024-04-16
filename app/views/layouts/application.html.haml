@@ -16,7 +16,7 @@
     %link{:href => "images/apple-touch-icon.png", :rel => "apple-touch-icon"}
     - if @page_description.present?
       %meta{name: "description", content: @page_description}/
-
+    %link{crossorigin: "use-credentials", href: "/manifest.json", rel: "manifest"}/
     = javascript_include_tag "//www.google.com/jsapi", "chartkick"
 
     / Google tag (gtag.js)
