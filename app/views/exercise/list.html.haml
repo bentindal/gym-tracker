@@ -2,7 +2,7 @@
     .text-right.mb-1.mt-3
         = link_to 'Dashboard', "/dashboard", {class: "btn btn-secondary"}
         = link_to 'Add New', "/exercise/new", {class: "btn btn-outline-primary"}
-    %h1.mt-1 All Exercises
+    %h1.mt-1 Recent Exercises
                 
     - if @exercises.empty?
         %p.bg-white.border.border-rounded.p-3.text-muted No exercises have been created yet. Use the "Add New" button to create your first exercise.

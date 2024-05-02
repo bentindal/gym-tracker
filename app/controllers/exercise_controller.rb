@@ -1,13 +1,17 @@
 class ExerciseController < ApplicationController
   def list
-    @page_title = "List of Exercises"
+    @page_title = "Recent Exercises"
     @page_description = "View all your exercises on GymTracker"
     @exercises = Exercise.where(user_id: current_user.id)
-    @exercises = @exercises.order(:group)
+    
+    # Sort by last set
+    @exercises = @exercises.order(:last_set).reverse_order
     # Get all unique group names
     @groups = @exercises.pluck(:group).uniq
     if params[:group]
       @exercises = @exercises.where(group: params[:group])
+      # Sort by last set
+      @exercises = @exercises.order(:last_set)
     end
   end
 
