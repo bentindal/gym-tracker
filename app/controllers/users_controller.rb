@@ -35,11 +35,13 @@ class UsersController < ApplicationController
             end
         end
         # Now for calendar view, default = current month
-        if params[:month] != nil && params[:month].to_i > 0 && params[:month].to_i < 13
+        if params[:month] != nil && params[:month].to_i > 0 && params[:month].to_i < 13 && params[:year] != nil && params[:year].to_i > 2020 && params[:year].to_i < 3000
             # If month is specified
             @month = params[:month].to_i
+            @year = params[:year].to_i
         else
             @month = Date.today.month
+            @year = Date.today.year
         end
         # Month name @month
         @month_name = Date::MONTHNAMES[@month]
