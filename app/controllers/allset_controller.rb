@@ -16,6 +16,10 @@ class AllsetController < ApplicationController
     @workout = Allset.new(allset_params)
 
     if @workout.save
+      # Update last_set on exercise
+      @exercise = Exercise.find(params[:exercise_id])
+      @exercise.last_set = @workout.created_at
+      @exercise.save
       redirect_to "/allset/" + params[:exercise_id].to_s, notice: "Set added successfully!"
     else
       render :new, status: :unprocessable_entity
