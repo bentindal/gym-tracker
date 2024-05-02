@@ -3,15 +3,23 @@
 - @dates = Workout.where(user_id: @user.id).pluck(:started_at).uniq
 .row.mb-1.text-center.align-middle.pt-3
     .col-2
-        %a.btn.btn-sm.btn-outline-primary{href: "?id=#{@user.id}&month=#{@month - 1}"}
-            %strong ◀
+        - if @month != 1
+            %a.btn.btn-sm.btn-outline-primary{href: "?id=#{@user.id}&month=#{@month - 1}&year=#{@year}"}
+                %strong ◀
+        - elsif @month == 1
+            %a.btn.btn-sm.btn-outline-primary{href: "?id=#{@user.id}&month=#{12}&year=#{@year - 1}"}
+                %strong ◀
     .col-8
         %h5.text-center
             %strong.float-center.align-middle
-                = "#{@month_name} #{Date.today.year}"
+                = "#{@month_name} #{@year}"
     .col-2
-        %a.btn.btn-sm.btn-outline-primary{href: "?id=#{@user.id}&month=#{@month + 1}"}
-            %strong ▶
+        - if @month != 12
+            %a.btn.btn-sm.btn-outline-primary{href: "?id=#{@user.id}&month=#{@month + 1}&year=#{@year}"}
+                %strong ▶
+        - elsif @month == 12
+            %a.btn.btn-sm.btn-outline-primary{href: "?id=#{@user.id}&month=#{1}&year=#{@year + 1}"} 
+                %strong ▶
 
 
 %table.table.table-sm.table-borderless.table-hover
@@ -32,9 +40,9 @@
             %th.m-0.p-0
                 S
     // Get the first day of @month this year
-    - @firstDay = Date.new(Date.today.year, @month, 1).strftime("%u").to_i
+    - @firstDay = Date.new(@year, @month, 1).strftime("%u").to_i
     // Get number of days in current month
-    - @daysInMonth = Date.new(Date.today.year, @month, -1).day
+    - @daysInMonth = Date.new(@year, @month, -1).day
     - rowCount = 0
     %tbody
         %tr
@@ -48,17 +56,17 @@
                 %tr
             - dateThatWasFound = ""
             - @dates.each do |date|
-                - if dayCount == date.day && date.strftime("%B") == Date.new(Date.today.year, @month, -1).strftime("%B")
+                - if dayCount == date.day && date.strftime("%B") == Date.new(@year, @month, -1).strftime("%B") && date.year == @year
                     - dateFound = true
                     - dateThatWasFound = date.strftime("%B%d%y") + @user.id.to_s
             - if dateFound
                 %td.bg-success.border.font-decoration-none
                     %a{href: "#workout-#{dateThatWasFound}"}
                         = dayCount
-            - elsif dayCount == Date.today.day && Date.today.strftime("%B") == Date.new(Date.today.year, @month, -1).strftime("%B")
+            - elsif dayCount == Date.today.day && Date.today.strftime("%B") == Date.new(@year, @month, -1).strftime("%B")
                 %td.bg-warning.border.border-warning
                     = dayCount
-            - elsif dayCount < Date.today.day && Date.today.month == @month || Date.today.month > @month
+            - elsif dayCount < Date.today.day && Date.today.month == @month || Date.today.month > @month && Date.today.year == @year || Date.today.year > @year
                 %td.bg-secondary.border
                     = dayCount
             - else
