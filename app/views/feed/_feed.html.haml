@@ -10,8 +10,6 @@
         - @owner = @workout.user
 
         - if @sets.length < 1
-            .container.bg-white.border.rounded.my-3.py-3{id: "workout-#{@workout.started_at.strftime("%B%d%y")+@owner.id.to_s}"}
-                .text-muted No exercises found for this workout, user may have deleted them.
             - next
         
         .container.bg-white.border.rounded.my-3.pt-3{id: "workout-#{@workout.started_at.strftime("%B%d%y")+@owner.id.to_s}"}
