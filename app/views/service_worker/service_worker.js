@@ -1,3 +1,5 @@
+importScripts("https://progressier.app/riZjD0OMYMTnSXf21KL4/sw.js" );
+
 function onInstall(event) {
   console.log('[Serviceworker]', "Installing!", event);
 }
