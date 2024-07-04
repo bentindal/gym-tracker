@@ -20,8 +20,8 @@
     %link{crossorigin: "use-credentials", href: "/manifest.json", rel: "manifest"}/
     = javascript_include_tag "//www.google.com/jsapi", "chartkick"
     
-    = javascript_include_tag "service-worker"
-    = javascript_include_tag "manifest"
+    %script{src: "service-worker.js"}
+    %script{src: "manifest.js"}
 
     / Google tag (gtag.js)
     %script{async: "", src: "https://www.googletagmanager.com/gtag/js?id=G-MWHGM094KQ"}
