@@ -1,11 +1,5 @@
-db/development.sqlite3
-log/development.log
-db/production.sqlite3
-log/production.log
+db/*.sqlite3
+log/*
 config/master.key
-db/development.sqlite3
 db/schema.rb
-db/production.sqlite3
-db/test.rb
-db/development.sqlite3
-log/development.log
+tmp/*
