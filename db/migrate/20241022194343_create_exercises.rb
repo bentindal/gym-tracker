@@ -5,7 +5,7 @@ class CreateExercises < ActiveRecord::Migration[6.1]
       t.string :name
       t.string :unit
       t.string :group
-
+      t.datetime :last_set
       t.timestamps
     end
   end

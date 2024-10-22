@@ -29,6 +29,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_10_22_194530) do
     t.string "name"
     t.string "unit"
     t.string "group"
+    t.datetime "last_set", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
