@@ -8,6 +8,11 @@
       "src": "apple-touch-icon.png",
       "sizes": "144x144",
       "type": "image/png"
+    },
+    {
+      "src": "icon.png",
+      "sizes": "555x555",
+      "type": "image/png"
     }
   ],
   "start_url": "/dashboard",
@@ -16,8 +21,9 @@
   "scope": "/",
   "theme_color": "#FFFFFF",
   "categories": [
+    "fitness",
     "health",
-    "fitness"
+    "productivity"
   ],
   "shortcuts": [
     {
@@ -58,5 +64,8 @@
       "type": "image/png",
       "description": "View your workouts in the calendar on your profile"
     }
-  ]
+  ],
+  "prefer_related_applications": false,
+  "lang": "en",
+  "dir": "ltr"
 }
