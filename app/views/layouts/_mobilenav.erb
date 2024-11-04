@@ -1,18 +1,18 @@
-<div class="container-fluid navbar fixed-bottom bg-light rounded-3 d-flex justify-content-around">
-    <!-- Exercises Button -->
-    <a title="Exercises" href="/exercises" class="col-2 d-flex flex-column align-items-center text-decoration-none">
-        <div class="position-relative d-flex justify-content-center">
-            <i class="fa-solid fa-dumbbell <%= current_page?('/exercises') ? 'text-primary' : 'text-dark' %>"></i>
-        </div>
-        <div class="<%= current_page?('/exercises') ? 'text-primary' : 'text-dark' %>">Exercises</div>
-    </a>
-
+<div class="container-fluid navbar fixed-bottom bg-light rounded-3 d-flex justify-content-around border-top">
     <!-- Feed Button -->
     <a title="Feed" href="/feed" class="col-2 d-flex flex-column align-items-center text-decoration-none">
         <div class="position-relative d-flex justify-content-center">
             <i class="fa-solid fa-rss <%= current_page?('/feed') ? 'text-primary' : 'text-dark' %>"></i>
         </div>
         <div class="<%= current_page?('/feed') ? 'text-primary' : 'text-dark' %>">Feed</div>
+    </a>
+
+    <!-- Exercises Button -->
+    <a title="Exercises" href="/exercises" class="col-2 d-flex flex-column align-items-center text-decoration-none">
+        <div class="position-relative d-flex justify-content-center">
+            <i class="fa-solid fa-dumbbell <%= current_page?('/exercises') ? 'text-primary' : 'text-dark' %>"></i>
+        </div>
+        <div class="<%= current_page?('/exercises') ? 'text-primary' : 'text-dark' %>">Exercises</div>
     </a>
 
     <!-- Center Dashboard button -->
