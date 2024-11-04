@@ -14,7 +14,7 @@ if ('serviceWorker' in navigator) {
 
     .then(function(registration) {
 
-      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      //console.log('ServiceWorker registration successful with scope: ', registration.scope);
 
     })
 
