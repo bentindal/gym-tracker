@@ -1,8 +1,9 @@
 // Configure your import map in config/importmap.rb. Read more: https://github.com/rails/importmap-rails
 import "@hotwired/turbo-rails"
 import "controllers"
-
-// This file is newly created to register the service worker
+import "chartkick"
+import "Chart.bundle"
+import "./chartkick/chart.js"
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
