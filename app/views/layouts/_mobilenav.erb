@@ -1,0 +1,43 @@
+<div class="container-fluid navbar fixed-bottom bg-light rounded-3 d-flex justify-content-around border-top">
+    <!-- Feed Button -->
+    <a title="Feed" href="/feed" class="col-2 d-flex flex-column align-items-center text-decoration-none">
+        <div class="position-relative d-flex justify-content-center">
+            <i class="fa-solid fa-rss <%= current_page?('/feed') ? 'text-primary' : 'text-dark' %>"></i>
+        </div>
+        <div class="<%= current_page?('/feed') ? 'text-primary' : 'text-dark' %>">Feed</div>
+    </a>
+
+    <!-- Exercises Button -->
+    <a title="Exercises" href="/exercises" class="col-2 d-flex flex-column align-items-center text-decoration-none">
+        <div class="position-relative d-flex justify-content-center">
+            <i class="fa-solid fa-dumbbell <%= current_page?('/exercises') ? 'text-primary' : 'text-dark' %>"></i>
+        </div>
+        <div class="<%= current_page?('/exercises') ? 'text-primary' : 'text-dark' %>">Exercises</div>
+    </a>
+
+    <!-- Center Dashboard button -->
+    <a title="Dashboard" href="/dashboard" class="col-3 d-flex flex-column align-items-center text-decoration-none">
+        <div class="bg-primary rounded-circle p-3 border border-white d-flex justify-content-center">
+            <div class="position-relative">
+                <i class="text-white fa-solid fa-house"></i>
+            </div>
+        </div>
+    </a>
+
+    <!-- Friends Button -->
+    <a title="Friends" href="/friend/list" class="col-2 d-flex flex-column align-items-center text-decoration-none">
+        <div class="position-relative d-flex justify-content-center">
+            <i class="fa-solid fa-heart <%= current_page?('/friend/list') ? 'text-primary' : 'text-dark' %>"></i>
+        </div>
+        <div class="<%= current_page?('/friend/list') ? 'text-primary' : 'text-dark' %>">Friends</div>
+    </a>
+
+    <!-- Profile Button -->
+    <% @USER_PROFILE_LINK = '/users/view?id=' + current_user.id.to_s %>
+    <a title="Profile" href="<%= @USER_PROFILE_LINK %>" class="col-2 d-flex flex-column align-items-center text-decoration-none">
+        <div class="position-relative d-flex justify-content-center">
+            <i class="fa-solid fa-user <%= current_page?(@USER_PROFILE_LINK) ? 'text-primary' : 'text-dark' %>"></i>
+        </div>
+        <div class="<%= current_page?(@USER_PROFILE_LINK) ? 'text-primary' : 'text-dark' %>">Profile</div>
+    </a>
+</div>
