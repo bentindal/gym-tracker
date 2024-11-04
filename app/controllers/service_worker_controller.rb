@@ -5,7 +5,7 @@ class ServiceWorkerController < ApplicationController
 
     def service_worker
         respond_to do |format|
-            format.js { render file: Rails.root.join('public', 'service_worker.js'), content_type: 'application/javascript' }
+            format.js { render file: Rails.root.join('public', 'service-worker.js'), content_type: 'application/javascript' }
         end
     end
     
