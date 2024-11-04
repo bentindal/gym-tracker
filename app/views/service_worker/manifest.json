@@ -1,0 +1,42 @@
+{
+  "short_name": "GymTracker",
+  "name": "GymTracker",
+  "description": "GymTracker is a simple app for tracking your workouts.",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/dashboard",
+  "background_color": "#FFFFFF",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#FFFFFF",
+  "categories": [
+    "health",
+    "fitness"
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Go to Dashboard",
+      "url": "/dashboard"
+    },
+    {
+      "name": "Feed",
+      "short_name": "Feed",
+      "description": "Go to Feed",
+      "url": "/feed"
+    },
+    {
+      "name": "Exercises",
+      "short_name": "Exercises",
+      "description": "Go to Exercises",
+      "url": "/exercises"
+    }
+  ]
+}

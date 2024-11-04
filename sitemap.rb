@@ -3,7 +3,7 @@ require 'sitemap_generator'
 
 SitemapGenerator::Sitemap.default_host = 'http://gymtracker.uk'
 SitemapGenerator::Sitemap.create do
-  add '/home', :changefreq => 'daily', :priority => 0.9
+  add '/dashboard', :changefreq => 'daily', :priority => 0.9
   add '/exercises', :changefreq => 'weekly', :priority => 0.9
   add '/feed', :changefreq => 'weekly', :priority => 0.7
   add '/users/sign_in', :changefreq => 'weekly', :priority => 0.8

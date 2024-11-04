@@ -5,14 +5,23 @@ import "chartkick"
 import "Chart.bundle"
 import "chartkick/chart.js"
 
-if (navigator.serviceWorker) {
-    navigator.serviceWorker.register("/service-worker.js", { scope: "/" })
-      .then(() => navigator.serviceWorker.ready)
-      .then((registration) => {
-        if ("SyncManager" in window) {
-          registration.sync.register("sync-forms");
-        } else {
-          window.alert("This browser does not support background sync.")
-        }
-      }).then(() => console.log("[Companion]", "Service worker registered!"));
+
+// This file is newly created to register the service worker
+
+if ('serviceWorker' in navigator) {
+
+  navigator.serviceWorker.register('/service_worker/service_worker.js')
+
+    .then(function(registration) {
+
+      console.log('ServiceWorker registration successful with scope: ', registration.scope);
+
+    })
+
+    .catch(function(error) {
+
+      console.log('ServiceWorker registration failed: ', error);
+
+    });
+
 }
