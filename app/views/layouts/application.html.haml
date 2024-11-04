@@ -19,18 +19,6 @@
     
     %link{crossorigin: "use-credentials", href: "/manifest.json", rel: "manifest"}/
     = javascript_include_tag "//www.google.com/jsapi", "chartkick"
-      
-    %script
-    :javascript
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-          navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
-            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-          }, function(error) {
-            console.log('ServiceWorker registration failed: ', error);
-          });
-        });
-      }
 
     / Google tag (gtag.js)
     %script{async: "", src: "https://www.googletagmanager.com/gtag/js?id=G-MWHGM094KQ"}
