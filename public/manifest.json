@@ -67,5 +67,10 @@
   ],
   "prefer_related_applications": false,
   "lang": "en",
-  "dir": "ltr"
+  "dir": "ltr",
+  "display_override": [
+    "fullscreen",
+    "minimal-ui",
+    "window-controls-overlay"
+  ]
 }
