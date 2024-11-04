@@ -22,6 +22,7 @@ class Users::SessionsController < Devise::SessionsController
   def new
     @page_title = "Sign In"
     @page_description = "Sign in to GymTracker to start tracking your workouts and following your friends."
+    @block_mobile_nav_bar = true
     super
   end
   # If you have extra params to permit, append them to the sanitizer.
