@@ -4,8 +4,14 @@ class ServiceWorkerController < ApplicationController
     skip_before_action :authenticate_user!
 
     def service_worker
+        respond_to do |format|
+            format.js { render file: Rails.root.join('public', 'service_worker.js'), content_type: 'application/javascript' }
+        end
     end
     
     def manifest
+        respond_to do |format|
+            format.json { render file: Rails.root.join('public', 'manifest.json'), content_type: 'application/json' }
+        end
     end
 end
