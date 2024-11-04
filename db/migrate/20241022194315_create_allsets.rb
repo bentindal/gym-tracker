@@ -1,6 +1,6 @@
 class CreateAllsets < ActiveRecord::Migration[6.1]
   def change
-    create_table :allsets do |t|
+    create_table :allsets, if_not_exists: true do |t|
       t.integer :exercise_id
       t.integer :repetitions
       t.decimal :weight

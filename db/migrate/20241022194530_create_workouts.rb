@@ -1,6 +1,6 @@
 class CreateWorkouts < ActiveRecord::Migration[6.1]
   def change
-    create_table :workouts do |t|
+    create_table :workouts, if_not_exists: true do |t|
       t.datetime :started_at, precision: nil
       t.datetime :ended_at, precision: nil
       t.integer :user_id

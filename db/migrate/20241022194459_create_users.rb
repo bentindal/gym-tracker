@@ -1,6 +1,6 @@
 class CreateUsers < ActiveRecord::Migration[6.1]
   def change
-    create_table :users do |t|
+    create_table :users, if_not_exists: true do |t|
       t.string :email, default: "", null: false
       t.string :encrypted_password, default: "", null: false
       t.string :reset_password_token

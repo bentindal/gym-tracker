@@ -1,6 +1,6 @@
 class CreateExercises < ActiveRecord::Migration[6.1]
   def change
-    create_table :exercises do |t|
+    create_table :exercises, if_not_exists: true do |t|
       t.integer :user_id
       t.string :name
       t.string :unit
