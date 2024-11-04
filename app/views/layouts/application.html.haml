@@ -114,12 +114,14 @@
   %body.bg-light
     - if @page_title != "Free Online Gym Tracker & Workout Diary"
       - if notice
+        .pt-2
         %p.notice.alert.alert-success.alert-dismissible.fade.show{role: "alert"}
           %strong Success!
           = notice
           %button.close{"aria-label" => "Close", "data-dismiss" => "alert", type: "button"}
             %span{"aria-hidden" => "true"} ×
       - if alert
+        .pt-2
         %p.alert.alert-danger.alert-dismissible.fade.show{role: "alert"}
           %strong Error!
           = alert
@@ -128,12 +130,15 @@
       // If the user is in the middle of a workout and is not already on /allset/(that page), show a warning
       - if user_signed_in?
         - if current_user.sets.count > 0
+          .pt-2
           - if current_page?("/allset/#{current_user.last_exercise.id}") == false && current_user.midworkout
             %p.alert.alert-warning.alert-dismissible.fade.show{role: "alert"}
               %strong Keep going!
               You are currently in the middle of a workout.
               %a{href: "/allset/#{current_user.last_exercise.id.to_s}"} 
                 = "Resume #{current_user.last_exercise.name}"
+              %button.close{"aria-label" => "Close", "data-dismiss" => "alert", type: "button"}
+                %span{"aria-hidden" => "true"} ×
 
     = yield
 
