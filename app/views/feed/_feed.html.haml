@@ -70,27 +70,25 @@
                         %h5.lead
                             = @workout.length_string
 
-            .row.border-top.align-items-center.float-center.pt-2.pb-2
+            .row.border-top.align-items-center.float-center.pt-2.pb-2{data: {controller: "like"}}
                 - count = @workout.likes_count
                 - if Like.where(user_id: current_user.id, workout_id: @workout.id).count > 0
-                    %a{href: likes_create_path(workout_id: @workout.id, back: "#{@location}"), class: "btn btn-danger btn-sm ml-2 mr-2"}
+                    %a{href: likes_create_path(workout_id: @workout.id, back: "#{@location}"), 
+                       class: "btn btn-danger btn-sm ml-2 mr-2",
+                       data: {like_target: "button", action: "click->like#toggle"}}
                         %i.fa-solid.fa-heart.text-white
-                        %strong
+                        %strong{data: {like_target: "count"}}
                             = count
                 - else
-                    %a{href: likes_create_path(workout_id: @workout.id, back: "#{@location}"), class: "btn btn-outline-danger btn-sm ml-2 mr-2"}
+                    %a{href: likes_create_path(workout_id: @workout.id, back: "#{@location}"), 
+                       class: "btn btn-outline-danger btn-sm ml-2 mr-2",
+                       data: {like_target: "button", action: "click->like#toggle"}}
                         %i.fa-solid.fa-heart.text-danger
-                        %strong
+                        %strong{data: {like_target: "count"}}
                             = count
                 - liked_by = @workout.liked_by
-                .text-muted 
+                .text-muted{data: {like_target: "likedBy"}}
                     - if count == 0
                         = str = "No one has liked this workout yet."
                     - else
-                        - str = ""
-                        - liked_by.each do |name|
-                            - if name == liked_by.first
-                                - str += name
-                            - else
-                                - str +=  ", #{name}"
-                        Liked by #{str}
+                        = "Liked by #{liked_by.join(", ")}"
