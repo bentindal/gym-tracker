@@ -18,7 +18,16 @@ class LikesController < ApplicationController
         Rails.logger.debug "Current user: #{current_user.name}"
 
         respond_to do |format|
-            format.html { redirect_to params[:back] }
+            format.html do
+                case params[:back]
+                when "dashboard"
+                    redirect_to dashboard_path
+                when "workout"
+                    redirect_to workout_path(params[:workout_id])
+                else
+                    redirect_back(fallback_location: root_path)
+                end
+            end
             format.json { 
                 render json: {
                     count: workout.likes_count,
