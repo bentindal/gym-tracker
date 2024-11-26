@@ -18,7 +18,7 @@ export default class extends Controller {
     const secs = Math.floor((diff % 60000) / 1000)
     
     if (mins >= 10) {
-      this.displayTarget.textContent = "10+"
+      this.displayTarget.textContent = ">10m"
       if (this.interval) clearInterval(this.interval)
       return
     }
