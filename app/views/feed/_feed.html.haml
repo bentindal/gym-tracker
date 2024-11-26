@@ -22,7 +22,7 @@
                             .badge.badge-pill.badge-dark.px-1.font-weight
                                 🔥 #{@owner.streakcount} days
 
-                        - if @sets.last.second.last.created_at >= 3.hours.ago
+                        - if @sets.last.second.last.created_at >= 12.hours.ago
                             %span.badge.badge-pill.badge-warning.text-white
                                 %i.fa-solid.fa-eye
                                 New
