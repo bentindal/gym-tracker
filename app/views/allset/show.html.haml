@@ -27,143 +27,97 @@
     - if @sets.empty?
         %p.text-center.text-muted No sets have been logged yet.
     - else
-        // if @sets.first.created_at is within 1 hour of current time
-        - if @sets.first.created_at > Time.now.beginning_of_day
-            #restTimer{style: "display: none;"}
-                = @sets.first.created_at.strftime("%H:%M:%S")
-        
-        - @setss.each do |info|
-            .text-muted
-                - if info[0] > Time.now.beginning_of_day - 10.minutes
-                    #target
-                - elsif info[0] > Time.now.beginning_of_day - 1.day
-                    = "Today"
-                - elsif info[0] > Time.now.beginning_of_day - 2.day
-                    = "Yesterday"
-                - elsif info[0] > Time.now.beginning_of_day - 6.days
-                    = info[0].strftime("%A")
-                - else
-                    // Output date in Day, Month format e.g 1st September
-                    = info[0].strftime("%d %B, %Y")
-            %table.table.text-center.bg-white.table-sm.border
-                %tbody
-                    - info[1].each do |set|
-                        - if set.isFailure
-                            %tr.text-danger
-                                %td
-                                    %u
+        #rest-timer{"data-controller": "rest-timer"}
+            - if @sets.first.created_at > Time.now.beginning_of_day
+                #timer{"data-rest-timer-target": "timer", "data-start-time": @sets.first.created_at.iso8601}
+            
+            - @setss.each do |info|
+                .text-muted
+                    - if info[0] > Time.now.beginning_of_day - 10.minutes
+                        %div{"data-rest-timer-target": "display", style: "min-height: 1.2em"}
+                            = "0s ago"
+                    - elsif info[0] > Time.now.beginning_of_day - 1.day
+                        = "Today"
+                    - elsif info[0] > Time.now.beginning_of_day - 2.day
+                        = "Yesterday"
+                    - elsif info[0] > Time.now.beginning_of_day - 6.days
+                        = info[0].strftime("%A")
+                    - else
+                        = info[0].strftime("%d %B, %Y")
+                %table.table.text-center.bg-white.table-sm.border
+                    %tbody
+                        - info[1].each do |set|
+                            - if set.isFailure
+                                %tr.text-danger
+                                    %td
+                                        %u
+                                            - if set.weight == 0
+                                                = "BW"
+                                            - elsif set.weight == nil
+                                                = "?"
+                                            - else
+                                                = set.weight.to_s + @exercise.unit
+                                        x
+                                        %u 
+                                            - if set.repetitions == nil
+                                                = "?"
+                                            - else
+                                                = set.repetitions
+                                    %td
+                                        %small
+                                            = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
+                                            = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
+                            - elsif set.isDropset
+                                %tr.text-info
+                                    %td
                                         - if set.weight == 0
                                             = "BW"
                                         - elsif set.weight == nil
                                             = "?"
                                         - else
                                             = set.weight.to_s + @exercise.unit
-                                    x
-                                    %u 
+                                        x
                                         - if set.repetitions == nil
                                             = "?"
                                         - else
                                             = set.repetitions
-                                %td
-                                    %small
-                                        = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
-                                        = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
-                        - elsif set.isDropset
-                            %tr.text-info
-                                %td
-                                    - if set.weight == 0
-                                        = "BW"
-                                    - elsif set.weight == nil
-                                        = "?"
-                                    - else
-                                        = set.weight.to_s + @exercise.unit
-                                    x
-                                    - if set.repetitions == nil
-                                        = "?"
-                                    - else
-                                        = set.repetitions
-                                %td
-                                    %small
-                                        = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
-                                        = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
-                        - elsif set.isWarmup
-                            %tr.small.text-muted
-                                %td
-                                    - if set.weight == 0
-                                        = "BW"
-                                    - elsif set.weight == nil
-                                        = "?"
-                                    - else
-                                        = set.weight.to_s + @exercise.unit
-                                    x
-                                    - if set.repetitions == nil
-                                        = "?"
-                                    - else
-                                        = set.repetitions
-                                %td
-                                    %small
-                                        = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
-                                        = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
-                        - else
-                            %tr
-                                %td
-                                    - if set.weight == 0
-                                        = "BW"
-                                    - elsif set.weight == nil
-                                        = "?"
-                                    - else
-                                        = set.weight.to_s + @exercise.unit
-                                    x
-                                    - if set.repetitions == nil
-                                        = "?"
-                                    - else
-                                        = set.repetitions
-                                %td
-                                    %small
-                                        = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
-                                        = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
-
-        
-    :javascript
-        var timer = document.getElementById("restTimer");
-        var target = document.getElementById("target");
-        // if restTimer exists
-        function updateTimer() {
-            if (timer) {
-                // timer.innerText = "00:00";
-                // console.log(timer.innerText);
-                var time = timer.innerText.split(":");
-                // convert into Date object
-                var date = new Date();
-                date.setHours(time[0]);
-                date.setMinutes(time[1]);
-                date.setSeconds(time[2]);
-                
-                // get current
-                var now = new Date();
-                // get difference
-                var diff = now - date;
-                // convert to mins:seconds
-                var mins = Math.floor(diff / 60000);
-                var secs = Math.floor((diff % 60000) / 1000);
-                // console.log('Diff', mins, secs);
-                if (mins < 10) {
-                    if (secs < 10) {
-                        secs = "0" + secs;
-                    }
-                    if (mins == 0) {
-                        msg = secs + "s ago";
-                    }
-                    else {
-                        msg = mins + "m " + secs + "s";
-                    }
-                    target.innerText = msg;
-                } 
-                else if (mins == 10 && secs == 0){
-                    target.innerText = "10+";
-                    timer.destroy();
-                }
-            }
-        }
-        updateTimer()
-        setInterval(updateTimer, 500);
+                                    %td
+                                        %small
+                                            = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
+                                            = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
+                            - elsif set.isWarmup
+                                %tr.small.text-muted
+                                    %td
+                                        - if set.weight == 0
+                                            = "BW"
+                                        - elsif set.weight == nil
+                                            = "?"
+                                        - else
+                                            = set.weight.to_s + @exercise.unit
+                                        x
+                                        - if set.repetitions == nil
+                                            = "?"
+                                        - else
+                                            = set.repetitions
+                                    %td
+                                        %small
+                                            = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
+                                            = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
+                            - else
+                                %tr
+                                    %td
+                                        - if set.weight == 0
+                                            = "BW"
+                                        - elsif set.weight == nil
+                                            = "?"
+                                        - else
+                                            = set.weight.to_s + @exercise.unit
+                                        x
+                                        - if set.repetitions == nil
+                                            = "?"
+                                        - else
+                                            = set.repetitions
+                                    %td
+                                        %small
+                                            = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
+                                            = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
