@@ -1,0 +1,25 @@
+name: RuboCop Linter
+
+on:
+  pull_request: # Trigger on any pull request
+  push:
+    branches:
+      - main # Trigger only when branches are merged into main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.2 # Adjust to your Ruby version
+          bundler-cache: true
+
+      - name: Run RuboCop
+        run: |
+          bundle exec rubocop
