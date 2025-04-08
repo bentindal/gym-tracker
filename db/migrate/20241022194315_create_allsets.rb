@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateAllsets < ActiveRecord::Migration[6.1]
   def change
     create_table :allsets, if_not_exists: true do |t|

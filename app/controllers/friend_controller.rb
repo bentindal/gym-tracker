@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class FriendController < ApplicationController
   def list
-    @page_title = "Friends"
-    @page_description = "View your friends on GymTracker"
+    @page_title = 'Friends'
+    @page_description = 'View your friends on GymTracker'
     # Incoming
     pending_followers = Friend.where(follows: current_user.id, confirmed: false)
 
@@ -33,16 +35,13 @@ class FriendController < ApplicationController
     actual_following.each do |following|
       @actual_following.push(User.find(following.follows))
     end
-
   end
 
   def add
     @friend = Friend.new
     @friend.user = current_user.id
     @friend.follows = params[:id]
-    if User.find_by(id: params[:id]).isPublic
-      @friend.confirmed = true
-    end
+    @friend.confirmed = true if User.find_by(id: params[:id]).isPublic
     @friend.save
     redirect_to "/users/view?id=#{params[:id]}"
   end
@@ -51,7 +50,7 @@ class FriendController < ApplicationController
     @friend = Friend.find_by(user: params[:id], follows: current_user.id)
     @friend.confirmed = true
     @friend.save
-    redirect_to "/friend/list"
+    redirect_to '/friend/list'
   end
 
   def remove
@@ -63,6 +62,6 @@ class FriendController < ApplicationController
   def remove_follower
     @friend = Friend.find_by(user: params[:id], follows: current_user.id)
     @friend.destroy
-    redirect_to "/friend/list"
+    redirect_to '/friend/list'
   end
 end

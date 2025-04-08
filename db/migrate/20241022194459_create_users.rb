@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class CreateUsers < ActiveRecord::Migration[6.1]
   def change
     create_table :users, if_not_exists: true do |t|
-      t.string :email, default: "", null: false
-      t.string :encrypted_password, default: "", null: false
+      t.string :email, default: '', null: false
+      t.string :encrypted_password, default: '', null: false
       t.string :reset_password_token
       t.datetime :reset_password_sent_at
       t.datetime :remember_created_at
@@ -17,8 +19,8 @@ class CreateUsers < ActiveRecord::Migration[6.1]
       t.integer :streakcount, default: 0
       t.integer :highest_streak, default: 0
 
-      t.index :email, unique: true, name: "index_users_on_email"
-      t.index :reset_password_token, unique: true, name: "index_users_on_reset_password_token"
+      t.index :email, unique: true, name: 'index_users_on_email'
+      t.index :reset_password_token, unique: true, name: 'index_users_on_reset_password_token'
 
       t.timestamps
     end
