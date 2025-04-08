@@ -7,7 +7,7 @@ on:
       - main # Trigger only when branches are merged into main
 
 jobs:
-  lint_and_test:
+  rubocop:
     runs-on: ubuntu-latest
 
     services:
