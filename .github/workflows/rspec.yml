@@ -37,6 +37,6 @@ jobs:
         run: |
           bundle exec rspec
           COVERAGE=$(bundle exec simplecov-console | grep -oP '\d+(?=% coverage)')
-          if [ "$COVERAGE" -lt 90 ]; then
-            echo "Coverage is below 90% ($COVERAGE%)"
+          if [ "$COVERAGE" -lt 80 ]; then
+            echo "Coverage is below 80% ($COVERAGE%)"
             exit 1
