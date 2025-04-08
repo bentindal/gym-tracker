@@ -13,7 +13,19 @@ class AllsetController < ApplicationController
   end
 
   def create
-    @workout = Allset.new(allset_params)
+    # Ensure we get the parameters - convert string values to numbers if needed
+    repetitions = params[:repetitions].to_i if params[:repetitions].present?
+    weight = params[:weight].to_f if params[:weight].present?
+    
+    @workout = Allset.new(
+      exercise_id: params[:exercise_id],
+      user_id: params[:user_id],
+      repetitions: repetitions,
+      weight: weight,
+      isFailure: params[:isFailure] == "on",
+      isDropset: params[:isDropset] == "on",
+      isWarmup: params[:isWarmup] == "on"
+    )
 
     if @workout.save
       # Update last_set on exercise
@@ -22,6 +34,8 @@ class AllsetController < ApplicationController
       @exercise.save
       redirect_to "/allset/" + params[:exercise_id].to_s, notice: "Set added successfully!"
     else
+      # Log validation errors for debugging
+      Rails.logger.error("Allset save failed: #{@workout.errors.full_messages}")
       render :new, status: :unprocessable_entity
     end
   end

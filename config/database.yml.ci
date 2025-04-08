@@ -1,0 +1,8 @@
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: gym_tracker_test
+  pool: 5
+  username: postgres
+  password: password
+  host: localhost
