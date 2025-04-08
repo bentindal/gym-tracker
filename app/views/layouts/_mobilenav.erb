@@ -33,11 +33,15 @@
     </a>
 
     <!-- Profile Button -->
-    <% @USER_PROFILE_LINK = '/users/view?id=' + current_user.id.to_s %>
-    <a title="Profile" href="<%= @USER_PROFILE_LINK %>" class="col-2 d-flex flex-column align-items-center text-decoration-none">
+    <% profile_link = current_user ? "/users/view?id=#{current_user.id}" : "/users/sign_in" %>
+    <a title="<%= current_user ? 'Profile' : 'Sign In' %>" 
+       href="<%= profile_link %>" 
+       class="col-2 d-flex flex-column align-items-center text-decoration-none">
         <div class="position-relative d-flex justify-content-center">
-            <i class="fa-solid fa-user <%= current_page?(@USER_PROFILE_LINK) ? 'text-primary' : 'text-dark' %>"></i>
+            <i class="fa-solid fa-user <%= current_page?(profile_link) ? 'text-primary' : 'text-dark' %>"></i>
         </div>
-        <div class="<%= current_page?(@USER_PROFILE_LINK) ? 'text-primary' : 'text-dark' %>">Profile</div>
+        <div class="<%= current_page?(profile_link) ? 'text-primary' : 'text-dark' %>">
+            <%= current_user ? 'Profile' : 'Sign In' %>
+        </div>
     </a>
 </div>

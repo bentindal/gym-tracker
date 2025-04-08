@@ -23,10 +23,10 @@ class Workout < ApplicationRecord
         @liked_by = []
         likes = Like.where(workout_id: self.id)
         likes.each do |like|
-            @liked_by.push(like.name)
+            user = User.find(like.user_id)
+            @liked_by.push(user.name)
         end
         return @liked_by
-
     end
     def user
         return User.find(self.user_id)

@@ -10,6 +10,10 @@
         - elsif current_user.id != @user.id && @is_friend == true
             %a.btn.btn-danger.btn-sm{href: "/friend/remove?id=" + @user.id.to_s}
                 Unfollow
+        - elsif current_user.id == @user.id
+            = link_to edit_user_registration_path, class: "btn btn-primary btn-sm" do
+                %i.fa-solid.fa-pencil
+                Edit Profile
         %h1
             %strong
                 = @user.first_name + ' ' + @user.last_name + "'s"
