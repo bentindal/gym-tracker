@@ -5,37 +5,52 @@
     %input{name: "user_id", placeholder: "UserID", value: @exercise.user_id.to_s, hidden: true}
     - if @sets.any?
       - if @sets.first.created_at > Time.now.beginning_of_day
-        %input.m-1.text-center.w-50{name: "weight", placeholder: "Weight ("+@exercise.unit+")", type: "number", step: "0.25", min: "0", value: @sets.first.weight.to_s}
-        %input.m-1.text-center.w-25{name: "repetitions", placeholder: "Reps", type: "number", step: "1", min: "0", max: "100", value: @sets.first.repetitions.to_s}
-        %h6.m-1.p-0
-          %input.text-danger.m-1.text-center.w-20{name: "isFailure", type: "checkbox", checked: @sets.first.isFailure}
-          %label.text-danger Failure?
-          %input.m-1.text-center.w-20{name: "isDropset", type: "checkbox", checked: @sets.first.isDropset}
-          %label.text-info Dropset?
-          %input.text-secondary.m-1.text-center.w-20{name: "isWarmup", type: "checkbox", checked: @sets.first.isWarmup} 
-          %label.text-secondary Warmup?
-
+        %input.m-1.text-center.w-50{name: "weight", 
+          placeholder: "Weight ("+@exercise.unit+")", 
+          type: "number",
+          inputmode: "decimal",
+          step: "0.25",
+          min: "0",
+          value: @sets.first.weight.to_s}
+        %input.m-1.text-center.w-25{name: "repetitions",
+          placeholder: "Reps",
+          type: "number",
+          inputmode: "numeric",
+          pattern: "[0-9]*",
+          step: "1",
+          min: "0",
+          max: "100",
+          value: @sets.first.repetitions.to_s}
       - else
-        %input.m-1.text-center.w-50{name: "weight", placeholder: "Weight ("+@exercise.unit+")", type: "number", step: "0.25", min: "0"}
-        %input.m-1.text-center.w-25{name: "repetitions", placeholder: "Reps", type: "number", step: "1", min: "0", max: "100"}
-        %h6.m-1.p-0
-          %input.text-danger.m-1.text-center.w-20{name: "isFailure", type: "checkbox"} 
-          %label.text-danger Failure?
-          %input.m-1.text-center.w-20{name: "isDropset", type: "checkbox"} 
-          %label.text-info Dropset?
-          %input.text-secondary.m-1.text-center.w-20{name: "isWarmup", type: "checkbox"} 
-          %label.text-secondary Warmup?
-
+        %input.m-1.text-center.w-50{name: "weight",
+          placeholder: "Weight ("+@exercise.unit+")",
+          type: "number",
+          inputmode: "decimal",
+          step: "0.25",
+          min: "0"}
+        %input.m-1.text-center.w-25{name: "repetitions",
+          placeholder: "Reps",
+          type: "number",
+          inputmode: "numeric",
+          pattern: "[0-9]*",
+          step: "1",
+          min: "0",
+          max: "100"}
     - else 
-      %input.m-1.text-center.w-50{name: "weight", placeholder: "Weight ("+@exercise.unit+")", type: "number", step: "0.25", min: "0"}
-      %input.m-1.text-center.w-25{name: "repetitions", placeholder: "Reps", type: "number", step: "1", min: "0", max: "100"}
-      %h6.m-1.p-0
-        %input.text-danger.m-1.text-center.w-20{name: "isFailure", type: "checkbox"} 
-        %label.text-danger Failure?
-        %input.m-1.text-center.w-20{name: "isDropset", type: "checkbox"} 
-        %label.text-info Dropset?
-        %input.text-secondary.m-1.text-center.w-20{name: "isWarmup", type: "checkbox"} 
-        %label.text-secondary Warmup?
+      %input.m-1.text-center.w-50{name: "weight",
+        placeholder: "Weight ("+@exercise.unit+")",
+        type: "number",
+        inputmode: "decimal",
+        step: "0.25",
+        min: "0"}
+      %input.m-1.text-center.w-25{name: "repetitions",
+        placeholder: "Reps",
+        type: "number",
+        inputmode: "numeric",
+        pattern: "[0-9]*",
+        step: "1",
+        min: "0",
+        max: "100"}
     .d-flex
       %button{type: "submit", class: "btn btn-sm w-100 btn-primary"} Add Set
       = link_to '', "/exercise/view?id=#{@exercise.id.to_s}", {class: "fa-solid fa-chart-line btn btn btn-success ml-1"}

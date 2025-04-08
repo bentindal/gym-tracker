@@ -16,10 +16,10 @@
     }
   ],
   "start_url": "/dashboard",
-  "background_color": "#FFFFFF",
+  "background_color": "#F8F9FA",
   "display": "standalone",
   "scope": "/",
-  "theme_color": "#FFFFFF",
+  "theme_color": "#F8F9FA",
   "categories": [
     "fitness",
     "health",
