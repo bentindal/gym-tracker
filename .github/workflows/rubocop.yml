@@ -1,4 +1,4 @@
-name: RuboCop Linter
+name: Rubocop Linting
 
 on:
   pull_request: # Trigger on any pull request
@@ -7,8 +7,22 @@ on:
       - main # Trigger only when branches are merged into main
 
 jobs:
-  lint:
+  lint_and_test:
     runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:13
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: password
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Checkout code
@@ -17,7 +31,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential
+          sudo apt-get install
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
