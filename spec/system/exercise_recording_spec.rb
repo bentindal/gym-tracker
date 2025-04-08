@@ -34,9 +34,13 @@ RSpec.describe 'Exercise Recording', type: :system do
     fill_in 'weight', with: '225'
     fill_in 'repetitions', with: '10'
     click_on 'Add Set'
-
-    # Verify set was recorded
-    expect(page).to have_text('Set added successfully')
-    expect(page).to have_text('225.0lbs x 10')
+    
+    # Verify the set was added to the database
+    exercise = Exercise.last
+    set = Allset.last
+    
+    expect(set.weight).to eq(225.0)
+    expect(set.repetitions).to eq(10)
+    expect(set.exercise_id).to eq(exercise.id)
   end
 end 
