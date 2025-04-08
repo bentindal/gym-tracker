@@ -106,6 +106,7 @@ group :test do
 
   # For test coverage reporting
   gem 'simplecov', require: false
+  gem 'simplecov-console', require: false
 
   # For testing validations and associations
   gem 'shoulda-matchers', '~> 5.0'
