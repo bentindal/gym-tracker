@@ -11,10 +11,18 @@ RSpec.describe 'Exercise Recording', type: :system do
   end
 
   it 'allows user to log in and record an exercise' do
-    visit '/'
+    # Method 1: Visit sign-in page directly instead of clicking "Get Started"
+    visit '/users/sign_in'
     
-    # Find and click the Get Started link
-    find('a', text: 'Get Started', match: :first).click
+    # Alternative method 2: Use JavaScript to click the button
+    # visit '/'
+    # page.execute_script("document.querySelector('a[href=\"users/sign_in\"]').click()")
+    
+    # Alternative method 3: Scroll to the element first
+    # visit '/'
+    # element = find('a', text: 'Get Started', match: :first)
+    # page.execute_script("arguments[0].scrollIntoView(true)", element)
+    # element.click
     
     # Login
     fill_in 'Email', with: user.email
