@@ -5,8 +5,7 @@ FactoryBot.define do
     repetitions { 10 }
     isWarmup { false }
     created_at { Time.current }
-    user_id { Exercise.find(exercise_id).user_id }
-    
+    user_id { exercise.user_id }
     trait :warmup do
       isWarmup { true }
       weight { 50 }
