@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module Users
+  # Controller for handling password reset functionality
+  # Inherits from Devise::PasswordsController to provide password reset features
   class PasswordsController < Devise::PasswordsController
     # GET /resource/password/new
     def new
