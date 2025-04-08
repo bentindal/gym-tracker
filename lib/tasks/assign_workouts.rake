@@ -2,12 +2,12 @@
 
 desc 'Check for any unassigned workouts inactive for over an hour, and assign them to a workout.'
 task assign_workouts: :environment do
-  puts "[#{Time.now}] Checking for unassigned workouts..."
-  User.all.each do |user|
+  puts "[#{Time.zone.now}] Checking for unassigned workouts..."
+  User.find_each do |user|
     @unassigned_sets = Allset.where(user_id: user.id, belongs_to_workout: nil).group_by(&:exercise)
     @sets = Allset.where(user_id: user.id, belongs_to_workout: nil)
 
-    if @unassigned_sets.length.positive? && @sets.last.created_at <= Time.now - 1.hour
+    if @unassigned_sets.length.positive? && @sets.last.created_at <= 1.hour.ago
       @workout = Workout.new
       @workout.user_id = user.id
       @workout.started_at = @sets.first.created_at

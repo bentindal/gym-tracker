@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'spec_helper'
 
-describe Exercise, type: :model do
+describe Exercise do
   let(:user) { create(:user) }
   let(:exercise) { create(:exercise, user_id: user.id) }
 
@@ -69,12 +69,12 @@ describe Exercise, type: :model do
       Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 110, repetitions: 8, isWarmup: false,
                     created_at: 1.day.ago)
       Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 120, repetitions: 6, isWarmup: true,
-                    created_at: Time.now)
+                    created_at: Time.zone.now)
     end
 
     it 'returns sets within the given date range excluding warmup sets' do
       from = 3.days.ago.to_s
-      to = Time.now.to_s
+      to = Time.zone.now.to_s
       result = exercise.workouts_in_range(from, to)
       expect(result.count).to eq(2)
     end
@@ -82,7 +82,7 @@ describe Exercise, type: :model do
 
   describe '#workouts_on_date' do
     before do
-      @today = Time.now
+      @today = Time.zone.now
       Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10, isWarmup: false,
                     created_at: @today)
       Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 110, repetitions: 8, isWarmup: false,
@@ -101,7 +101,7 @@ describe Exercise, type: :model do
 
   describe '#graph_total_volume' do
     before do
-      today = Time.now
+      today = Time.zone.now
       yesterday = 1.day.ago
 
       # Create sets for today
@@ -121,7 +121,7 @@ describe Exercise, type: :model do
 
     it 'calculates total volume for each day in range' do
       from = 2.days.ago.to_s
-      to = Time.now.to_s
+      to = Time.zone.now.to_s
 
       result = exercise.graph_total_volume(from, to)
 
@@ -129,7 +129,7 @@ describe Exercise, type: :model do
       expect(result.keys.count).to eq(2)
 
       # Today's volume: (100 * 10) + (90 * 12) = 1000 + 1080 = 2080
-      today_key = Time.now.strftime('%d/%m')
+      today_key = Time.zone.now.strftime('%d/%m')
       expect(result[today_key]).to eq(2080)
 
       # Yesterday's volume: 95 * 10 = 950
@@ -140,7 +140,7 @@ describe Exercise, type: :model do
 
   describe '#graph_orm' do
     before do
-      today = Time.now
+      today = Time.zone.now
       yesterday = 1.day.ago
 
       # Create sets for today
@@ -165,7 +165,7 @@ describe Exercise, type: :model do
 
     it 'calculates highest ORM for each day in range' do
       from = 2.days.ago.to_s
-      to = Time.now.to_s
+      to = Time.zone.now.to_s
 
       result = exercise.graph_orm(from, to)
 
@@ -173,7 +173,7 @@ describe Exercise, type: :model do
       expect(result.keys.count).to eq(2)
 
       # Today's ORM: 100 * (1 + (10/30)) rounded to 2 decimal places = 133.33
-      today_key = Time.now.strftime('%d/%m')
+      today_key = Time.zone.now.strftime('%d/%m')
       expect(result[today_key]).to eq(133.33)
 
       # Yesterday's ORM: 95 * (1 + (10/30)) rounded to 2 decimal places = 126.67

@@ -36,8 +36,8 @@ class UsersController < ApplicationController
       @month = params[:month].to_i
       @year = params[:year].to_i
     else
-      @month = Date.today.month
-      @year = Date.today.year
+      @month = Time.zone.today.month
+      @year = Time.zone.today.year
     end
     # Month name @month
     @month_name = Date::MONTHNAMES[@month]

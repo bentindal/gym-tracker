@@ -48,8 +48,8 @@ class User < ApplicationRecord
 
   def streak_status
     streakcount
-    Date.today.day
-    Date.today.day
+    Time.zone.today.day
+    Time.zone.today.day
 
     # Worked out today
     if has_worked_out_today
@@ -71,7 +71,7 @@ class User < ApplicationRecord
   def has_worked_out_today
     all_workouts = sets
     all_workouts.each do |workout|
-      return true if workout.created_at.strftime('%d/%m') == Date.today.strftime('%d/%m')
+      return true if workout.created_at.strftime('%d/%m') == Time.zone.today.strftime('%d/%m')
     end
     false
   end
@@ -126,32 +126,32 @@ class User < ApplicationRecord
 
     last = last_set.created_at
     # If greater than a month, print > 1 month
-    if last <= Time.now - 1.month
+    if last <= 1.month.ago
       'over a month ago'
     # elsif greater than a week, print how many weeks ago
-    elsif last <= Time.now - 1.week
-      weeks = ((Time.now - last) / 1.week).round
+    elsif last <= 1.week.ago
+      weeks = ((Time.zone.now - last) / 1.week).round
       return "#{weeks} week ago" if weeks == 1
 
       "#{weeks} weeks ago"
 
     # elsif greater than a day, print how many days ago
-    elsif last <= Time.now - 1.day
-      days = ((Time.now - last) / 1.day).round
+    elsif last <= 1.day.ago
+      days = ((Time.zone.now - last) / 1.day).round
       return "#{days} day ago" if days == 1
 
       "#{days} days ago"
 
     # elsif greater than an hour, print how many hours ago
-    elsif last <= Time.now - 1.hour
-      hours = ((Time.now - last) / 1.hour).round
+    elsif last <= 1.hour.ago
+      hours = ((Time.zone.now - last) / 1.hour).round
       return "#{hours} hour ago" if hours == 1
 
       "#{hours} hours ago"
 
     # else, print in minutes
     else
-      minutes = ((Time.now - last) / 1.minute).round
+      minutes = ((Time.zone.now - last) / 1.minute).round
       return "#{minutes} minute ago" if minutes == 1
 
       "#{minutes} minutes ago"
@@ -179,7 +179,7 @@ class User < ApplicationRecord
     return 0 if sets == []
 
     datePointer = if has_worked_out_today
-                    Date.today
+                    Time.zone.today
                   else
                     Date.yesterday
                   end
@@ -222,9 +222,9 @@ class User < ApplicationRecord
         item.save
       end
 
-      puts "#{@sets.length} sets assigned to workout #{@workout.id} successfully for user #{id}"
+      Rails.logger.debug { "#{@sets.length} sets assigned to workout #{@workout.id} successfully for user #{id}" }
     else
-      puts 'Cannot end a workout with no sets.'
+      Rails.logger.debug 'Cannot end a workout with no sets.'
     end
   end
 end

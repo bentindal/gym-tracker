@@ -30,7 +30,7 @@ class Exercise < ApplicationRecord
   end
 
   def workouts_on_date(date)
-    Allset.where(exercise_id: id, created_at: date.beginning_of_day..date.end_of_day, isWarmup: false)
+    Allset.where(exercise_id: id, created_at: date.all_day, isWarmup: false)
   end
 
   def graph_total_volume(from, to)

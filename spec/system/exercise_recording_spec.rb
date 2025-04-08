@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Exercise Recording', type: :system do
+RSpec.describe 'Exercise Recording' do
   let(:user) { create(:user) }
 
   it 'allows user to log in and record an exercise' do

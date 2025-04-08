@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'spec_helper'
 require 'ostruct'
 
-describe User, type: :model do
+describe User do
   let(:user) { create(:user) }
 
   describe 'validations' do
@@ -110,7 +110,7 @@ describe User, type: :model do
         Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 90, repetitions: 10,
                       created_at: 1.day.ago)
         set2 = Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 8,
-                             created_at: Time.now)
+                             created_at: Time.zone.now)
 
         expect(user.last_set).to eq(set2)
       end
@@ -153,7 +153,8 @@ describe User, type: :model do
     context 'when user has worked out today' do
       it 'returns true' do
         exercise = create(:exercise, user_id: user.id)
-        Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10, created_at: Time.now)
+        Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10,
+                      created_at: Time.zone.now)
 
         expect(user.has_worked_out_today).to be true
       end
@@ -172,7 +173,7 @@ describe User, type: :model do
   describe '#worked_out_on_date' do
     it 'returns true if user worked out on given date' do
       exercise = create(:exercise, user_id: user.id)
-      date = Date.today
+      date = Time.zone.today
       Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10, created_at: date.to_time)
 
       expect(user.worked_out_on_date(date.day, date.month, date.year)).to be true
@@ -181,7 +182,7 @@ describe User, type: :model do
     it 'returns false if user did not work out on given date' do
       exercise = create(:exercise, user_id: user.id)
       Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10, created_at: 1.day.ago)
-      date = Date.today - 2.days
+      date = Time.zone.today - 2.days
 
       expect(user.worked_out_on_date(date.day, date.month, date.year)).to be false
     end
@@ -346,20 +347,17 @@ describe User, type: :model do
     end
 
     it 'returns appropriate message for "pending" status' do
-      allow(user).to receive(:streak_status).and_return('pending')
-      allow(user).to receive(:streakcount).and_return(5)
+      allow(user).to receive_messages(streak_status: 'pending', streakcount: 5)
       expect(user.streak_msg_own).to eq("You haven't worked out today, but you have a 5 day streak!")
     end
 
     it 'returns appropriate message for "at_risk" status' do
-      allow(user).to receive(:streak_status).and_return('at_risk')
-      allow(user).to receive(:streakcount).and_return(10)
+      allow(user).to receive_messages(streak_status: 'at_risk', streakcount: 10)
       expect(user.streak_msg_own).to eq('You had a day off yesterday, workout today to keep the 10 day streak going or it will be reset!')
     end
 
     it 'returns appropriate message for "active" status' do
-      allow(user).to receive(:streak_status).and_return('active')
-      allow(user).to receive(:streakcount).and_return(15)
+      allow(user).to receive_messages(streak_status: 'active', streakcount: 15)
       expect(user.streak_msg_own).to eq('You have a 15 day streak!')
     end
   end
@@ -371,20 +369,17 @@ describe User, type: :model do
     end
 
     it 'returns appropriate message for "pending" status' do
-      allow(user).to receive(:streak_status).and_return('pending')
-      allow(user).to receive(:streakcount).and_return(5)
+      allow(user).to receive_messages(streak_status: 'pending', streakcount: 5)
       expect(user.streak_msg_other).to eq("#{user.first_name} hasn't worked out today, but has a 5 day streak going!")
     end
 
     it 'returns appropriate message for "at_risk" status' do
-      allow(user).to receive(:streak_status).and_return('at_risk')
-      allow(user).to receive(:streakcount).and_return(10)
+      allow(user).to receive_messages(streak_status: 'at_risk', streakcount: 10)
       expect(user.streak_msg_other).to eq("#{user.first_name} had a day off yesterday, workout today to keep the 10 day streak going or it will be reset!")
     end
 
     it 'returns appropriate message for "active" status' do
-      allow(user).to receive(:streak_status).and_return('active')
-      allow(user).to receive(:streakcount).and_return(15)
+      allow(user).to receive_messages(streak_status: 'active', streakcount: 15)
       expect(user.streak_msg_other).to eq("#{user.first_name} has a 15 day streak going!")
     end
   end

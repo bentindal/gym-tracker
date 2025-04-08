@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'spec_helper'
 
-describe User, type: :model do
+describe User do
   describe '#streak_count' do
     it 'returns 0 when user has no sets' do
       user = create(:user)

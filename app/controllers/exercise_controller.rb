@@ -36,6 +36,10 @@ class ExerciseController < ApplicationController
     @exercise = Exercise.new
   end
 
+  def edit
+    @exercise = Exercise.find(params[:id])
+  end
+
   def create
     @exercise = Exercise.new(exercise_params)
 
@@ -46,17 +50,13 @@ class ExerciseController < ApplicationController
     end
   end
 
-  def edit
-    @exercise = Exercise.find(params[:id])
-  end
-
   def update
     @exercise = Exercise.find(params[:id])
     if current_user.id == @exercise.user_id
       if @exercise.update(exercise_params)
         redirect_to '/exercises', notice: 'Exercise updated successfully'
       else
-        puts @exercise.errors.full_messages # Output error messages to the console
+        Rails.logger.debug @exercise.errors.full_messages # Output error messages to the console
         redirect_to edit_exercise_path(@exercise), notice: 'Error updating exercise'
       end
     else

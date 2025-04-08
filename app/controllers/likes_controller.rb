@@ -15,9 +15,9 @@ class LikesController < ApplicationController
     liked_by = workout.liked_by # Get updated list
 
     # Add debugging
-    Rails.logger.debug "Liked by: #{liked_by.inspect}"
-    Rails.logger.debug "Likes count: #{workout.likes_count}"
-    Rails.logger.debug "Current user: #{current_user.name}"
+    Rails.logger.debug { "Liked by: #{liked_by.inspect}" }
+    Rails.logger.debug { "Likes count: #{workout.likes_count}" }
+    Rails.logger.debug { "Current user: #{current_user.name}" }
 
     respond_to do |format|
       format.html do
