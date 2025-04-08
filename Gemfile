@@ -117,5 +117,3 @@ group :test do
   gem 'rubocop-rspec', require: false
   gem 'rubocop-rspec_rails', require: false
 end
-
-gem "launchy", "~> 3.1", :group => :test
