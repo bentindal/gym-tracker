@@ -2,7 +2,7 @@ source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.0.4", ">= 7.0.4.3"
+gem "rails", "~> 7.1.0"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -49,6 +49,10 @@ gem 'uglifier'
 gem 'execjs'
 
 gem 'mini_racer'
+
+# Add logger gem
+gem 'logger'
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 
@@ -79,7 +83,6 @@ group :development, :test do
 
   # Add testing gems
   gem 'rspec-rails'
-  gem 'capybara'
   gem 'factory_bot_rails'
   gem 'faker'
 end
@@ -100,4 +103,7 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers"
+
+  # For test coverage reporting
+  gem 'simplecov', require: false
 end
