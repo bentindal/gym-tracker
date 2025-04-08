@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Represents a workout session in the system
+# Contains information about when the workout started and ended,
+# and manages the sets that belong to it
 class Workout < ApplicationRecord
   def allsets
     Allset.where(belongs_to_workout: id)

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Migration to create the users table for storing user information
 class CreateUsers < ActiveRecord::Migration[6.1]
   def change
     create_table :users, if_not_exists: true do |t|
@@ -15,7 +16,7 @@ class CreateUsers < ActiveRecord::Migration[6.1]
       t.datetime :last_sign_in_at
       t.string :current_sign_in_ip
       t.string :last_sign_in_ip
-      t.boolean :isPublic, default: true
+      t.boolean :isPublic, null: false, default: true
       t.integer :streakcount, default: 0
       t.integer :highest_streak, default: 0
 

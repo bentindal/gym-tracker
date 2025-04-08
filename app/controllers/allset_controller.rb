@@ -53,7 +53,7 @@ class AllsetController < ApplicationController
     if current_user.id == @workout.user_id
       @id = @workout.exercise_id
       @workout.destroy
-      redirect_to "/allset/#{@id}", notice: 'Workout was successfully destroyed.'
+      redirect_to "/allset/#{@id}", notice: t('.success')
     else
       redirect_to '/error/permission'
     end

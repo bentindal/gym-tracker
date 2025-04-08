@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Migration to create the workouts table for storing workout information
 class CreateWorkouts < ActiveRecord::Migration[6.1]
   def change
     create_table :workouts, if_not_exists: true do |t|
