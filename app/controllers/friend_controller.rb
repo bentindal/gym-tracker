@@ -1,68 +1,67 @@
+# frozen_string_literal: true
+
+# The FriendController manages friend relationships, including listing friends,
+# adding, confirming, and removing friendships.
 class FriendController < ApplicationController
   def list
-    @page_title = "Friends"
-    @page_description = "View your friends on GymTracker"
-    # Incoming
-    pending_followers = Friend.where(follows: current_user.id, confirmed: false)
-
-    @pending_followers = []
-    pending_followers.each do |follower|
-      @pending_followers.push(User.find(follower.user))
-    end
-
-    # Outgoing
-    pending_following = Friend.where(user: current_user.id, confirmed: false)
-
-    @pending_following = []
-    pending_following.each do |following|
-      @pending_following.push(User.find(following.follows))
-    end
-
-    # Followers
-    actual_followers = Friend.where(follows: current_user.id, confirmed: true)
-
-    @actual_followers = []
-    actual_followers.each do |follower|
-      @actual_followers.push(User.find(follower.user))
-    end
-
-    # Following
-    actual_following = Friend.where(user: current_user.id, confirmed: true)
-
-    @actual_following = []
-    actual_following.each do |following|
-      @actual_following.push(User.find(following.follows))
-    end
-
+    set_page_metadata('Friends', 'View your friends on GymTracker')
+    load_pending_followers
+    load_pending_following
+    load_actual_followers
+    load_actual_following
   end
 
   def add
-    @friend = Friend.new
-    @friend.user = current_user.id
-    @friend.follows = params[:id]
-    if User.find_by(id: params[:id]).isPublic
-      @friend.confirmed = true
-    end
+    @friend = Friend.new(user: current_user.id, follows: params[:id])
+    @friend.confirmed = true if User.find_by(id: params[:id])&.isPublic
     @friend.save
-    redirect_to "/users/view?id=#{params[:id]}"
+    redirect_to user_view_path(params[:id])
   end
 
   def confirm
     @friend = Friend.find_by(user: params[:id], follows: current_user.id)
-    @friend.confirmed = true
-    @friend.save
-    redirect_to "/friend/list"
+    @friend.update(confirmed: true)
+    redirect_to friend_list_path
   end
 
   def remove
-    @friend = Friend.find_by(user: current_user.id, follows: params[:id])
-    @friend.destroy
-    redirect_to "/users/view?id=#{params[:id]}"
+    Friend.find_by(user: current_user.id, follows: params[:id])&.destroy
+    redirect_to user_view_path(params[:id])
   end
 
   def remove_follower
-    @friend = Friend.find_by(user: params[:id], follows: current_user.id)
-    @friend.destroy
-    redirect_to "/friend/list"
+    Friend.find_by(user: params[:id], follows: current_user.id)&.destroy
+    redirect_to friend_list_path
+  end
+
+  private
+
+  def set_page_metadata(title, description)
+    @page_title = title
+    @page_description = description
+  end
+
+  def load_pending_followers
+    @pending_followers = User.joins(:friends).where(friends: { follows: current_user.id, confirmed: false })
+  end
+
+  def load_pending_following
+    @pending_following = User.joins(:friends).where(friends: { user: current_user.id, confirmed: false })
+  end
+
+  def load_actual_followers
+    @actual_followers = User.joins(:friends).where(friends: { follows: current_user.id, confirmed: true })
+  end
+
+  def load_actual_following
+    @actual_following = User.joins(:friends).where(friends: { user: current_user.id, confirmed: true })
+  end
+
+  def user_view_path(user_id)
+    "/users/view?id=#{user_id}"
+  end
+
+  def friend_list_path
+    '/friend/list'
   end
 end

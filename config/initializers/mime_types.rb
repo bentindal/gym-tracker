@@ -1,4 +1,6 @@
+# frozen_string_literal: true
+
 # config/initializers/mime_types.rb
 
 # Register JavaScript MIME type
-Mime::Type.register "application/javascript", :js
+Mime::Type.register 'application/javascript', :js

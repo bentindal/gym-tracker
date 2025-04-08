@@ -1,7 +1,9 @@
-require "test_helper"
+# frozen_string_literal: true
+
+require 'test_helper'
 
 class FeedControllerTest < ActionDispatch::IntegrationTest
-  test "should get view" do
+  test 'should get view' do
     get feed_view_url
     assert_response :success
   end

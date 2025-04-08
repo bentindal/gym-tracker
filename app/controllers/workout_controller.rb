@@ -1,53 +1,84 @@
+# frozen_string_literal: true
+
+# The WorkoutController manages workout-related actions, including editing,
+# updating, and finishing workouts. It ensures proper user permissions and
+# provides feedback through flash messages.
 class WorkoutController < ApplicationController
-  def list
-  end
+  def list; end
+
   def edit
     @workout = Workout.find(params[:id])
-    if current_user.id != @workout.user_id
-      redirect_to "/error/permission"
-    end
+    redirect_to permission_error_path if current_user.id != @workout.user_id
   end
+
   def update
     @workout = Workout.find(params[:id])
-    if current_user.id == @workout.user_id
+
+    if authorized_user?(@workout.user_id)
       if @workout.update(workout_params)
-        redirect_to "/workout/view?id=#{@workout.id}", notice: "Workout updated successfully"
+        redirect_to workout_view_path(@workout.id), notice: t('.success')
       else
-        puts @workout.errors.full_messages # Output error messages to the console
-        redirect_to edit_workout_path(@workout), notice: "Error updating workout"
+        Rails.logger.error("Workout update failed: #{@workout.errors.full_messages}")
+        redirect_to edit_workout_path(@workout), alert: t('.failure')
       end
     else
-      redirect_to "/error/permission"
+      redirect_to permission_error_path
     end
   end
+
   def finish
-    @unassigned_sets = Allset.where(user_id: current_user.id, belongs_to_workout: nil).group_by(&:exercise)
-    @sets = Allset.where(user_id: current_user.id, belongs_to_workout: nil)
-    
-    if @unassigned_sets.length > 0
-      @workout = Workout.new
-      @workout.user_id = current_user.id
-      @workout.started_at = @sets.first.created_at
-      @workout.ended_at = @sets.last.created_at
-      # Get the title from unique group names seperated by commas and last being "and"
-      @workout.title = @unassigned_sets.keys.map(&:group).uniq.join(", ").reverse.sub(",", "& ").reverse
-      @workout.exercises_used = @unassigned_sets.length
-      @workout.sets_completed = @sets.length
-      @workout.save
+    load_unassigned_sets
 
-      @sets.each do |item|
-        item.belongs_to_workout = @workout.id
-        item.save
-      end
-
-      redirect_to "/workout/view?id=#{@workout.id}", notice: "Workout successfully ended."
+    if @unassigned_sets.any?
+      create_workout_from_sets
+      redirect_to workout_view_path(@workout.id), notice: t('.success')
     else
-      redirect_to "/workout/list", alert: "Cannot end a workout with no sets."
+      redirect_to workout_list_path, alert: t('.failure')
     end
   end
 
   private
-    def workout_params
-      params.require(:workout).permit(:title)
-    end
+
+  def authorized_user?(user_id)
+    current_user.id == user_id
+  end
+
+  def load_unassigned_sets
+    @unassigned_sets = Allset.where(user_id: current_user.id, belongs_to_workout: nil).group_by(&:exercise)
+    @sets = Allset.where(user_id: current_user.id, belongs_to_workout: nil)
+  end
+
+  def create_workout_from_sets
+    @workout = Workout.new(
+      user_id: current_user.id,
+      started_at: @sets.first.created_at,
+      ended_at: @sets.last.created_at,
+      title: generate_workout_title,
+      exercises_used: @unassigned_sets.length,
+      sets_completed: @sets.length
+    )
+    @workout.save
+
+    @sets.each { |item| item.update(belongs_to_workout: @workout.id) }
+  end
+
+  def generate_workout_title
+    @unassigned_sets.keys.map(&:group).uniq.join(', ').reverse.sub(',', '& ').reverse
+  end
+
+  def workout_view_path(workout_id)
+    "/workout/view?id=#{workout_id}"
+  end
+
+  def workout_list_path
+    '/workout/list'
+  end
+
+  def permission_error_path
+    '/error/permission'
+  end
+
+  def workout_params
+    params.require(:workout).permit(:title)
+  end
 end

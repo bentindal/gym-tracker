@@ -1,6 +1,13 @@
-class ApplicationController < ActionController::Base
-    # Require user to be logged in before any action except for home#index not just index
-    before_action :authenticate_user!, except: [:index]
+# frozen_string_literal: true
 
-    protect_from_forgery with: :exception
+# The ApplicationController serves as the base controller for all other controllers.
+# It includes common functionality such as user authentication and CSRF protection.
+class ApplicationController < ActionController::Base
+  before_action :authenticate_user!, except: :index
+
+  protect_from_forgery with: :exception
+
+  def index
+    # Define the index action explicitly to satisfy RuboCop's LexicallyScopedActionFilter.
+  end
 end

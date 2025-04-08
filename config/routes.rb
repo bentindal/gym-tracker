@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   get 'likes/create'
   get 'likes/destroy'
@@ -45,7 +47,7 @@ Rails.application.routes.draw do
   get 'error/permission' => 'application#no_permission'
   get 'error/page_not_found' => 'application#page_not_found'
 
-  devise_for :users, :controllers => {
+  devise_for :users, controllers: {
     registrations: 'registrations',
     sessions: 'users/sessions',
     passwords: 'users/passwords'
@@ -63,9 +65,7 @@ Rails.application.routes.draw do
     patch '', action: :update, on: :member
   end
 
-  root "home#index"
+  root 'home#index'
 
-  #match "*path" => redirect("/"), via: :get
-
-
+  # match "*path" => redirect("/"), via: :get
 end

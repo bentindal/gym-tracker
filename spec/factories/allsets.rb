@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :allset do
     exercise_id { create(:exercise).id }
@@ -10,21 +12,21 @@ FactoryBot.define do
       isWarmup { true }
       weight { 50 }
     end
-    
+
     trait :heavy do
       weight { 150 }
       repetitions { 5 }
     end
-    
+
     trait :light do
       weight { 60 }
       repetitions { 15 }
     end
-    
+
     trait :past do
       created_at { 7.days.ago }
     end
-    
+
     trait :recent do
       created_at { 1.day.ago }
     end

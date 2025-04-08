@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
+# The HomeController manages the landing page for GymTracker. It redirects
+# signed-in users to their dashboard and displays information for new visitors.
 class HomeController < ApplicationController
   def index
-    # If users signed in redirect to dashboard
-    if user_signed_in?
-      redirect_to dashboard_path
-    end
-    @page_title = "Free Online Gym Tracker & Workout Diary"
-    @page_description = "GymTracker is a simple easy-to-use gym tracker & workout diary allowing you to track your workouts, follow your friends, and see what they're up to."
+    redirect_to dashboard_path if user_signed_in?
+
+    @page_title = t('.page_title')
+    @page_description = t('.page_description')
     @block_mobile_nav_bar = true
   end
 end

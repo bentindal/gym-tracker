@@ -1,38 +1,44 @@
+# frozen_string_literal: true
+
+# The DashboardController manages the user's dashboard view, providing an overview
+# of recent activities, workouts, and a calendar view for tracking progress.
 class DashboardController < ApplicationController
   def view
-    @page_title = "Dashboard"
-    @page_description = "View your dashboard on GymTracker"
-    @location = "dashboard"
+    set_page_metadata
+    load_feed
+    load_calendar_data
+  end
 
-    userList = [current_user]
-    list_of_ids = Friend.where(user: current_user.id, confirmed: true).pluck(:follows)
-    # Feed
+  private
 
-    @feed = []
-    all_workouts = Workout.where(user_id: list_of_ids) + Workout.where(user_id: current_user.id)
-    all_workouts.each do |workout|
-      @feed.push(workout)
-    end
-    
-    # Sort by started_at date
-    @feed = @feed.sort_by { |a| a.started_at }.reverse[0...5]
+  def set_page_metadata
+    @page_title = 'Dashboard'
+    @page_description = 'View your dashboard on GymTracker'
+    @location = 'dashboard'
+  end
 
-    # Other information
-    @dates = []
-    current_user.sets.each do |workout|
-        @dates.push(workout.created_at.to_date)
-    end
-    
-    # Now for calendar view, default = current month
-    if params[:month] != nil && params[:month].to_i > 0 && params[:month].to_i < 13 && params[:year] != nil && params[:year].to_i > 2020 && params[:year].to_i < 3000
-      # If month is specified
+  def load_feed
+    friend_ids = Friend.where(user: current_user.id, confirmed: true).pluck(:follows)
+    workouts = Workout.where(user_id: friend_ids + [current_user.id])
+    @feed = workouts.order(started_at: :desc).limit(5)
+  end
+
+  def load_calendar_data
+    @dates = current_user.sets.pluck(:created_at).map(&:to_date)
+
+    if valid_month_and_year_params?
       @month = params[:month].to_i
       @year = params[:year].to_i
     else
-        @month = Date.today.month
-        @year = Date.today.year
+      today = Time.zone.today
+      @month = today.month
+      @year = today.year
     end
-    # Month name @month
-    @month_name = Date::MONTHNAMES[@month]
+
+    @month_name = I18n.t('date.month_names')[@month]
+  end
+
+  def valid_month_and_year_params?
+    params[:month].to_i.between?(1, 12) && params[:year].to_i.between?(2021, 2999)
   end
 end

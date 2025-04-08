@@ -1,8 +1,8 @@
+# frozen_string_literal: true
+
+# The Allset model represents a single set in a workout. It includes associations
+# to the user who performed the set and the exercise it belongs to.
 class Allset < ApplicationRecord
-    def user
-        return User.find(self.user_id)
-    end
-    def exercise
-        return Exercise.find(self.exercise_id)
-    end
+  belongs_to :user
+  belongs_to :exercise
 end
