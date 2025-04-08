@@ -1,53 +1,62 @@
 # frozen_string_literal: true
 
+# The UsersController manages user profiles and provides functionality to view
+# and search for users on GymTracker.
 class UsersController < ApplicationController
   def view
-    @user = User.find(params[:id])
-    @location = 'dashboard'
-
-    userList = [@user]
-
-    @feed = Workout.where(user_id: userList).order(:started_at).reverse_order[0...3]
-
-    @exercises = Exercise.where(user_id: params[:id])
-    @workouts = Allset.where(user_id: params[:id])
-    @is_friend = false
-    @pending = false
-    @page_title = "#{@user.first_name} #{@user.last_name}'s Profile"
-    @page_description = "View #{@user.first_name} #{@user.last_name}'s profile on GymTracker"
-    unless current_user.nil?
-      all_friends = Friend.where(user: current_user.id)
-      all_friends.each do |friend|
-        @is_friend = true if friend.follows == params[:id].to_i && friend.confirmed == true
-        @pending = true if friend.follows == params[:id].to_i && friend.confirmed == false
-      end
-    end
-    # do they follow back?
-    @follows_back = false
-    unless current_user.nil?
-      all_friends = Friend.where(follows: current_user.id)
-      all_friends.each do |friend|
-        @follows_back = true if friend.user == params[:id].to_i && friend.confirmed == true
-      end
-    end
-    # Now for calendar view, default = current month
-    if !params[:month].nil? && params[:month].to_i.positive? && params[:month].to_i < 13 && !params[:year].nil? && params[:year].to_i > 2020 && params[:year].to_i < 3000
-      # If month is specified
-      @month = params[:month].to_i
-      @year = params[:year].to_i
-    else
-      @month = Time.zone.today.month
-      @year = Time.zone.today.year
-    end
-    # Month name @month
-    @month_name = Date::MONTHNAMES[@month]
+    load_user_profile
+    load_feed
+    load_exercises_and_workouts
+    check_friendship_status
+    set_calendar_data
   end
 
   def find
-    @page_title = 'All Users'
-    @page_description = 'View all users using GymTracker'
-    @users = User.all
-    # Sort Alphabetically by First Name
-    @users = @users.sort_by(&:first_name)
+    @page_title = t('.page_title')
+    @page_description = t('.page_description')
+    @users = User.order(:first_name)
+  end
+
+  private
+
+  def load_user_profile
+    @user = User.find(params[:id])
+    @location = 'dashboard'
+    @page_title = t('users.view.page_title', name: "#{@user.first_name} #{@user.last_name}")
+    @page_description = t('users.view.page_description', name: "#{@user.first_name} #{@user.last_name}")
+  end
+
+  def load_feed
+    @feed = Workout.where(user_id: @user.id).order(started_at: :desc).limit(3)
+  end
+
+  def load_exercises_and_workouts
+    @exercises = Exercise.where(user_id: @user.id)
+    @workouts = Allset.where(user_id: @user.id)
+  end
+
+  def check_friendship_status
+    return if current_user.nil?
+
+    @is_friend = Friend.exists?(user: current_user.id, follows: @user.id, confirmed: true)
+    @pending = Friend.exists?(user: current_user.id, follows: @user.id, confirmed: false)
+    @follows_back = Friend.exists?(follows: current_user.id, user: @user.id, confirmed: true)
+  end
+
+  def set_calendar_data
+    if valid_month_and_year_params?
+      @month = params[:month].to_i
+      @year = params[:year].to_i
+    else
+      today = Time.zone.today
+      @month = today.month
+      @year = today.year
+    end
+
+    @month_name = I18n.t('date.month_names')[@month]
+  end
+
+  def valid_month_and_year_params?
+    params[:month].to_i.between?(1, 12) && params[:year].to_i.between?(2021, 2999)
   end
 end

@@ -1,34 +1,20 @@
 # frozen_string_literal: true
 
+# The ExerciseController manages CRUD operations for exercises, allowing users
+# to create, view, update, and delete their workout exercises.
 class ExerciseController < ApplicationController
   def list
-    @page_title = 'Recent Exercises'
-    @page_description = 'View all your exercises on GymTracker'
-    @exercises = Exercise.where(user_id: current_user.id)
-
-    # Sort by last set
-    @exercises = @exercises.order(:last_set).reverse_order
-    # Get all unique group names
-    @groups = @exercises.pluck(:group).uniq
-    return unless params[:group]
-
-    @exercises = @exercises.where(group: params[:group])
-    # Sort by last set
-    @exercises = @exercises.order(:last_set)
+    set_page_metadata('Recent Exercises', 'View all your exercises on GymTracker')
+    load_exercises
+    filter_exercises_by_group if params[:group].present?
   end
 
   def view
     @exercise = Exercise.find(params[:id])
-    if @exercise.user_id == current_user.id
-      if @exercise.sets.count.positive?
-        params[:from] = @exercise.sets.order(:created_at).first.created_at.strftime('%d/%m/%Y') if params[:from].nil?
-        params[:to] = @exercise.sets.order(:created_at).last.created_at.strftime('%d/%m/%Y') if params[:to].nil?
-      else
-        params[:from] = DateTime.now.strftime('%d/%m/%Y')
-        params[:to] = DateTime.now.strftime('%d/%m/%Y')
-      end
+    if authorized_user?(@exercise.user_id)
+      set_date_range
     else
-      redirect_to '/error/permission'
+      redirect_to permission_error_path
     end
   end
 
@@ -44,7 +30,7 @@ class ExerciseController < ApplicationController
     @exercise = Exercise.new(exercise_params)
 
     if @exercise.save
-      redirect_to allset_path(@exercise), notice: 'Exercise created successfully!'
+      redirect_to allset_path(@exercise), notice: t('.success')
     else
       render :new, status: :unprocessable_entity
     end
@@ -52,15 +38,16 @@ class ExerciseController < ApplicationController
 
   def update
     @exercise = Exercise.find(params[:id])
-    if current_user.id == @exercise.user_id
+
+    if authorized_user?(@exercise.user_id)
       if @exercise.update(exercise_params)
-        redirect_to '/exercises', notice: 'Exercise updated successfully'
+        redirect_to exercises_path, notice: t('.success')
       else
-        Rails.logger.debug @exercise.errors.full_messages # Output error messages to the console
-        redirect_to edit_exercise_path(@exercise), notice: 'Error updating exercise'
+        Rails.logger.error("Exercise update failed: #{@exercise.errors.full_messages}")
+        redirect_to edit_exercise_path(@exercise), alert: t('.failure')
       end
     else
-      redirect_to '/error/permission'
+      redirect_to permission_error_path
     end
   end
 
@@ -75,6 +62,47 @@ class ExerciseController < ApplicationController
   end
 
   private
+
+  def set_page_metadata(title, description)
+    @page_title = title
+    @page_description = description
+  end
+
+  def load_exercises
+    @exercises = Exercise.where(user_id: current_user.id).order(last_set: :desc)
+    @groups = @exercises.pluck(:group).uniq
+  end
+
+  def filter_exercises_by_group
+    @exercises = @exercises.where(group: params[:group]).order(last_set: :desc)
+  end
+
+  def set_date_range
+    if @exercise.sets.exists?
+      @from = @exercise.sets.order(:created_at).first.created_at.to_date
+      @to = @exercise.sets.order(:created_at).last.created_at.to_date
+    else
+      today = Time.zone.today
+      @from = today
+      @to = today
+    end
+  end
+
+  def authorized_user?(user_id)
+    current_user.id == user_id
+  end
+
+  def permission_error_path
+    '/error/permission'
+  end
+
+  def allset_path(exercise)
+    "/allset/#{exercise.id}"
+  end
+
+  def exercises_path
+    '/exercises'
+  end
 
   def exercise_params
     params.require(:exercise).permit(:user_id, :name, :unit, :group)

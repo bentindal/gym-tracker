@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# app/controllers/service_worker_controller.rb
+# The ServiceWorkerController serves static files for the service worker and manifest.
+# It ensures these files are accessible without requiring user authentication.
 class ServiceWorkerController < ApplicationController
   protect_from_forgery except: :service_worker
   skip_before_action :authenticate_user!

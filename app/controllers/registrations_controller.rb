@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
+# The RegistrationsController extends Devise's RegistrationsController to customize
+# the sign-up and account update processes for GymTracker users.
 class RegistrationsController < Devise::RegistrationsController
   def new
-    @page_title = 'Sign Up'
-    @page_description = 'Create an account on GymTracker'
+    @page_title = t('.page_title')
+    @page_description = t('.page_description')
     super
   end
 
