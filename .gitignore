@@ -4,3 +4,4 @@ log/*
 config/master.key
 db/schema.rb
 tmp/*
+coverage/*
