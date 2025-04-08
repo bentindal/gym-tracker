@@ -1,12 +1,10 @@
 name: RSpec Tests
 
 on:
+  pull_request: # Trigger on any pull request
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - main # Trigger only when branches are merged into main
 
 jobs:
   test:
