@@ -48,8 +48,6 @@ gem 'uglifier'
 
 gem 'execjs'
 
-gem 'mini_racer'
-
 # Add logger gem
 gem 'logger'
 
