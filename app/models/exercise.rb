@@ -5,7 +5,7 @@
 # calculating workout statistics and visualizing data.
 class Exercise < ApplicationRecord
   belongs_to :user
-  has_many :sets, class_name: 'Allset', foreign_key: 'exercise_id'
+  has_many :sets, class_name: 'Allset'
 
   GROUP_COLOURS = {
     'Chest' => 'primary',
@@ -30,13 +30,19 @@ class Exercise < ApplicationRecord
 
   def graph_total_volume(from, to)
     calculate_graph_data(from, to) do |sets|
-      sets.sum { |set| set.weight.to_f * set.repetitions.to_i unless set.isWarmup || set.weight.nil? || set.repetitions.nil? }
+      sets.sum do |set|
+        set.weight.to_f * set.repetitions.to_i unless set.isWarmup || set.weight.nil? || set.repetitions.nil?
+      end
     end
   end
 
   def graph_orm(from, to)
     calculate_graph_data(from, to) do |sets|
-      sets.map { |set| set.weight.to_f * (1 + (set.repetitions.to_i / 30.0)) unless set.isWarmup || set.weight.nil? || set.repetitions.nil? }.compact.max.to_f.round(2)
+      sets.map do |set|
+        unless set.isWarmup || set.weight.nil? || set.repetitions.nil?
+          set.weight.to_f * (1 + (set.repetitions.to_i / 30.0))
+        end
+      end.compact.max.to_f.round(2)
     end
   end
 

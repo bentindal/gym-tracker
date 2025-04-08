@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def login_as(user)
   visit login_path
   fill_in 'Email', with: user.email

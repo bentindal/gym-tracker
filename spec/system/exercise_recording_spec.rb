@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe 'Exercise Recording', type: :system do
+RSpec.describe 'Exercise Recording' do
   let(:user) { create(:user) }
 
   before do
@@ -13,17 +13,17 @@ RSpec.describe 'Exercise Recording', type: :system do
   it 'allows user to log in and record an exercise' do
     # Method 1: Visit sign-in page directly instead of clicking "Get Started"
     visit '/users/sign_in'
-    
+
     # Alternative method 2: Use JavaScript to click the button
     # visit '/'
     # page.execute_script("document.querySelector('a[href=\"users/sign_in\"]').click()")
-    
+
     # Alternative method 3: Scroll to the element first
     # visit '/'
     # element = find('a', text: 'Get Started', match: :first)
     # page.execute_script("arguments[0].scrollIntoView(true)", element)
     # element.click
-    
+
     # Login
     fill_in 'Email', with: user.email
     fill_in 'Password', with: 'password'
@@ -55,22 +55,22 @@ RSpec.describe 'Exercise Recording', type: :system do
     fill_in 'weight', with: '225'
     fill_in 'repetitions', with: '10'
     click_button 'Add Set'
-    
+
     # Wait for AJAX if necessary
     expect(page).to have_content('225')
     expect(page).to have_content('10')
 
     # Give database time to update
     sleep(1)
-    
+
     # Verify the set was added to the database
     # Use the exercise ID to find the associated set
     set = Allset.find_by(exercise_id: exercise.id)
-    
+
     # Debugging assistance - uncomment if needed
     # puts "Exercise: #{exercise.inspect}"
     # puts "Sets: #{Allset.all.inspect}"
-    
+
     expect(set).to be_present
     expect(set.weight).to eq(225.0)
     expect(set.repetitions).to eq(10)
