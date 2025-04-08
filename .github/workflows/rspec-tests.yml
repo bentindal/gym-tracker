@@ -28,6 +28,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -48,4 +53,3 @@ jobs:
           if [ "$COVERAGE" -lt 90 ]; then
             echo "Coverage is below 90% ($COVERAGE%)"
             exit 1
-          fi
