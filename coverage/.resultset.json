@@ -1500,66 +1500,6 @@
           null
         ]
       },
-      "/Users/ben.tindal/Desktop/Development/gym-tracker/app/controllers/home_controller.rb": {
-        "lines": [
-          null,
-          null,
-          null,
-          null,
-          1,
-          1,
-          2,
-          null,
-          2,
-          2,
-          2,
-          null,
-          null
-        ]
-      },
-      "/Users/ben.tindal/Desktop/Development/gym-tracker/app/controllers/application_controller.rb": {
-        "lines": [
-          null,
-          null,
-          null,
-          null,
-          1,
-          1,
-          null,
-          1,
-          null,
-          1,
-          null,
-          null,
-          null
-        ]
-      },
-      "/Users/ben.tindal/Desktop/Development/gym-tracker/app/controllers/service_worker_controller.rb": {
-        "lines": [
-          null,
-          null,
-          null,
-          null,
-          1,
-          1,
-          1,
-          null,
-          1,
-          1,
-          1,
-          1,
-          null,
-          null,
-          null,
-          null,
-          1,
-          0,
-          0,
-          null,
-          null,
-          null
-        ]
-      },
       "/Users/ben.tindal/Desktop/Development/gym-tracker/app/controllers/users/sessions_controller.rb": {
         "lines": [
           null,
@@ -1594,6 +1534,40 @@
           null,
           null,
           null,
+          null,
+          null
+        ]
+      },
+      "/Users/ben.tindal/Desktop/Development/gym-tracker/app/controllers/application_controller.rb": {
+        "lines": [
+          null,
+          null,
+          null,
+          null,
+          1,
+          1,
+          null,
+          1,
+          null,
+          1,
+          null,
+          null,
+          null
+        ]
+      },
+      "/Users/ben.tindal/Desktop/Development/gym-tracker/app/controllers/home_controller.rb": {
+        "lines": [
+          null,
+          null,
+          null,
+          null,
+          1,
+          1,
+          1,
+          null,
+          1,
+          1,
+          1,
           null,
           null
         ]
@@ -1874,12 +1848,18 @@
           1,
           0,
           0,
+          0,
+          null,
           null,
           null,
           null,
           1,
           0,
           0,
+          0,
+          0,
+          null,
+          null,
           null,
           null,
           null,
@@ -2007,6 +1987,6 @@
         ]
       }
     },
-    "timestamp": 1744121512
+    "timestamp": 1744122511
   }
 }
