@@ -40,6 +40,3 @@ jobs:
           RAILS_ENV: test
         run: |
           bundle exec rspec
-          # Simply output the coverage percentage
-          echo "Coverage report:"
-          grep -A 2 "Line Coverage:" coverage/index.html | head -n 3
