@@ -17,31 +17,13 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y sqlite3 libsqlite3-dev chromium-browser
-          
-      - name: Install Chrome and Chromedriver
-        run: |
-          wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
-          CHROME_VERSION=$(google-chrome --version | cut -d' ' -f3 | cut -d'.' -f1)
-          CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
-          wget -N "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/
-          sudo chmod +x /usr/local/bin/chromedriver
+          sudo apt-get install -y sqlite3 libsqlite3-dev
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.2 # Adjust to your Ruby version
-          bundler-cache: false
-
-      - name: Install dependencies
-        run: |
-          bundle config set --local frozen false
-          bundle install --jobs 4
+          bundler-cache: true
 
       - name: Set up database
         env:
@@ -58,4 +40,3 @@ jobs:
           if [ "$COVERAGE" -lt 90 ]; then
             echo "Coverage is below 90% ($COVERAGE%)"
             exit 1
-          fi
