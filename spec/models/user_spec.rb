@@ -198,75 +198,55 @@ describe User do
 
   describe '#last_seen' do
     context 'when user has sets' do
-      it 'returns human-readable time diff for minutes' do
-        exercise = create(:exercise, user_id: user.id)
-        Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10,
-                      created_at: 5.minutes.ago)
+      let(:exercise) { create(:exercise, user_id: user.id) }
+      let(:set) { Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10) }
 
+      before do
+        allow(set).to receive(:created_at).and_return(Time.zone.now)
+      end
+
+      it 'returns human-readable time diff for minutes' do
+        allow(set).to receive(:created_at).and_return(5.minutes.ago)
         expect(user.last_seen).to match(/minutes ago/)
       end
 
       it 'returns singular form for 1 minute' do
-        exercise = create(:exercise, user_id: user.id)
-        allow_any_instance_of(Allset).to receive(:created_at).and_return(1.minute.ago)
-        Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10)
-
+        allow(set).to receive(:created_at).and_return(1.minute.ago)
         expect(user.last_seen).to eq('1 minute ago')
       end
 
       it 'returns human-readable time diff for hours' do
-        exercise = create(:exercise, user_id: user.id)
-        allow_any_instance_of(Allset).to receive(:created_at).and_return(3.hours.ago)
-        Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10)
-
+        allow(set).to receive(:created_at).and_return(3.hours.ago)
         expect(user.last_seen).to eq('3 hours ago')
       end
 
       it 'returns singular form for 1 hour' do
-        exercise = create(:exercise, user_id: user.id)
-        allow_any_instance_of(Allset).to receive(:created_at).and_return(1.hour.ago)
-        Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10)
-
+        allow(set).to receive(:created_at).and_return(1.hour.ago)
         expect(user.last_seen).to eq('1 hour ago')
       end
 
       it 'returns human-readable time diff for days' do
-        exercise = create(:exercise, user_id: user.id)
-        allow_any_instance_of(Allset).to receive(:created_at).and_return(3.days.ago)
-        Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10)
-
+        allow(set).to receive(:created_at).and_return(3.days.ago)
         expect(user.last_seen).to eq('3 days ago')
       end
 
       it 'returns singular form for 1 day' do
-        exercise = create(:exercise, user_id: user.id)
-        allow_any_instance_of(Allset).to receive(:created_at).and_return(1.day.ago)
-        Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10)
-
+        allow(set).to receive(:created_at).and_return(1.day.ago)
         expect(user.last_seen).to eq('1 day ago')
       end
 
       it 'returns human-readable time diff for weeks' do
-        exercise = create(:exercise, user_id: user.id)
-        allow_any_instance_of(Allset).to receive(:created_at).and_return(2.weeks.ago)
-        Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10)
-
+        allow(set).to receive(:created_at).and_return(2.weeks.ago)
         expect(user.last_seen).to eq('2 weeks ago')
       end
 
       it 'returns singular form for 1 week' do
-        exercise = create(:exercise, user_id: user.id)
-        allow_any_instance_of(Allset).to receive(:created_at).and_return(1.week.ago)
-        Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10)
-
+        allow(set).to receive(:created_at).and_return(1.week.ago)
         expect(user.last_seen).to eq('1 week ago')
       end
 
       it 'returns "over a month ago" for older dates' do
-        exercise = create(:exercise, user_id: user.id)
-        allow_any_instance_of(Allset).to receive(:created_at).and_return(2.months.ago)
-        Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10)
-
+        allow(set).to receive(:created_at).and_return(2.months.ago)
         expect(user.last_seen).to eq('over a month ago')
       end
     end
@@ -337,7 +317,9 @@ describe User do
 
     it 'returns appropriate message for "at_risk" status' do
       allow(user).to receive_messages(streak_status: 'at_risk', streakcount: 10)
-      expect(user.streak_msg_own).to eq('You had a day off yesterday, workout today to keep the 10 day streak going or it will be reset!')
+      expect(user.streak_msg_own).to eq(
+        'You had a day off yesterday, workout today to keep the 10 day streak going or it will be reset!'
+      )
     end
 
     it 'returns appropriate message for "active" status' do
@@ -359,7 +341,9 @@ describe User do
 
     it 'returns appropriate message for "at_risk" status' do
       allow(user).to receive_messages(streak_status: 'at_risk', streakcount: 10)
-      expect(user.streak_msg_other).to eq("#{user.first_name} had a day off yesterday, workout today to keep the 10 day streak going or it will be reset!")
+      expect(user.streak_msg_other).to eq(
+        "#{user.first_name} had a day off yesterday, workout today to keep the 10 day streak going or it will be reset!"
+      )
     end
 
     it 'returns appropriate message for "active" status' do

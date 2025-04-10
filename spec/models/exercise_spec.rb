@@ -6,6 +6,7 @@ require 'spec_helper'
 describe Exercise do
   let(:user) { create(:user) }
   let(:exercise) { create(:exercise, user_id: user.id) }
+  let(:today) { Time.zone.today }
 
   describe '#user' do
     it 'returns the associated user' do
@@ -96,6 +97,34 @@ describe Exercise do
     it 'returns sets created on the given date excluding warmup sets' do
       result = exercise.workouts_on_date(@today)
       expect(result.count).to eq(2)
+    end
+
+    it 'returns sets for a specific date' do
+      set1 = Allset.create(
+        exercise_id: exercise.id,
+        user_id: user.id,
+        weight: 100,
+        repetitions: 10,
+        created_at: today
+      )
+      set2 = Allset.create(
+        exercise_id: exercise.id,
+        user_id: user.id,
+        weight: 110,
+        repetitions: 8,
+        created_at: today
+      )
+      set3 = Allset.create(
+        exercise_id: exercise.id,
+        user_id: user.id,
+        weight: 120,
+        repetitions: 6,
+        created_at: today
+      )
+
+      result = exercise.workouts_on_date(today)
+      expect(result).to include(set1, set2, set3)
+      expect(result.count).to eq(3)
     end
   end
 
