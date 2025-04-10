@@ -4,6 +4,8 @@
 # Contains information about when the workout started and ended,
 # and manages the sets that belong to it
 class Workout < ApplicationRecord
+  belongs_to :user
+
   def allsets
     Allset.where(belongs_to_workout: id)
   end

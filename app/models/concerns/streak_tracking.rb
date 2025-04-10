@@ -19,6 +19,19 @@ module StreakTracking
     'none'
   end
 
+  def streak_msg_other
+    I18n.t("user.streak.messages.other.#{streak_status}",
+           name: first_name,
+           count: streakcount,
+           going: streak_status == 'active' ? ' going!' : '')
+  end
+
+  def streak_msg_own
+    I18n.t("user.streak.messages.own.#{streak_status}",
+           count: streakcount,
+           going: streak_status == 'active' ? ' going!' : '')
+  end
+
   def worked_out_today?
     all_workouts = sets
     all_workouts.each do |workout|
@@ -52,32 +65,48 @@ module StreakTracking
   def start_date_for_streak
     if worked_out_today?
       Time.zone.today
-    else
+    elsif worked_out_yesterday?
       Date.yesterday
+    else
+      Date.yesterday.yesterday
     end
   end
 
   def calculate_streak(start_date)
-    date_pointer = start_date
-    streak_count = 0
-    gaps_used = 0
-
-    loop do
-      break if streak_ended?(gaps_used)
-
-      if worked_out_on_date(date_pointer.day, date_pointer.month, date_pointer.year)
-        streak_count += 1
-        gaps_used = 0
-      else
-        gaps_used += 1
-      end
-      date_pointer -= 1
-    end
-
-    streak_count
+    StreakCalculator.new(self, start_date).calculate
   end
 
-  def streak_ended?(gaps_used)
-    gaps_used > 1
+  # Internal class to handle streak calculation logic
+  class StreakCalculator
+    def initialize(user, start_date)
+      @user = user
+      @date_pointer = start_date
+      @streak_count = 0
+      @gaps_used = 0
+    end
+
+    def calculate
+      until streak_ended?
+        update_streak_stats
+        @date_pointer = @date_pointer.yesterday
+      end
+
+      @streak_count
+    end
+
+    private
+
+    def update_streak_stats
+      if @user.worked_out_on_date(@date_pointer.day, @date_pointer.month, @date_pointer.year)
+        @streak_count += 1
+        @gaps_used = 0
+      else
+        @gaps_used += 1
+      end
+    end
+
+    def streak_ended?
+      @gaps_used > 1
+    end
   end
 end

@@ -5,6 +5,7 @@
 class User < ApplicationRecord
   include TimeFormatting
   include StreakTracking
+  include WorkoutTracking
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
@@ -84,14 +85,12 @@ class User < ApplicationRecord
   def streak_msg_other
     I18n.t("user.streak.messages.other.#{streak_status}",
            name: first_name,
-           count: streakcount,
-           going: streak_status == 'active' ? ' going!' : '')
+           count: streakcount)
   end
 
   def streak_msg_own
     I18n.t("user.streak.messages.own.#{streak_status}",
-           count: streakcount,
-           going: streak_status == 'active' ? ' going!' : '')
+           count: streakcount)
   end
 
   def midworkout

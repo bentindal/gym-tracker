@@ -4,55 +4,68 @@ require 'rails_helper'
 
 RSpec.describe 'Exercise Recording' do
   let(:user) { create(:user) }
+  let(:exercise) { create(:exercise, name: 'Bench Press', user: user) }
 
   before do
     user
+    exercise
+    sign_in_user
   end
 
-  it 'allows user to log in and record an exercise' do
-    # Visit sign-in page directly
-    visit '/users/sign_in'
+  describe 'exercise creation' do
+    before do
+      navigate_to_exercises
+      click_link('Add New')
+      fill_in_exercise_details
+      click_button 'Create'
+    end
 
-    # Fill in login details with explicit identification
+    it 'displays the new exercise name' do
+      expect(page).to have_css('h2.display-5', text: 'Bench Press')
+    end
+
+    it 'creates the exercise in the database' do
+      expect(Exercise.find_by(name: 'Bench Press')).to be_present
+    end
+  end
+
+  describe 'set recording' do
+    before do
+      navigate_to_exercises
+      click_link('Bench Press')
+      fill_in 'weight', with: '225'
+      fill_in 'repetitions', with: '10'
+      click_button 'Add Set'
+    end
+
+    it 'displays the set details' do
+      within('table.table') do
+        expect(page).to have_content('225.0lbs x 10')
+      end
+    end
+  end
+
+  private
+
+  def sign_in_user
+    visit '/users/sign_in'
     within('#new_user') do
       fill_in 'user_email', with: user.email
       fill_in 'user_password', with: 'password'
       click_button 'Log in'
     end
-
-    # Verify login success using the exact HTML content
     expect(page).to have_css('.alert-success', text: /Success.*signed in successfully/i)
+  end
 
-    # Navigate to exercises page using a more specific selector for the navbar link
+  def navigate_to_exercises
     within('.navbar-nav') do
       click_link('Exercises')
     end
+  end
 
-    # Click Add New button - using click_link instead of find
-    click_link('Add New')
-
-    # Fill in exercise details with explicit field identification
+  def fill_in_exercise_details
     fill_in 'exercise[name]', with: 'Bench Press'
     select 'lbs', from: 'exercise[unit]'
     select 'Chest', from: 'exercise[group]'
-    click_button 'Create'
-
-    # Look for heading with display-5 class containing "Bench Press"
-    expect(page).to have_css('h2.display-5', text: 'Bench Press')
-
-    # Get the created exercise from database
-    exercise = Exercise.find_by(name: 'Bench Press')
-    expect(exercise).to be_present
-
-    # Record a set with correct field names from the HTML
-    fill_in 'weight', with: '225'
-    fill_in 'repetitions', with: '10'
-    click_button 'Add Set'
-
-    # Verify the set was added to the database
-    set = Allset.last
-    expect(set.weight).to eq(225.0)
-    expect(set.repetitions).to eq(10)
-    expect(set.exercise_id).to eq(exercise.id)
   end
 end

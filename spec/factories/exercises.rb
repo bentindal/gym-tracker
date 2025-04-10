@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :exercise do
     name { 'Bench Press' }
     group { 'Chest' }
+    unit { 'lbs' }
     user_id { create(:user).id }
 
     trait :back_exercise do
