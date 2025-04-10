@@ -82,20 +82,17 @@ describe Exercise do
   end
 
   describe '#workouts_on_date' do
-    before do
-      @today = Time.zone.now
+    it 'returns sets created on the given date excluding warmup sets' do
       Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10, isWarmup: false,
-                    created_at: @today)
+                    created_at: today)
       Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 110, repetitions: 8, isWarmup: false,
-                    created_at: @today)
+                    created_at: today)
       Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 120, repetitions: 6, isWarmup: true,
-                    created_at: @today)
+                    created_at: today)
       Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 90, repetitions: 12, isWarmup: false,
                     created_at: 1.day.ago)
-    end
 
-    it 'returns sets created on the given date excluding warmup sets' do
-      result = exercise.workouts_on_date(@today)
+      result = exercise.workouts_on_date(today)
       expect(result.count).to eq(2)
     end
 
@@ -105,6 +102,7 @@ describe Exercise do
         user_id: user.id,
         weight: 100,
         repetitions: 10,
+        isWarmup: false,
         created_at: today
       )
       set2 = Allset.create(
@@ -112,6 +110,7 @@ describe Exercise do
         user_id: user.id,
         weight: 110,
         repetitions: 8,
+        isWarmup: false,
         created_at: today
       )
       set3 = Allset.create(
@@ -119,6 +118,7 @@ describe Exercise do
         user_id: user.id,
         weight: 120,
         repetitions: 6,
+        isWarmup: false,
         created_at: today
       )
 

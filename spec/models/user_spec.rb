@@ -4,7 +4,9 @@ require 'rails_helper'
 require 'spec_helper'
 require 'ostruct'
 
-describe User do
+RSpec.describe User do
+  include ActiveSupport::Testing::TimeHelpers
+
   let(:user) { create(:user) }
 
   describe 'validations' do
@@ -26,8 +28,8 @@ describe User do
     end
 
     it 'requires unique email' do
-      create(:user, email: 'test@example.com')
-      duplicate_user = build(:user, email: 'test@example.com')
+      create(:user, email: 'unique@example.com')
+      duplicate_user = build(:user, email: 'unique@example.com')
       expect(duplicate_user).not_to be_valid
       expect(duplicate_user.errors[:email]).to include('has already been taken')
     end
@@ -199,55 +201,123 @@ describe User do
   describe '#last_seen' do
     context 'when user has sets' do
       let(:exercise) { create(:exercise, user_id: user.id) }
-      let(:set) { Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10) }
-
-      before do
-        allow(set).to receive(:created_at).and_return(Time.zone.now)
-      end
+      let(:now) { Time.zone.now }
 
       it 'returns human-readable time diff for minutes' do
-        allow(set).to receive(:created_at).and_return(5.minutes.ago)
-        expect(user.last_seen).to match(/minutes ago/)
+        travel_to now do
+          Allset.create(
+            exercise_id: exercise.id,
+            user_id: user.id,
+            weight: 100,
+            repetitions: 10,
+            created_at: 5.minutes.ago
+          )
+          expect(user.last_seen).to match(/minutes ago/)
+        end
       end
 
       it 'returns singular form for 1 minute' do
-        allow(set).to receive(:created_at).and_return(1.minute.ago)
-        expect(user.last_seen).to eq('1 minute ago')
+        travel_to now do
+          Allset.create(
+            exercise_id: exercise.id,
+            user_id: user.id,
+            weight: 100,
+            repetitions: 10,
+            created_at: 1.minute.ago
+          )
+          expect(user.last_seen).to eq('1 minute ago')
+        end
       end
 
       it 'returns human-readable time diff for hours' do
-        allow(set).to receive(:created_at).and_return(3.hours.ago)
-        expect(user.last_seen).to eq('3 hours ago')
+        travel_to now do
+          Allset.create(
+            exercise_id: exercise.id,
+            user_id: user.id,
+            weight: 100,
+            repetitions: 10,
+            created_at: 3.hours.ago
+          )
+          expect(user.last_seen).to eq('3 hours ago')
+        end
       end
 
       it 'returns singular form for 1 hour' do
-        allow(set).to receive(:created_at).and_return(1.hour.ago)
-        expect(user.last_seen).to eq('1 hour ago')
+        travel_to now do
+          Allset.create(
+            exercise_id: exercise.id,
+            user_id: user.id,
+            weight: 100,
+            repetitions: 10,
+            created_at: 1.hour.ago
+          )
+          expect(user.last_seen).to eq('1 hour ago')
+        end
       end
 
       it 'returns human-readable time diff for days' do
-        allow(set).to receive(:created_at).and_return(3.days.ago)
-        expect(user.last_seen).to eq('3 days ago')
+        travel_to now do
+          Allset.create(
+            exercise_id: exercise.id,
+            user_id: user.id,
+            weight: 100,
+            repetitions: 10,
+            created_at: 3.days.ago
+          )
+          expect(user.last_seen).to eq('3 days ago')
+        end
       end
 
       it 'returns singular form for 1 day' do
-        allow(set).to receive(:created_at).and_return(1.day.ago)
-        expect(user.last_seen).to eq('1 day ago')
+        travel_to now do
+          Allset.create(
+            exercise_id: exercise.id,
+            user_id: user.id,
+            weight: 100,
+            repetitions: 10,
+            created_at: 1.day.ago
+          )
+          expect(user.last_seen).to eq('1 day ago')
+        end
       end
 
       it 'returns human-readable time diff for weeks' do
-        allow(set).to receive(:created_at).and_return(2.weeks.ago)
-        expect(user.last_seen).to eq('2 weeks ago')
+        travel_to now do
+          Allset.create(
+            exercise_id: exercise.id,
+            user_id: user.id,
+            weight: 100,
+            repetitions: 10,
+            created_at: 2.weeks.ago
+          )
+          expect(user.last_seen).to eq('2 weeks ago')
+        end
       end
 
       it 'returns singular form for 1 week' do
-        allow(set).to receive(:created_at).and_return(1.week.ago)
-        expect(user.last_seen).to eq('1 week ago')
+        travel_to now do
+          Allset.create(
+            exercise_id: exercise.id,
+            user_id: user.id,
+            weight: 100,
+            repetitions: 10,
+            created_at: 1.week.ago
+          )
+          expect(user.last_seen).to eq('1 week ago')
+        end
       end
 
       it 'returns "over a month ago" for older dates' do
-        allow(set).to receive(:created_at).and_return(2.months.ago)
-        expect(user.last_seen).to eq('over a month ago')
+        travel_to now do
+          Allset.create(
+            exercise_id: exercise.id,
+            user_id: user.id,
+            weight: 100,
+            repetitions: 10,
+            created_at: 2.months.ago
+          )
+          expect(user.last_seen).to eq('over a month ago')
+        end
       end
     end
 

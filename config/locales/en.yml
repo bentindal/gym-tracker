@@ -52,7 +52,19 @@ en:
           none: "%{name} hasn't worked out yet today!"
           pending: "%{name} hasn't worked out today, but has a %{count} day streak going!"
           at_risk: "%{name} had a day off yesterday, workout today to keep the %{count} day streak going or it will be reset!"
-          active: "%{name} has a %{count} day streak!"
+          active: "%{name} has a %{count} day streak going!"
   allset:
     destroy:
       success: "Workout was successfully destroyed."
+    create:
+      success: "Set was successfully recorded."
+    update:
+      success: "Set was successfully updated."
+      failure: "Failed to update set."
+  workout:
+    update:
+      success: "Workout title was successfully updated."
+      failure: "Failed to update workout title."
+    finish:
+      success: "Workout was successfully finished."
+      failure: "No unassigned sets to finish."

@@ -34,6 +34,9 @@ class User < ApplicationRecord
   # validates :password, length: { minimum: 6 }
   # validates :password, format: { with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[[:^alnum:]])/x }
 
+  has_many :friends, class_name: 'Friend', foreign_key: 'user'
+  has_many :followed_by, class_name: 'Friend', foreign_key: 'follows'
+
   def exercises
     Exercise.where(user_id: id)
   end
@@ -81,12 +84,14 @@ class User < ApplicationRecord
   def streak_msg_other
     I18n.t("user.streak.messages.other.#{streak_status}",
            name: first_name,
-           count: streakcount)
+           count: streakcount,
+           going: streak_status == 'active' ? ' going!' : '')
   end
 
   def streak_msg_own
     I18n.t("user.streak.messages.own.#{streak_status}",
-           count: streakcount)
+           count: streakcount,
+           going: streak_status == 'active' ? ' going!' : '')
   end
 
   def midworkout
@@ -112,7 +117,7 @@ class User < ApplicationRecord
     return nil if sets.empty?
 
     time_diff = Time.zone.now - last_set.created_at
-    format_time_diff(time_diff)
+    format_time_diff(time_diff.to_i)
   end
 
   def workout_count
@@ -153,41 +158,6 @@ class User < ApplicationRecord
 
     Rails.logger.debug { "#{sets.length} sets assigned to workout #{workout.id} successfully for user #{id}" }
     workout
-  end
-
-  def format_time_diff(time_diff)
-    case time_diff
-    when (0..(1.hour))
-      format_minutes(time_diff)
-    when ((1.hour)..(1.day))
-      format_hours(time_diff)
-    when ((1.day)..(1.week))
-      format_days(time_diff)
-    when ((1.week)..(1.month))
-      format_weeks(time_diff)
-    else
-      'over a month ago'
-    end
-  end
-
-  def format_minutes(time_diff)
-    minutes = (time_diff / 1.minute).round
-    "#{minutes} minute#{'s' unless minutes == 1} ago"
-  end
-
-  def format_hours(time_diff)
-    hours = (time_diff / 1.hour).round
-    "#{hours} hour#{'s' unless hours == 1} ago"
-  end
-
-  def format_days(time_diff)
-    days = (time_diff / 1.day).round
-    "#{days} day#{'s' unless days == 1} ago"
-  end
-
-  def format_weeks(time_diff)
-    weeks = (time_diff / 1.week).round
-    "#{weeks} week#{'s' unless weeks == 1} ago"
   end
 
   def start_date_for_streak

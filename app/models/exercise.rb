@@ -50,8 +50,8 @@ class Exercise < ApplicationRecord
 
   def calculate_graph_data(from, to)
     graph_data = {}
-    start_point = Time.zone.parse(from)
-    end_point = Time.zone.parse(to).end_of_day
+    start_point = from.is_a?(String) ? Time.zone.parse(from) : from
+    end_point = (to.is_a?(String) ? Time.zone.parse(to) : to).end_of_day
 
     while start_point < end_point
       sets = workouts_on_date(start_point)

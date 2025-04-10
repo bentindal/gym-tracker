@@ -10,11 +10,13 @@
 
 .mb-3.container.text-center
     %form{action: exercise_view_path, method: "GET"}
+        - from_date = params[:from].present? ? DateTime.parse(params[:from]) : 1.month.ago
+        - to_date = params[:to].present? ? DateTime.parse(params[:to]) : DateTime.now
         
-        %input{type: "date", name: "from", id: "from", value: DateTime.parse(params[:from]).strftime("%Y-%m-%d")}
+        %input{type: "date", name: "from", id: "from", value: from_date.strftime("%Y-%m-%d")}
         %label{for: "to"} to
 
-        %input{type: "date", name: "to", id: "to", value: DateTime.parse(params[:to]).strftime("%Y-%m-%d")}
+        %input{type: "date", name: "to", id: "to", value: to_date.strftime("%Y-%m-%d")}
         %input{type: "hidden", name: "id", id: "id", value: @exercise.id}
         %br
         %button.btn.btn-primary.w-50{type: "submit"} Submit
@@ -23,7 +25,9 @@
         
 .container
     .card.mb-3
-        - data = @exercise.graph_orm(params[:from], params[:to])
+        - from_date = params[:from].present? ? DateTime.parse(params[:from]) : 1.month.ago
+        - to_date = params[:to].present? ? DateTime.parse(params[:to]) : DateTime.now
+        - data = @exercise.graph_orm(from_date.strftime("%Y-%m-%d"), to_date.strftime("%Y-%m-%d"))
         - if data.values.length == 0
             %p.bg-white.border.rounded.p-3.text-muted Not enough data available.
         - else
@@ -58,7 +62,7 @@
                         library: { colors: ['rgb(100,100,100)'] }
                     
     .card
-        - data = @exercise.graph_total_volume(params[:from], params[:to])
+        - data = @exercise.graph_total_volume(from_date.strftime("%Y-%m-%d"), to_date.strftime("%Y-%m-%d"))
         - if data.values.length == 0
             %p.bg-white.border.rounded.p-3.text-muted Not enough data available.
         - else
