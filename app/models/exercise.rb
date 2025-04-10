@@ -25,7 +25,9 @@ class Exercise < ApplicationRecord
   end
 
   def workouts_on_date(date)
-    sets.where(created_at: date.all_day, isWarmup: false)
+    start_time = date.beginning_of_day
+    end_time = date.end_of_day
+    sets.where(created_at: start_time..end_time, isWarmup: false)
   end
 
   def graph_total_volume(from, to)
@@ -38,11 +40,11 @@ class Exercise < ApplicationRecord
 
   def graph_orm(from, to)
     calculate_graph_data(from, to) do |sets|
-      sets.map do |set|
-        unless set.isWarmup || set.weight.nil? || set.repetitions.nil?
-          set.weight.to_f * (1 + (set.repetitions.to_i / 30.0))
-        end
-      end.compact.max.to_f.round(2)
+      sets.reject { |set| set.isWarmup || set.weight.nil? || set.repetitions.nil? }
+          .map { |set| calculate_orm(set) }
+          .max
+          .to_f
+          .round(2)
     end
   end
 
@@ -61,5 +63,9 @@ class Exercise < ApplicationRecord
     end
 
     graph_data
+  end
+
+  def calculate_orm(set)
+    set.weight.to_f * (1 + (set.repetitions.to_i / 30.0))
   end
 end

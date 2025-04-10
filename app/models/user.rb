@@ -34,8 +34,8 @@ class User < ApplicationRecord
   # validates :password, length: { minimum: 6 }
   # validates :password, format: { with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[[:^alnum:]])/x }
 
-  has_many :friends, class_name: 'Friend', foreign_key: 'user'
-  has_many :followed_by, class_name: 'Friend', foreign_key: 'follows'
+  has_many :friends, class_name: 'Friend', foreign_key: 'user', dependent: :destroy, inverse_of: :follower
+  has_many :followed_by, class_name: 'Friend', foreign_key: 'follows', dependent: :destroy, inverse_of: :followed
 
   def exercises
     Exercise.where(user_id: id)
@@ -169,13 +169,11 @@ class User < ApplicationRecord
   end
 
   def calculate_streak(start_date)
-    date_pointer = start_date
     streak_count = 0
     gaps_used = 0
+    date_pointer = start_date
 
-    loop do
-      break if streak_ended?(gaps_used)
-
+    until streak_ended?(gaps_used)
       if worked_out_on_date(date_pointer.day, date_pointer.month, date_pointer.year)
         streak_count += 1
         gaps_used = 0

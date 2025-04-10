@@ -82,132 +82,118 @@ describe Exercise do
   end
 
   describe '#workouts_on_date' do
-    it 'returns sets created on the given date excluding warmup sets' do
-      Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10, isWarmup: false,
-                    created_at: today)
-      Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 110, repetitions: 8, isWarmup: false,
-                    created_at: today)
-      Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 120, repetitions: 6, isWarmup: true,
-                    created_at: today)
-      Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 90, repetitions: 12, isWarmup: false,
-                    created_at: 1.day.ago)
+    context 'with mixed sets' do
+      before do
+        create_set(weight: 100, reps: 10, warmup: false, date: today)
+        create_set(weight: 110, reps: 8, warmup: false, date: today)
+        create_set(weight: 120, reps: 6, warmup: true, date: today)
+        create_set(weight: 90, reps: 12, warmup: false, date: 1.day.ago)
+      end
 
-      result = exercise.workouts_on_date(today)
-      expect(result.count).to eq(2)
+      it 'excludes warmup sets' do
+        result = exercise.workouts_on_date(today)
+        expect(result.count).to eq(2)
+      end
+
+      it 'excludes sets from other dates' do
+        result = exercise.workouts_on_date(today)
+        expect(result.pluck(:created_at).map(&:to_date).uniq).to eq([today])
+      end
     end
 
-    it 'returns sets for a specific date' do
-      set1 = Allset.create(
-        exercise_id: exercise.id,
-        user_id: user.id,
-        weight: 100,
-        repetitions: 10,
-        isWarmup: false,
-        created_at: today
-      )
-      set2 = Allset.create(
-        exercise_id: exercise.id,
-        user_id: user.id,
-        weight: 110,
-        repetitions: 8,
-        isWarmup: false,
-        created_at: today
-      )
-      set3 = Allset.create(
-        exercise_id: exercise.id,
-        user_id: user.id,
-        weight: 120,
-        repetitions: 6,
-        isWarmup: false,
-        created_at: today
-      )
+    context 'with regular sets' do
+      let(:heavy_set) { create_set(weight: 120, reps: 6, warmup: false, date: today) }
+      let(:medium_set) { create_set(weight: 110, reps: 8, warmup: false, date: today) }
+      let(:light_set) { create_set(weight: 100, reps: 10, warmup: false, date: today) }
 
-      result = exercise.workouts_on_date(today)
-      expect(result).to include(set1, set2, set3)
-      expect(result.count).to eq(3)
+      it 'includes all sets for that date' do
+        # Create the sets
+        heavy_set
+        medium_set
+        light_set
+
+        result = exercise.workouts_on_date(today)
+        expect(result).to include(light_set, medium_set, heavy_set)
+      end
+
+      it 'returns the correct number of sets' do
+        # Create the sets
+        heavy_set
+        medium_set
+        light_set
+
+        result = exercise.workouts_on_date(today)
+        expect(result.count).to eq(3)
+      end
     end
   end
 
   describe '#graph_total_volume' do
+    let(:today) { Time.zone.now }
+    let(:yesterday) { 1.day.ago }
+
     before do
-      today = Time.zone.now
-      yesterday = 1.day.ago
-
-      # Create sets for today
-      Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10, isWarmup: false,
-                    created_at: today)
-      Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 90, repetitions: 12, isWarmup: false,
-                    created_at: today)
-
-      # Create sets for yesterday
-      Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 95, repetitions: 10, isWarmup: false,
-                    created_at: yesterday)
-
-      # Create a warmup set that should be excluded
-      Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 50, repetitions: 15, isWarmup: true,
-                    created_at: today)
+      create_set(weight: 100, reps: 10, warmup: false, date: today)
+      create_set(weight: 90, reps: 12, warmup: false, date: today)
+      create_set(weight: 95, reps: 10, warmup: false, date: yesterday)
+      create_set(weight: 50, reps: 15, warmup: true, date: today)
     end
 
-    it 'calculates total volume for each day in range' do
-      from = 2.days.ago.to_s
-      to = Time.zone.now.to_s
+    context 'with date range' do
+      let(:result) { exercise.graph_total_volume(2.days.ago.to_s, Time.zone.now.to_s) }
 
-      result = exercise.graph_total_volume(from, to)
+      it 'returns data for the correct number of days' do
+        expect(result.keys.count).to eq(2)
+      end
 
-      # Should have entries for 2 days (with actual workouts)
-      expect(result.keys.count).to eq(2)
+      it 'calculates correct volume for today' do
+        expect(result[today.strftime('%d/%m')]).to eq(2080) # (100 * 10) + (90 * 12)
+      end
 
-      # Today's volume: (100 * 10) + (90 * 12) = 1000 + 1080 = 2080
-      today_key = Time.zone.now.strftime('%d/%m')
-      expect(result[today_key]).to eq(2080)
-
-      # Yesterday's volume: 95 * 10 = 950
-      yesterday_key = 1.day.ago.strftime('%d/%m')
-      expect(result[yesterday_key]).to eq(950)
+      it 'calculates correct volume for yesterday' do
+        expect(result[yesterday.strftime('%d/%m')]).to eq(950) # 95 * 10
+      end
     end
   end
 
   describe '#graph_orm' do
+    let(:today) { Time.zone.now }
+    let(:yesterday) { 1.day.ago }
+
     before do
-      today = Time.zone.now
-      yesterday = 1.day.ago
-
-      # Create sets for today
-      # ORM formula: weight * (1 + (reps / 30.0))
-      # Set 1: 100 * (1 + (10/30)) = 100 * 1.33 = 133.33
-      # Set 2: 90 * (1 + (12/30)) = 90 * 1.4 = 126
-      # Highest is 133.33
-      Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10, isWarmup: false,
-                    created_at: today)
-      Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 90, repetitions: 12, isWarmup: false,
-                    created_at: today)
-
-      # Create sets for yesterday
-      # ORM: 95 * (1 + (10/30)) = 95 * 1.33 = 126.67
-      Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 95, repetitions: 10, isWarmup: false,
-                    created_at: yesterday)
-
-      # Create a warmup set that should be excluded
-      Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 50, repetitions: 15, isWarmup: true,
-                    created_at: today)
+      create_set(weight: 100, reps: 10, warmup: false, date: today)
+      create_set(weight: 90, reps: 12, warmup: false, date: today)
+      create_set(weight: 95, reps: 10, warmup: false, date: yesterday)
+      create_set(weight: 50, reps: 15, warmup: true, date: today)
     end
 
-    it 'calculates highest ORM for each day in range' do
-      from = 2.days.ago.to_s
-      to = Time.zone.now.to_s
+    context 'with date range' do
+      let(:result) { exercise.graph_orm(2.days.ago.to_s, Time.zone.now.to_s) }
 
-      result = exercise.graph_orm(from, to)
+      it 'returns data for the correct number of days' do
+        expect(result.keys.count).to eq(2)
+      end
 
-      # Should have entries for 2 days (with actual workouts)
-      expect(result.keys.count).to eq(2)
+      it 'calculates correct ORM for today' do
+        expect(result[today.strftime('%d/%m')]).to eq(133.33) # 100 * (1 + (10/30))
+      end
 
-      # Today's ORM: 100 * (1 + (10/30)) rounded to 2 decimal places = 133.33
-      today_key = Time.zone.now.strftime('%d/%m')
-      expect(result[today_key]).to eq(133.33)
-
-      # Yesterday's ORM: 95 * (1 + (10/30)) rounded to 2 decimal places = 126.67
-      yesterday_key = 1.day.ago.strftime('%d/%m')
-      expect(result[yesterday_key]).to eq(126.67)
+      it 'calculates correct ORM for yesterday' do
+        expect(result[yesterday.strftime('%d/%m')]).to eq(126.67) # 95 * (1 + (10/30))
+      end
     end
+  end
+
+  private
+
+  def create_set(weight:, reps:, warmup:, date:)
+    Allset.create(
+      exercise_id: exercise.id,
+      user_id: user.id,
+      weight: weight,
+      repetitions: reps,
+      isWarmup: warmup,
+      created_at: date.to_time
+    )
   end
 end

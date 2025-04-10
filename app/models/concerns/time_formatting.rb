@@ -5,16 +5,12 @@ module TimeFormatting
   extend ActiveSupport::Concern
 
   def format_time_diff(time_diff)
-    if time_diff < 3600 # Less than 1 hour
-      format_minutes(time_diff)
-    elsif time_diff < 86_400 # Less than 1 day
-      format_hours(time_diff)
-    elsif time_diff < 604_800 # Less than 1 week
-      format_days(time_diff)
-    elsif time_diff < 2_592_000 # Less than 1 month (30 days)
-      format_weeks(time_diff)
-    else
-      'over a month ago'
+    case time_diff
+    when 0...3600 then format_minutes(time_diff)
+    when 3600...86_400 then format_hours(time_diff)
+    when 86_400...604_800 then format_days(time_diff)
+    when 604_800...2_592_000 then format_weeks(time_diff)
+    else 'over a month ago'
     end
   end
 

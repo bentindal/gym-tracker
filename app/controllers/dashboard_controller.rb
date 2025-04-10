@@ -25,7 +25,11 @@ class DashboardController < ApplicationController
 
   def load_calendar_data
     @dates = current_user.sets.pluck(:created_at).map(&:to_date)
+    set_month_and_year
+    @month_name = I18n.t('date.month_names')[@month]
+  end
 
+  def set_month_and_year
     if valid_month_and_year_params?
       @month = params[:month].to_i
       @year = params[:year].to_i
@@ -34,8 +38,6 @@ class DashboardController < ApplicationController
       @month = today.month
       @year = today.year
     end
-
-    @month_name = I18n.t('date.month_names')[@month]
   end
 
   def valid_month_and_year_params?

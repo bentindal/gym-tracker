@@ -13,17 +13,7 @@ class WorkoutController < ApplicationController
 
   def update
     @workout = Workout.find(params[:id])
-
-    if authorized_user?(@workout.user_id)
-      if @workout.update(workout_params)
-        redirect_to workout_view_path(@workout.id), notice: t('.success')
-      else
-        Rails.logger.error("Workout update failed: #{@workout.errors.full_messages}")
-        redirect_to edit_workout_path(@workout), alert: t('.failure')
-      end
-    else
-      redirect_to permission_error_path
-    end
+    handle_workout_update
   end
 
   def finish
@@ -80,5 +70,24 @@ class WorkoutController < ApplicationController
 
   def workout_params
     params.require(:workout).permit(:title)
+  end
+
+  def handle_workout_update
+    return redirect_to permission_error_path unless authorized_user?(@workout.user_id)
+
+    if update_workout
+      redirect_to workout_view_path(@workout.id), notice: t('.success')
+    else
+      handle_update_failure
+    end
+  end
+
+  def update_workout
+    @workout.update(workout_params)
+  end
+
+  def handle_update_failure
+    Rails.logger.error("Workout update failed: #{@workout.errors.full_messages}")
+    redirect_to edit_workout_path(@workout), alert: t('.failure')
   end
 end

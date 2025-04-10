@@ -38,17 +38,7 @@ class ExerciseController < ApplicationController
 
   def update
     @exercise = Exercise.find(params[:id])
-
-    if authorized_user?(@exercise.user_id)
-      if @exercise.update(exercise_params)
-        redirect_to exercises_path, notice: t('.success')
-      else
-        Rails.logger.error("Exercise update failed: #{@exercise.errors.full_messages}")
-        redirect_to edit_exercise_path(@exercise), alert: t('.failure')
-      end
-    else
-      redirect_to permission_error_path
-    end
+    handle_exercise_update
   end
 
   def destroy
@@ -106,5 +96,24 @@ class ExerciseController < ApplicationController
 
   def exercise_params
     params.require(:exercise).permit(:user_id, :name, :unit, :group)
+  end
+
+  def handle_exercise_update
+    return redirect_to permission_error_path unless authorized_user?(@exercise.user_id)
+
+    if update_exercise
+      redirect_to exercises_path, notice: t('.success')
+    else
+      handle_update_failure
+    end
+  end
+
+  def update_exercise
+    @exercise.update(exercise_params)
+  end
+
+  def handle_update_failure
+    Rails.logger.error("Exercise update failed: #{@exercise.errors.full_messages}")
+    redirect_to edit_exercise_path(@exercise), alert: t('.failure')
   end
 end
