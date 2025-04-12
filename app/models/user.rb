@@ -6,6 +6,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  # Associations
+  has_many :workouts, dependent: :destroy
+  has_many :exercises, dependent: :destroy
+  has_many :allsets, dependent: :destroy
+
   validates :first_name, :last_name, :email, presence: true
   validates :email, uniqueness: true
 
@@ -47,10 +52,6 @@ class User < ApplicationRecord
   end
 
   def streak_status
-    streakcount
-    Time.zone.today.day
-    Time.zone.today.day
-
     # Worked out today
     if has_worked_out_today
       'active'
@@ -69,11 +70,7 @@ class User < ApplicationRecord
   end
 
   def has_worked_out_today
-    all_workouts = sets
-    all_workouts.each do |workout|
-      return true if workout.created_at.strftime('%d/%m') == Time.zone.today.strftime('%d/%m')
-    end
-    false
+    workouts.where('ended_at >= ?', Time.zone.today.beginning_of_day).exists?
   end
 
   def streak_msg_other
@@ -81,11 +78,15 @@ class User < ApplicationRecord
     when 'none'
       "#{first_name} hasn't worked out yet today!"
     when 'pending'
-      "#{first_name} hasn't worked out today, but has a #{streakcount} day streak going!"
+      "#{first_name} hasn't worked out today, but has a #{streak_count} day streak going!"
     when 'at_risk'
-      "#{first_name} had a day off yesterday, workout today to keep the #{streakcount} day streak going or it will be reset!"
+      "#{first_name} had a day off yesterday, workout today to keep the #{streak_count} day streak going or it will be reset!"
     else
-      "#{first_name} has a #{streakcount} day streak going!"
+      if streak_count.zero?
+        "#{first_name} worked out today!"
+      else
+        "#{first_name} has a #{streak_count} day streak going!"
+      end
     end
   end
 
@@ -94,11 +95,15 @@ class User < ApplicationRecord
     when 'none'
       "You haven't got a streak going yet."
     when 'pending'
-      "You haven't worked out today, but you have a #{streakcount} day streak!"
+      "You haven't worked out today, but you have a #{streak_count} day streak!"
     when 'at_risk'
-      "You had a day off yesterday, workout today to keep the #{streakcount} day streak going or it will be reset!"
+      "You had a day off yesterday, workout today to keep the #{streak_count} day streak going or it will be reset!"
     else
-      "You have a #{streakcount} day streak!"
+      if streak_count.zero?
+        "You worked out today!"
+      else
+        "You have a #{streak_count} day streak going!"
+      end
     end
   end
 
@@ -164,19 +169,12 @@ class User < ApplicationRecord
   end
 
   def worked_out_on_date(day, month, year)
-    all_workouts = sets
-    # Pad day and month values with a 0 if they are less than 10
-    day = "0#{day}" if day.to_i < 10
-    month = "0#{month}" if month.to_i < 10
-
-    all_workouts.each do |workout|
-      return true if workout.created_at.strftime('%d/%m/%Y') == "#{day}/#{month}/#{year}"
-    end
-    false
+    date = Date.new(year, month, day)
+    workouts.where('ended_at >= ? AND ended_at < ?', date.beginning_of_day, date.end_of_day).exists?
   end
 
   def streak_count
-    return 0 if sets == []
+    return 0 if workouts.empty?
 
     datePointer = if has_worked_out_today
                     Time.zone.today
@@ -189,16 +187,13 @@ class User < ApplicationRecord
 
     while streakEnded == false
       if worked_out_on_date(datePointer.day, datePointer.month, datePointer.year) == true
-        # puts "worked out on #{datePointer.day.to_s}/#{datePointer.month.to_s}/#{datePointer.year.to_s}"
         streakCount += 1
         datePointer -= 1
         gapsUsed = 0
       elsif gapsUsed.zero?
-        # puts "did not workout out, 1 gap used #{datePointer.day.to_s}/#{datePointer.month.to_s}/#{datePointer.year.to_s}"
         datePointer -= 1
         gapsUsed += 1
       else
-        # puts "didn't work out on #{datePointer.day.to_s}/#{datePointer.month.to_s}/#{datePointer.year.to_s}"
         streakEnded = true
       end
     end

@@ -116,8 +116,13 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.6.1)
     docile (1.4.1)
+    dotenv (3.1.8)
+    dotenv-rails (3.1.8)
+      dotenv (= 3.1.8)
+      railties (>= 6.1)
     drb (2.2.1)
     erubi (1.13.1)
+    event_stream_parser (1.0.0)
     execjs (2.10.0)
     factory_bot (6.5.1)
       activesupport (>= 6.1.0)
@@ -126,6 +131,14 @@ GEM
       railties (>= 5.0.0)
     faker (3.5.1)
       i18n (>= 1.8.11, < 2)
+    faraday (2.13.0)
+      faraday-net_http (>= 2.0, < 3.5)
+      json
+      logger
+    faraday-multipart (1.1.0)
+      multipart-post (~> 2.0)
+    faraday-net_http (3.4.0)
+      net-http (>= 0.5.0)
     ffi (1.17.1)
     ffi (1.17.1-arm64-darwin)
     font-awesome-sass (6.7.2)
@@ -177,7 +190,10 @@ GEM
     mini_portile2 (2.8.8)
     minitest (5.25.5)
     msgpack (1.8.0)
+    multipart-post (2.4.1)
     mutex_m (0.3.0)
+    net-http (0.6.0)
+      uri
     net-imap (0.4.19)
       date
       net-protocol
@@ -307,6 +323,10 @@ GEM
       lint_roller (~> 1.1)
       rubocop (~> 1.72, >= 1.72.1)
       rubocop-rspec (~> 3.5)
+    ruby-openai (8.1.0)
+      event_stream_parser (>= 0.3.0, < 2.0.0)
+      faraday (>= 1)
+      faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
     rubyzip (2.4.1)
     sassc (2.4.0)
@@ -367,6 +387,7 @@ GEM
     unicode-display_width (3.1.4)
       unicode-emoji (~> 4.0, >= 4.0.4)
     unicode-emoji (4.0.4)
+    uri (1.0.3)
     warden (1.2.9)
       rack (>= 2.0.9)
     web-console (4.2.1)
@@ -400,6 +421,7 @@ DEPENDENCIES
   chartkick (~> 5.0, >= 5.0.2)
   debug
   devise
+  dotenv-rails
   execjs
   factory_bot_rails
   faker
@@ -418,6 +440,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   rubocop-rspec_rails
+  ruby-openai
   sassc-rails
   selenium-webdriver
   shoulda-matchers (~> 5.0)

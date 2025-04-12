@@ -17,8 +17,13 @@
                         New
 
             - if @owner == current_user
-                %a.ml-auto.btn.btn-lg.p-0.px-2{hidden: true, href: "/workout/edit?id=#{@workout.id}", type: "button"}
-                    %i.fa-solid.fa-pencil.text-dark
+                .float-right
+                    %a.btn.btn-outline-primary.btn-sm.mr-2{href: "/ai/analyze?workout_id=#{@workout.id}", data: { turbo: false }}
+                        %i.fa-solid.fa-robot
+                        AI Analysis
+                    %a.btn.btn-outline-dark.btn-sm{href: "/workout/edit?id=#{@workout.id}", type: "button"}
+                        %i.fa-solid.fa-pencil
+                        Edit
         
         
     .row

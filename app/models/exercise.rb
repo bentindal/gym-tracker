@@ -5,7 +5,9 @@
 # calculating workout statistics and visualizing data.
 class Exercise < ApplicationRecord
   belongs_to :user
-  has_many :sets, class_name: 'Allset'
+  belongs_to :workout, optional: true
+  has_many :sets, class_name: 'Allset', dependent: :destroy
+  validates :name, presence: true
 
   GROUP_COLOURS = {
     'Chest' => 'primary',
