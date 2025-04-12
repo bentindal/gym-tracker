@@ -15,15 +15,6 @@
                     %span.badge.badge-pill.badge-warning.text-white.ml-1
                         %i.fa-solid.fa-eye
                         New
-
-            - if @owner == current_user
-                .float-right
-                    %a.btn.btn-outline-primary.btn-sm.mr-2{href: "/ai/analyze?workout_id=#{@workout.id}", data: { turbo: false }}
-                        %i.fa-solid.fa-robot
-                        AI Analysis
-                    %a.btn.btn-outline-dark.btn-sm{href: "/workout/edit?id=#{@workout.id}", type: "button"}
-                        %i.fa-solid.fa-pencil
-                        Edit
         
         
     .row
@@ -105,7 +96,6 @@
                             - else
                                 %span.font-weight-light
                                     = msg
-
     .row.border-top.pt-2.pb-2
         .col-12.d-flex{data: {controller: "like"}}
             - count = @workout.likes_count
@@ -129,3 +119,41 @@
                     = "No one has liked this workout yet."
                 - else
                     = "Liked by #{liked_by.join(", ")}"
+
+- if @workout.workout_analysis
+    .container
+        .row.pt-4
+            .col-12
+                .card.shadow-sm
+                    .card-header.bg-primary.text-white.d-flex.justify-content-between.align-items-center
+                        %h5.mb-0
+                            %i.fa-solid.fa-robot.mr-2
+                            AI Analysis
+                        %small.text-white-50
+                            = @workout.workout_analysis.created_at.strftime("%B %d, %Y")
+                    .card-body
+                        .p-3.rounded.bg-light.border-left.border-primary.border-4
+                            - feedback_paragraphs = @workout.workout_analysis.feedback.split("\n\n")
+                            - feedback_paragraphs.each do |paragraph|
+                                %p.mb-3
+                                    = paragraph.gsub(/\*\*(.*?)\*\*/, '<strong>\1</strong>')
+- elsif @owner == current_user
+    .container
+        .row.pt-4
+            .col-12
+                .card.shadow-sm
+                    .card-body.text-center
+                        %h5.mb-3
+                            %i.fa-solid.fa-robot.mr-2
+                            Get AI Analysis
+                        %p.text-muted.mb-4 Get personalized insights about your workout performance and progress
+                        = form_tag "/ai/analyze", method: :get, class: "d-inline-block", data: { turbo: false } do
+                            = hidden_field_tag :workout_id, @workout.id
+                            = button_tag type: "submit", class: "btn btn-primary btn-lg position-relative", data: { controller: "loading", action: "click->loading#show" } do
+                                %span.d-none{data: { loading_target: "spinner" }}
+                                    %i.fa-solid.fa-spinner.fa-spin.mr-2
+                                %span{data: { loading_target: "text" }}
+                                    %i.fa-solid.fa-magic.mr-2
+                                    Generate Analysis
+
+    

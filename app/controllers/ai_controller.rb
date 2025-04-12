@@ -6,6 +6,7 @@ class AiController < ApplicationController
     if params[:workout_id].present?
       # Analyze specific workout
       workout = Workout.find(params[:workout_id])
+      
       # Verify user owns the workout
       if workout.user_id != current_user.id
         redirect_to workout_view_path(id: params[:workout_id]), alert: "Unauthorized"
@@ -13,20 +14,42 @@ class AiController < ApplicationController
       end
       
       # Check if analysis already exists
-      @analysis = WorkoutAnalysis.find_by(workout_id: workout.id)
+      existing_analysis = WorkoutAnalysis.find_by(workout_id: workout.id)
       
-      unless @analysis
-        # Get recent workouts (last 30 days)
-        recent_workouts = current_user.workouts
-          .where('started_at >= ?', 30.days.ago)
-          .where.not(id: workout.id)
-          .order(started_at: :desc)
+      if existing_analysis
+        redirect_to workout_view_path(id: params[:workout_id]), notice: "Analysis already exists"
+        return
+      end
+      
+      # Add a small delay to ensure the loading state is visible
+      sleep(1)
+      
+      # Get recent workouts (last 30 days)
+      recent_workouts = current_user.workouts
+        .where('started_at >= ?', 30.days.ago)
+        .where.not(id: workout.id)
+        .order(started_at: :desc)
 
-        # Prepare current workout data
-        current_workout_data = {
-          date: workout.started_at,
-          duration: workout.length_string,
-          exercises: workout.allsets.map do |set|
+      # Prepare current workout data
+      current_workout_data = {
+        date: workout.started_at,
+        duration: workout.length_string,
+        exercises: workout.allsets.map do |set|
+          {
+            name: set.exercise.name,
+            group: set.exercise.group,
+            repetitions: set.repetitions,
+            weight: set.weight
+          }
+        end
+      }
+
+      # Prepare recent workouts data
+      recent_workouts_data = recent_workouts.map do |w|
+        {
+          date: w.started_at,
+          duration: w.length_string,
+          exercises: w.allsets.map do |set|
             {
               name: set.exercise.name,
               group: set.exercise.group,
@@ -35,67 +58,27 @@ class AiController < ApplicationController
             }
           end
         }
-
-        # Prepare recent workouts data
-        recent_workouts_data = recent_workouts.map do |w|
-          {
-            date: w.started_at,
-            duration: w.length_string,
-            exercises: w.allsets.map do |set|
-              {
-                name: set.exercise.name,
-                group: set.exercise.group,
-                repetitions: set.repetitions,
-                weight: set.weight
-              }
-            end
-          }
-        end
-
-        # Format data for OpenAI
-        prompt = format_workout_data_for_ai(current_workout_data, recent_workouts_data)
-        
-        # Get AI feedback
-        feedback = get_ai_feedback(prompt)
-        
-        # Create and save the analysis
-        @analysis = WorkoutAnalysis.create!(
-          workout: workout,
-          total_volume: calculate_total_volume(workout),
-          total_sets: workout.allsets.count,
-          total_reps: calculate_total_reps(workout),
-          average_weight: calculate_average_weight(workout),
-          feedback: feedback
-        )
-      end
-      
-      render :analyze
-    else
-      # Get recent workouts (last 30 days)
-      recent_workouts = current_user.workouts.where('started_at >= ?', 30.days.ago)
-      
-      # Prepare workout data for analysis
-      workout_data = recent_workouts.map do |workout|
-        {
-          date: workout.started_at,
-          duration: workout.length_string,
-          exercises: workout.allsets.map do |set|
-            {
-              name: set.exercise.name,
-              repetitions: set.repetitions,
-              weight: set.weight
-            }
-          end
-        }
       end
 
       # Format data for OpenAI
-      prompt = format_workout_data_for_ai(nil, workout_data)
+      prompt = format_workout_data_for_ai(current_workout_data, recent_workouts_data)
       
       # Get AI feedback
-      @feedback = get_ai_feedback(prompt)
+      feedback = get_ai_feedback(prompt)
       
-      render :analyze
+      # Create and save the analysis
+      WorkoutAnalysis.create!(
+        workout: workout,
+        total_volume: calculate_total_volume(workout),
+        total_sets: workout.allsets.count,
+        total_reps: calculate_total_reps(workout),
+        average_weight: calculate_average_weight(workout),
+        feedback: feedback
+      )
+      
+      redirect_to workout_view_path(id: params[:workout_id]), notice: "Analysis generated successfully!"
+    else
+      redirect_to root_path, alert: "No workout specified"
     end
   end
 
@@ -117,13 +100,13 @@ class AiController < ApplicationController
 
   def format_workout_data_for_ai(current_workout, recent_workouts)
     <<~PROMPT
-      Provide a concise, three-paragraph analysis for #{current_user.first_name}. Write in a natural, flowing style as if you're having a conversation with them:
+      Provide a concise, three-paragraph analysis for #{current_user.first_name}. Write in a natural, flowing style as if you're having a conversation with them. Format your response in markdown with clear paragraph breaks:
 
-      First paragraph: Highlight the most impressive or interesting aspects of their current workout. Feel free to mention specific sets or reps if they tell a compelling story about their progress.
+      **First paragraph:** Highlight the most impressive or interesting aspects of their current workout. Feel free to mention specific sets or reps if they tell a compelling story about their progress.
 
-      Second paragraph: Compare their current workout to their recent training history. Focus on meaningful patterns or progress in their training approach.
+      **Second paragraph:** Compare their current workout to their recent training history. Focus on meaningful patterns or progress in their training approach.
 
-      Third paragraph: Provide one key insight about their overall training routine and consistency.
+      **Third paragraph:** Provide one key insight about their overall training routine and consistency.
 
       Keep it concise and engaging - focus on what makes their training unique or impressive. Write as if you're their personal trainer reviewing their workout data.
 
