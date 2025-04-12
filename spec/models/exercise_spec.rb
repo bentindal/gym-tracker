@@ -97,7 +97,7 @@ describe Exercise do
     context 'with date range' do
       let(:exercise) { create(:exercise) }
       let(:today) { Time.zone.today }
-      let(:yesterday) { today - 1.day }
+      let(:yesterday) { 1.day.ago.to_date }
 
       before do
         create(:allset, exercise: exercise, weight: 100, repetitions: 10, created_at: today.noon)
@@ -105,18 +105,18 @@ describe Exercise do
       end
 
       it 'returns data for the correct number of days' do
-        data = exercise.graph_total_volume(yesterday, today)
+        data = exercise.graph_total_volume(yesterday.strftime('%Y-%m-%d'), today.strftime('%Y-%m-%d'))
         expect(data.length).to eq(2)
       end
 
       it 'calculates correct volume for today' do
-        data = exercise.graph_total_volume(yesterday, today)
-        expect(data.last[:volume]).to eq(1000) # 100 * 10
+        data = exercise.graph_total_volume(today.strftime('%Y-%m-%d'), today.strftime('%Y-%m-%d'))
+        expect(data[today.strftime('%d/%m')]).to eq(1000) # 100 * 10
       end
 
       it 'calculates correct volume for yesterday' do
-        data = exercise.graph_total_volume(yesterday, today)
-        expect(data.first[:volume]).to eq(1080) # 90 * 12
+        data = exercise.graph_total_volume(yesterday.strftime('%Y-%m-%d'), yesterday.strftime('%Y-%m-%d'))
+        expect(data[yesterday.strftime('%d/%m')]).to eq(1080) # 90 * 12
       end
     end
   end
@@ -125,7 +125,7 @@ describe Exercise do
     context 'with date range' do
       let(:exercise) { create(:exercise) }
       let(:today) { Time.zone.today }
-      let(:yesterday) { today - 1.day }
+      let(:yesterday) { 1.day.ago.to_date }
 
       before do
         create(:allset, exercise: exercise, weight: 100, repetitions: 10, created_at: today.noon)
@@ -133,18 +133,18 @@ describe Exercise do
       end
 
       it 'returns data for the correct number of days' do
-        data = exercise.graph_orm(yesterday, today)
+        data = exercise.graph_orm(yesterday.strftime('%Y-%m-%d'), today.strftime('%Y-%m-%d'))
         expect(data.length).to eq(2)
       end
 
       it 'calculates correct ORM for today' do
-        data = exercise.graph_orm(yesterday, today)
-        expect(data.last[:orm]).to eq(133) # Using Brzycki formula
+        data = exercise.graph_orm(today.strftime('%Y-%m-%d'), today.strftime('%Y-%m-%d'))
+        expect(data[today.strftime('%d/%m')]).to eq(133) # Using Brzycki formula
       end
 
       it 'calculates correct ORM for yesterday' do
-        data = exercise.graph_orm(yesterday, today)
-        expect(data.first[:orm]).to eq(126) # Using Brzycki formula
+        data = exercise.graph_orm(yesterday.strftime('%Y-%m-%d'), yesterday.strftime('%Y-%m-%d'))
+        expect(data[yesterday.strftime('%d/%m')]).to eq(126) # Using Brzycki formula
       end
     end
   end

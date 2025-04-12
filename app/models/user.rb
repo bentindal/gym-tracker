@@ -153,7 +153,7 @@ class User < ApplicationRecord
       ended_at: sets.last.created_at
     )
 
-    sets.each { |set| set.update!(belongs_to_workout: workout.id) }
+    sets.each { |set| set.update!(belongs_to_workout: workout) }
 
     Rails.logger.debug { "#{sets.length} sets assigned to workout #{workout.id} successfully for user #{id}" }
     workout

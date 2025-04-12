@@ -346,7 +346,7 @@ RSpec.describe User do
         exercise = create(:exercise, user_id: user.id)
         workout = Workout.create(user_id: user.id)
         Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10,
-                      belongs_to_workout: workout.id)
+                      belongs_to_workout: workout)
 
         expect(user.midworkout).to be_falsey
       end
@@ -364,7 +364,7 @@ RSpec.describe User do
 
       it 'assigns sets to the workout' do
         workout = user.manually_end_workout
-        expect(unassigned_sets.all? { |set| set.reload.belongs_to_workout == workout.id }).to be true
+        expect(unassigned_sets.all? { |set| set.reload.belongs_to_workout == workout }).to be true
       end
     end
 
