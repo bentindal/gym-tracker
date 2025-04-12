@@ -16,21 +16,44 @@ class AiController < ApplicationController
       @analysis = WorkoutAnalysis.find_by(workout_id: workout.id)
       
       unless @analysis
-        # Prepare workout data for analysis
-        workout_data = [{
+        # Get recent workouts (last 30 days)
+        recent_workouts = current_user.workouts
+          .where('started_at >= ?', 30.days.ago)
+          .where.not(id: workout.id)
+          .order(started_at: :desc)
+
+        # Prepare current workout data
+        current_workout_data = {
           date: workout.started_at,
           duration: workout.length_string,
           exercises: workout.allsets.map do |set|
             {
               name: set.exercise.name,
+              group: set.exercise.group,
               repetitions: set.repetitions,
               weight: set.weight
             }
           end
-        }]
+        }
+
+        # Prepare recent workouts data
+        recent_workouts_data = recent_workouts.map do |w|
+          {
+            date: w.started_at,
+            duration: w.length_string,
+            exercises: w.allsets.map do |set|
+              {
+                name: set.exercise.name,
+                group: set.exercise.group,
+                repetitions: set.repetitions,
+                weight: set.weight
+              }
+            end
+          }
+        end
 
         # Format data for OpenAI
-        prompt = format_workout_data_for_ai(workout_data)
+        prompt = format_workout_data_for_ai(current_workout_data, recent_workouts_data)
         
         # Get AI feedback
         feedback = get_ai_feedback(prompt)
@@ -67,7 +90,7 @@ class AiController < ApplicationController
       end
 
       # Format data for OpenAI
-      prompt = format_workout_data_for_ai(workout_data)
+      prompt = format_workout_data_for_ai(nil, workout_data)
       
       # Get AI feedback
       @feedback = get_ai_feedback(prompt)
@@ -92,17 +115,23 @@ class AiController < ApplicationController
     total_sets.positive? ? total_weight / total_sets : 0
   end
 
-  def format_workout_data_for_ai(workout_data)
+  def format_workout_data_for_ai(current_workout, recent_workouts)
     <<~PROMPT
-      Analyze the following workout data and provide constructive feedback on:
-      1. Workout frequency and consistency
-      2. Exercise variety
-      3. Progressive overload
-      4. Any potential imbalances
-      5. General recommendations for improvement
+      Provide a concise, three-paragraph analysis for #{current_user.first_name}. Write in a natural, flowing style as if you're having a conversation with them:
 
-      Workout Data:
-      #{workout_data.to_json}
+      First paragraph: Highlight the most impressive or interesting aspects of their current workout. Feel free to mention specific sets or reps if they tell a compelling story about their progress.
+
+      Second paragraph: Compare their current workout to their recent training history. Focus on meaningful patterns or progress in their training approach.
+
+      Third paragraph: Provide one key insight about their overall training routine and consistency.
+
+      Keep it concise and engaging - focus on what makes their training unique or impressive. Write as if you're their personal trainer reviewing their workout data.
+
+      Current Workout Data:
+      #{current_workout.to_json}
+
+      Recent Workouts Data:
+      #{recent_workouts.to_json}
     PROMPT
   end
 
@@ -113,7 +142,7 @@ class AiController < ApplicationController
       parameters: {
         model: "gpt-3.5-turbo-instruct",
         prompt: prompt,
-        max_tokens: 500,
+        max_tokens: 400,
         temperature: 0.7
       }
     )
