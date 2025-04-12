@@ -5,4 +5,5 @@
 class Allset < ApplicationRecord
   belongs_to :user
   belongs_to :exercise
+  belongs_to :belongs_to_workout, class_name: 'Workout', optional: true
 end

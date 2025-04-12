@@ -10,7 +10,7 @@ class CreateWorkouts < ActiveRecord::Migration[6.1]
       t.string :title
       t.integer :exercises_used
       t.integer :sets_completed
-
+      t.references :allset, foreign_key: true
       t.timestamps
     end
   end

@@ -44,13 +44,13 @@ class Exercise < ApplicationRecord
   end
 
   def graph_total_volume(from, to)
-    data = []
+    data = {}
     current_date = Date.parse(from.to_s)
     end_date = Date.parse(to.to_s)
 
     while current_date <= end_date
       volume = calculate_volume_for_date(current_date)
-      data << { date: current_date.strftime('%d/%m'), volume: volume }
+      data[current_date.strftime('%d/%m')] = volume
       current_date += 1.day
     end
 
@@ -58,13 +58,13 @@ class Exercise < ApplicationRecord
   end
 
   def graph_orm(from, to)
-    data = []
+    data = {}
     current_date = Date.parse(from.to_s)
     end_date = Date.parse(to.to_s)
 
     while current_date <= end_date
       orm = calculate_orm_for_date(current_date)
-      data << { date: current_date.strftime('%d/%m'), orm: orm }
+      data[current_date.strftime('%d/%m')] = orm
       current_date += 1.day
     end
 

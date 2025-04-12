@@ -49,7 +49,7 @@ class WorkoutController < ApplicationController
     )
     @workout.save
 
-    @sets.each { |item| item.update(belongs_to_workout: @workout.id) }
+    @sets.each { |item| item.update(belongs_to_workout: @workout) }
   end
 
   def generate_workout_title
