@@ -22,14 +22,13 @@ module StreakTracking
   def streak_msg_other
     I18n.t("user.streak.messages.other.#{streak_status}",
            name: first_name,
-           count: streakcount,
+           count: streak_count,
            going: streak_status == 'active' ? ' going!' : '')
   end
 
   def streak_msg_own
     I18n.t("user.streak.messages.own.#{streak_status}",
-           count: streakcount,
-           going: streak_status == 'active' ? ' going!' : '')
+           count: streak_count,
   end
 
   def worked_out_today?
