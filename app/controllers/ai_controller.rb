@@ -9,7 +9,7 @@ class AiController < ApplicationController
       
       # Verify user owns the workout
       if workout.user_id != current_user.id
-        redirect_to workout_view_path(id: params[:workout_id]), alert: "Unauthorized"
+        render json: { success: false, error: "Unauthorized" }, status: :unauthorized
         return
       end
       
@@ -17,7 +17,7 @@ class AiController < ApplicationController
       existing_analysis = WorkoutAnalysis.find_by(workout_id: workout.id)
       
       if existing_analysis
-        redirect_to workout_view_path(id: params[:workout_id]), notice: "Analysis already exists"
+        render json: { success: false, error: "Analysis already exists" }, status: :conflict
         return
       end
       
@@ -67,7 +67,7 @@ class AiController < ApplicationController
       feedback = get_ai_feedback(prompt)
       
       # Create and save the analysis
-      WorkoutAnalysis.create!(
+      analysis = WorkoutAnalysis.create!(
         workout: workout,
         total_volume: calculate_total_volume(workout),
         total_sets: workout.allsets.count,
@@ -76,9 +76,16 @@ class AiController < ApplicationController
         feedback: feedback
       )
       
-      redirect_to workout_view_path(id: params[:workout_id]), notice: "Analysis generated successfully!"
+      render json: { 
+        success: true, 
+        analysis: {
+          id: analysis.id,
+          created_at: analysis.created_at,
+          feedback: analysis.feedback
+        }
+      }
     else
-      redirect_to root_path, alert: "No workout specified"
+      render json: { success: false, error: "No workout specified" }, status: :bad_request
     end
   end
 
