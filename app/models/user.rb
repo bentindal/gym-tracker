@@ -23,7 +23,7 @@ class User < ApplicationRecord
   # First name and last name must be at least 2 characters long
   validates :first_name, :last_name, length: { minimum: 2 }
   validates :first_name, :last_name, format: { with: /\A[a-zA-Z\s\-']+\z/,
-                                             message: 'only allows letters, spaces, hyphens, and apostrophes' }
+                                               message: 'only allows letters, spaces, hyphens, and apostrophes' }
 
   # Email must be in correct format
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -74,8 +74,8 @@ class User < ApplicationRecord
   end
 
   def has_worked_out_today
-    workouts.where('started_at >= ?', Time.zone.today.beginning_of_day).exists? ||
-      sets.where('created_at >= ?', Time.zone.today.beginning_of_day).exists?
+    workouts.exists?(['started_at >= ?', Time.zone.today.beginning_of_day]) ||
+      sets.exists?(['created_at >= ?', Time.zone.today.beginning_of_day])
   end
 
   def worked_out_yesterday?
@@ -113,7 +113,7 @@ class User < ApplicationRecord
       "You had a day off yesterday, workout today to keep the #{streakcount} day streak going or it will be reset!"
     else
       if streakcount.zero?
-        "You worked out today!"
+        'You worked out today!'
       else
         "You have a #{streakcount} day streak!"
       end
@@ -126,16 +126,19 @@ class User < ApplicationRecord
 
   def midworkout
     return false if sets.empty?
-    sets.where(workout_id: nil).exists?
+
+    sets.exists?(workout_id: nil)
   end
 
   def last_exercise
     return nil if sets.empty?
+
     sets.last.exercise
   end
 
   def last_set
     return nil if sets.empty?
+
     sets.last
   end
 
@@ -182,8 +185,8 @@ class User < ApplicationRecord
 
   def worked_out_on_date(day, month, year)
     date = Date.new(year, month, day)
-    workouts.where('started_at >= ? AND started_at < ?', date.beginning_of_day, date.end_of_day).exists? ||
-      sets.where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.end_of_day).exists?
+    workouts.exists?(['started_at >= ? AND started_at < ?', date.beginning_of_day, date.end_of_day]) ||
+      sets.exists?(['created_at >= ? AND created_at < ?', date.beginning_of_day, date.end_of_day])
   end
 
   def streak_count
@@ -194,7 +197,7 @@ class User < ApplicationRecord
 
     while worked_out_on_date(current_date.day, current_date.month, current_date.year)
       streak += 1
-      current_date = current_date - 1.day
+      current_date -= 1.day
     end
 
     streak

@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'spec_helper'
 require 'ostruct'
 
-RSpec.describe User, type: :model do
+RSpec.describe User do
   include ActiveSupport::Testing::TimeHelpers
 
   let(:user) { create(:user) }
@@ -49,13 +49,13 @@ RSpec.describe User, type: :model do
   describe 'validations' do
     subject { build(:user) }
 
-    it { should validate_presence_of(:first_name) }
-    it { should validate_presence_of(:last_name) }
-    it { should validate_presence_of(:email) }
+    it { is_expected.to validate_presence_of(:first_name) }
+    it { is_expected.to validate_presence_of(:last_name) }
+    it { is_expected.to validate_presence_of(:email) }
 
     context 'email uniqueness' do
       before { create(:user, email: 'test@example.com') }
-      
+
       it 'is invalid with a duplicate email' do
         user = build(:user, email: 'test@example.com')
         expect(user).not_to be_valid
@@ -69,17 +69,17 @@ RSpec.describe User, type: :model do
       end
     end
 
-    it { should validate_length_of(:first_name).is_at_least(2) }
-    it { should validate_length_of(:last_name).is_at_least(2) }
+    it { is_expected.to validate_length_of(:first_name).is_at_least(2) }
+    it { is_expected.to validate_length_of(:last_name).is_at_least(2) }
 
-    it { should allow_value('user@example.com').for(:email) }
-    it { should_not allow_value('invalid_email').for(:email) }
+    it { is_expected.to allow_value('user@example.com').for(:email) }
+    it { is_expected.not_to allow_value('invalid_email').for(:email) }
   end
 
   describe 'associations' do
-    it { should have_many(:workouts).dependent(:destroy) }
-    it { should have_many(:exercises).dependent(:destroy) }
-    it { should have_many(:sets).class_name('Allset').dependent(:destroy) }
+    it { is_expected.to have_many(:workouts).dependent(:destroy) }
+    it { is_expected.to have_many(:exercises).dependent(:destroy) }
+    it { is_expected.to have_many(:sets).class_name('Allset').dependent(:destroy) }
 
     describe '#exercises' do
       it 'returns exercises for the user' do
@@ -361,4 +361,3 @@ RSpec.describe User, type: :model do
     end
   end
 end
-
