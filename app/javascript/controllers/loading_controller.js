@@ -1,10 +1,22 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["spinner", "text", "error", "errorMessage"]
+  static targets = ["spinner", "text", "error", "errorMessage", "button"]
 
   connect() {
     this.originalHTML = this.element.innerHTML
+  }
+
+  start() {
+    this.buttonTarget.disabled = true
+    this.spinnerTarget.classList.remove("d-none")
+    this.textTarget.textContent = "Generating Analysis..."
+  }
+
+  stop() {
+    this.buttonTarget.disabled = false
+    this.spinnerTarget.classList.add("d-none")
+    this.textTarget.innerHTML = '<i class="fa-solid fa-magic mr-2"></i>Generate Analysis'
   }
 
   submit(event) {
