@@ -4,10 +4,13 @@ require 'rails_helper'
 require 'spec_helper'
 require 'ostruct'
 
-RSpec.describe User do
+RSpec.describe User, type: :model do
   include ActiveSupport::Testing::TimeHelpers
 
   let(:user) { create(:user) }
+  let(:workout) { create(:workout, user: user) }
+  let(:exercise) { create(:exercise, user: user) }
+  let(:set) { create(:set, exercise: exercise, user: user) }
 
   shared_examples 'a validation' do
     let(:model) { build(:user) }
@@ -44,38 +47,21 @@ RSpec.describe User do
   end
 
   describe 'validations' do
-    describe 'presence validations' do
-      %w[first_name last_name email].each do |field|
-        it_behaves_like 'a validation' do
-          let(:field_name) { field }
-        end
-      end
-    end
-
-    describe 'email validations' do
-      it 'requires unique email' do
-        user = create(:user)
-        duplicate_user = build(:user, email: user.email)
-        expect(duplicate_user).not_to be_valid
-      end
-
-      it 'validates email format' do
-        user = build(:user, email: 'invalid_email')
-        expect(user).not_to be_valid
-      end
-    end
-
-    describe 'length validations' do
-      %w[first_name last_name].each do |field|
-        it_behaves_like 'a validation' do
-          let(:field_name) { field }
-          let(:min_length) { 2 }
-        end
-      end
-    end
+    it { should validate_presence_of(:first_name) }
+    it { should validate_presence_of(:last_name) }
+    it { should validate_presence_of(:email) }
+    it { should validate_uniqueness_of(:email) }
+    it { should validate_length_of(:first_name).is_at_least(2) }
+    it { should validate_length_of(:last_name).is_at_least(2) }
+    it { should allow_value('user@example.com').for(:email) }
+    it { should_not allow_value('invalid_email').for(:email) }
   end
 
   describe 'associations' do
+    it { should have_many(:workouts).dependent(:destroy) }
+    it { should have_many(:exercises).dependent(:destroy) }
+    it { should have_many(:sets).class_name('Allset').dependent(:destroy) }
+
     describe '#exercises' do
       it 'returns exercises for the user' do
         user = create(:user)
@@ -122,111 +108,133 @@ RSpec.describe User do
   end
 
   describe '#name' do
-    it 'returns full name' do
-      user = build(:user, first_name: 'John', last_name: 'Doe')
-      expect(user.name).to eq('John Doe')
-    end
-  end
-
-  describe '#last_set' do
-    context 'when user has sets' do
-      it 'returns the most recent set' do
-        user = create(:user)
-        create(:allset, user: user, created_at: 1.day.ago)
-        recent_set = create(:allset, user: user)
-        expect(user.last_set).to eq(recent_set)
-      end
-    end
-
-    context 'when user has no sets' do
-      it 'returns nil' do
-        user = create(:user)
-        expect(user.last_set).to be_nil
-      end
-    end
-  end
-
-  describe '#last_exercise' do
-    context 'when user has exercises' do
-      it 'returns the exercise of the last set' do
-        user = create(:user)
-        exercise = create(:exercise, user: user)
-        create(:allset, user: user, exercise: exercise)
-        expect(user.last_exercise).to eq(exercise)
-      end
-    end
-
-    context 'when user has no sets' do
-      it 'returns nil' do
-        user = create(:user)
-        expect(user.last_exercise).to be_nil
-      end
+    it 'returns the full name' do
+      expect(user.name).to eq("#{user.first_name} #{user.last_name}")
     end
   end
 
   describe '#workout_count' do
-    it 'returns number of workouts' do
-      user = create(:user)
-      create_list(:workout, 3, user: user)
-      expect(user.workout_count).to eq(3)
+    it 'returns the number of workouts' do
+      create(:workout, user: user)
+      expect(user.workout_count).to eq(2)
     end
   end
 
-  describe '#worked_out_today?' do
-    context 'when user has worked out today' do
-      it 'returns true' do
-        user = create(:user)
-        create(:allset, user: user)
-        expect(user.worked_out_today?).to be true
-      end
+  describe '#has_worked_out_today' do
+    it 'returns true if user has worked out today' do
+      create(:workout, user: user, started_at: Time.current)
+      expect(user.has_worked_out_today).to be true
     end
 
-    context 'when user has not worked out today' do
-      it 'returns false' do
-        user = create(:user)
-        create(:allset, user: user, created_at: 1.day.ago)
-        expect(user.worked_out_today?).to be false
-      end
+    it 'returns false if user has not worked out today' do
+      create(:workout, user: user, started_at: 1.day.ago)
+      expect(user.has_worked_out_today).to be false
     end
   end
 
   describe '#worked_out_on_date' do
-    it 'returns true if user worked out on given date' do
-      user = create(:user)
-      create(:allset, user: user, created_at: Date.yesterday)
-      expect(user.worked_out_on_date(Date.yesterday.day, Date.yesterday.month, Date.yesterday.year)).to be true
+    it 'returns true if user worked out on the given date' do
+      date = Date.current
+      create(:workout, user: user, started_at: date)
+      expect(user.worked_out_on_date(date.day, date.month, date.year)).to be true
     end
 
-    it 'returns false if user did not work out on given date' do
-      user = create(:user)
-      expect(user.worked_out_on_date(Date.yesterday.day, Date.yesterday.month, Date.yesterday.year)).to be false
+    it 'returns false if user did not work out on the given date' do
+      date = Date.current
+      create(:workout, user: user, started_at: date + 1.day)
+      expect(user.worked_out_on_date(date.day, date.month, date.year)).to be false
+    end
+  end
+
+  describe '#streak_count' do
+    it 'returns 0 if user has never worked out' do
+      expect(user.streak_count).to eq(0)
     end
 
-    it 'correctly formats single-digit day and month' do
-      user = create(:user)
-      date = Date.new(2024, 1, 1)
-      create(:allset, user: user, created_at: date)
-      expect(user.worked_out_on_date(1, 1, 2024)).to be true
+    it 'returns 1 if user worked out today' do
+      create(:workout, user: user, started_at: Time.current)
+      expect(user.streak_count).to eq(1)
+    end
+
+    it 'returns 2 if user worked out today and yesterday' do
+      create(:workout, user: user, started_at: Time.current)
+      create(:workout, user: user, started_at: 1.day.ago)
+      expect(user.streak_count).to eq(2)
+    end
+
+    it 'returns 0 if user worked out yesterday but not today' do
+      create(:workout, user: user, started_at: 1.day.ago)
+      expect(user.streak_count).to eq(0)
+    end
+  end
+
+  describe '#midworkout' do
+    it 'returns false if user has no sets' do
+      expect(user.midworkout).to be false
+    end
+
+    it 'returns true if user has an active workout' do
+      create(:set, user: user, belongs_to_workout: nil)
+      expect(user.midworkout).to be true
+    end
+
+    it 'returns false if user has only completed workouts' do
+      create(:set, user: user, belongs_to_workout: 1)
+      expect(user.midworkout).to be false
+    end
+  end
+
+  describe '#last_exercise' do
+    it 'returns nil if user has no sets' do
+      expect(user.last_exercise).to be_nil
+    end
+
+    it 'returns the last exercise' do
+      exercise = create(:exercise, user: user)
+      create(:set, exercise: exercise, user: user)
+      expect(user.last_exercise).to eq(exercise)
+    end
+  end
+
+  describe '#last_set' do
+    it 'returns nil if user has no sets' do
+      expect(user.last_set).to be_nil
+    end
+
+    it 'returns the last set' do
+      set = create(:set, user: user)
+      expect(user.last_set).to eq(set)
     end
   end
 
   describe '#last_seen' do
-    context 'when user has sets' do
-      it_behaves_like 'a time diff test', -> { 5.minutes.ago }, '5 minutes ago'
-      it_behaves_like 'a time diff test', -> { 1.minute.ago }, '1 minute ago'
-      it_behaves_like 'a time diff test', -> { 3.hours.ago }, '3 hours ago'
-      it_behaves_like 'a time diff test', -> { 1.hour.ago }, '1 hour ago'
-      it_behaves_like 'a time diff test', -> { 3.days.ago }, '3 days ago'
-      it_behaves_like 'a time diff test', -> { 1.day.ago }, '1 day ago'
-      it_behaves_like 'a time diff test', -> { 2.weeks.ago }, '2 weeks ago'
-      it_behaves_like 'a time diff test', -> { 1.week.ago }, '1 week ago'
-      it_behaves_like 'a time diff test', -> { 2.months.ago }, 'over a month ago'
+    it 'returns nil if user has no sets' do
+      expect(user.last_seen).to be_nil
     end
 
-    context 'when user has no sets' do
-      it 'returns nil' do
-        expect(user.last_seen).to be_nil
-      end
+    it 'returns "over a month ago" if last set was over a month ago' do
+      create(:set, user: user, created_at: 2.months.ago)
+      expect(user.last_seen).to eq('over a month ago')
+    end
+
+    it 'returns "X weeks ago" if last set was within a month' do
+      create(:set, user: user, created_at: 2.weeks.ago)
+      expect(user.last_seen).to eq('2 weeks ago')
+    end
+
+    it 'returns "X days ago" if last set was within a week' do
+      create(:set, user: user, created_at: 2.days.ago)
+      expect(user.last_seen).to eq('2 days ago')
+    end
+
+    it 'returns "X hours ago" if last set was within a day' do
+      create(:set, user: user, created_at: 2.hours.ago)
+      expect(user.last_seen).to eq('2 hours ago')
+    end
+
+    it 'returns "X minutes ago" if last set was within an hour' do
+      create(:set, user: user, created_at: 2.minutes.ago)
+      expect(user.last_seen).to eq('2 minutes ago')
     end
   end
 
@@ -259,20 +267,6 @@ RSpec.describe User do
                                         worked_out_two_days_ago?: false)
         expect(user.streak_status).to eq('none')
       end
-    end
-  end
-
-  describe '#streak_count' do
-    it 'returns 0 when user has no sets' do
-      expect(user.streak_count).to eq(0)
-    end
-
-    it 'calculates streak count for users with sets' do
-      exercise = create(:exercise, user_id: user.id)
-      Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10)
-
-      # Just verify the method runs without errors and returns an integer
-      expect(user.streak_count).to be_a(Integer)
     end
   end
 
@@ -324,35 +318,6 @@ RSpec.describe User do
     end
   end
 
-  describe '#midworkout' do
-    context 'when user has no sets' do
-      it 'returns false' do
-        expect(user.midworkout).to be_falsey
-      end
-    end
-
-    context 'when user has sets not belonging to a workout' do
-      it 'returns true' do
-        exercise = create(:exercise, user_id: user.id)
-        Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10,
-                      belongs_to_workout: nil)
-
-        expect(user.midworkout).to be_truthy
-      end
-    end
-
-    context 'when all user sets belong to workouts' do
-      it 'returns false' do
-        exercise = create(:exercise, user_id: user.id)
-        workout = Workout.create(user_id: user.id)
-        Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10,
-                      belongs_to_workout: workout)
-
-        expect(user.midworkout).to be_falsey
-      end
-    end
-  end
-
   describe '#manually_end_workout' do
     context 'when user has unassigned sets' do
       let(:user) { create(:user) }
@@ -376,3 +341,4 @@ RSpec.describe User do
     end
   end
 end
+

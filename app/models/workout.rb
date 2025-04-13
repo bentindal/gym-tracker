@@ -5,6 +5,9 @@
 # and manages the sets that belong to it
 class Workout < ApplicationRecord
   belongs_to :user
+  has_many :exercises, dependent: :destroy
+  has_one :workout_analysis, dependent: :destroy
+  validates :title, presence: true
 
   def allsets
     Allset.where(belongs_to_workout: id)
