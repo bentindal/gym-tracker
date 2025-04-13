@@ -38,6 +38,7 @@ class AiController < ApplicationController
           {
             name: set.exercise.name,
             group: set.exercise.group,
+            unit: set.exercise.unit,
             repetitions: set.repetitions,
             weight: set.weight
           }
@@ -53,6 +54,7 @@ class AiController < ApplicationController
             {
               name: set.exercise.name,
               group: set.exercise.group,
+              unit: set.exercise.unit,
               repetitions: set.repetitions,
               weight: set.weight
             }
@@ -109,13 +111,13 @@ class AiController < ApplicationController
     <<~PROMPT
       Provide a concise, three-paragraph analysis for #{current_user.first_name}. Write in a natural, flowing style as if you're having a conversation with them. Format your response in markdown with clear paragraph breaks:
 
-      **First paragraph:** Highlight the most impressive or interesting aspects of their current workout. Feel free to mention specific sets or reps if they tell a compelling story about their progress.
+      **First paragraph:** Highlight the most impressive or interesting aspects of their current workout. Feel free to mention specific sets or reps if they tell a compelling story about their progress. Always mention weights with their correct units (kg, lbs, kg/db for dumbbells in kg, or lbs/db for dumbbells in lbs).
 
-      **Second paragraph:** Compare their current workout to their recent training history. Focus on meaningful patterns or progress in their training approach.
+      **Second paragraph:** Compare their current workout to their recent training history. Focus on meaningful patterns or progress in their training approach. When comparing weights, always use the same unit system as the exercise (kg, lbs, kg/db, or lbs/db).
 
       **Third paragraph:** Provide one key insight about their overall training routine and consistency.
 
-      Keep it concise and engaging - focus on what makes their training unique or impressive. Write as if you're their personal trainer reviewing their workout data.
+      Keep it concise and engaging - focus on what makes their training unique or impressive. Write as if you're their personal trainer reviewing their workout data. Always respect and use the unit system specified for each exercise.
 
       Current Workout Data:
       #{current_workout.to_json}
