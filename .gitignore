@@ -2,7 +2,6 @@ db/*.sqlite3
 db/*.sqlite3-*
 log/*
 config/master.key
-db/schema.rb
 tmp/*
 coverage/*
 .env
