@@ -9,7 +9,7 @@ class AiController < ApplicationController
       
       # Verify user owns the workout
       if workout.user_id != current_user.id
-        redirect_to workout_view_path(workout), alert: "Unauthorized"
+        render json: { error: "Unauthorized" }, status: :unauthorized
         return
       end
       
@@ -17,7 +17,7 @@ class AiController < ApplicationController
       existing_analysis = WorkoutAnalysis.find_by(workout_id: workout.id)
       
       if existing_analysis
-        redirect_to workout_view_path(workout), alert: "Analysis already exists"
+        render json: { error: "Analysis already exists" }, status: :conflict
         return
       end
       
@@ -67,7 +67,8 @@ class AiController < ApplicationController
         feedback = get_ai_feedback(prompt)
         
         if feedback.blank?
-          raise "Failed to get AI feedback"
+          render json: { error: "Failed to get AI feedback" }, status: :service_unavailable
+          return
         end
         
         # Create and save the analysis
@@ -80,15 +81,14 @@ class AiController < ApplicationController
           feedback: feedback
         )
         
-        # Redirect to workout view with success message
-        redirect_to workout_view_path(workout), notice: "Analysis generated successfully"
+        render json: { success: true }
       rescue StandardError => e
         Rails.logger.error("AI Analysis failed: #{e.message}")
         Rails.logger.error(e.backtrace.join("\n"))
-        redirect_to workout_view_path(workout), alert: "Failed to generate analysis. Please try again later."
+        render json: { error: "Failed to generate analysis" }, status: :internal_server_error
       end
     else
-      redirect_to workout_list_path, alert: "No workout specified"
+      render json: { error: "No workout specified" }, status: :bad_request
     end
   end
 
