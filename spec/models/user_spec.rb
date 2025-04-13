@@ -3,8 +3,11 @@
 require 'rails_helper'
 require 'spec_helper'
 require 'ostruct'
+require 'shoulda/matchers'
 
-RSpec.describe User do
+RSpec.describe User, type: :model do
+  include Shoulda::Matchers::ActiveModel
+  include Shoulda::Matchers::ActiveRecord
   include ActiveSupport::Testing::TimeHelpers
 
   let(:user) { create(:user) }
