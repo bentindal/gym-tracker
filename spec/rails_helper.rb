@@ -31,7 +31,6 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
-
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
@@ -77,7 +76,7 @@ RSpec.configure do |config|
     driven_by :rack_test
   end
 
-  config.before(:each, :js, type: :system) do
+  config.before(:each, type: :system, js: true) do
     driven_by :selenium_chrome_headless
   end
 end
@@ -88,10 +87,4 @@ Shoulda::Matchers.configure do |config|
     with.test_framework :rspec
     with.library :rails
   end
-end
-
-# Include Shoulda Matchers in RSpec configuration
-RSpec.configure do |config|
-  config.include(Shoulda::Matchers::ActiveModel, type: :model)
-  config.include(Shoulda::Matchers::ActiveRecord, type: :model)
 end

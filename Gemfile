@@ -19,7 +19,7 @@ gem 'devise'
 gem 'haml-rails'
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem 'puma', '~> 5.0'
+gem 'puma', '~> 6.0'
 
 # jquery for confirmations
 gem 'jquery-rails'
@@ -56,7 +56,7 @@ gem 'logger'
 # OpenAI API client
 gem 'ruby-openai'
 
-gem 'dotenv-rails', groups: %i[development test]
+gem 'dotenv-rails', groups: [:development, :test]
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
@@ -89,7 +89,6 @@ group :development, :test do
   # Add testing gems
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'ostruct'
   gem 'rspec-rails'
 end
 

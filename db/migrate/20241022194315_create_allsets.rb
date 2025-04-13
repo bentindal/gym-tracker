@@ -1,15 +1,16 @@
 # frozen_string_literal: true
 
-# Creates the allsets table
-class CreateAllsets < ActiveRecord::Migration[7.1]
+class CreateAllsets < ActiveRecord::Migration[6.1]
   def change
-    create_table :allsets do |t|
-      t.references :exercise, null: false, foreign_key: true
-      t.references :user, null: false, foreign_key: true
-      t.references :belongs_to_workout, foreign_key: { to_table: :workouts }
-      t.decimal :weight, precision: 5, scale: 1
+    create_table :allsets, if_not_exists: true do |t|
+      t.integer :exercise_id
       t.integer :repetitions
-      t.boolean :warmup, null: false, default: false
+      t.decimal :weight
+      t.integer :user_id
+      t.boolean :isFailure, default: false, null: false
+      t.boolean :isDropset, default: false, null: false
+      t.boolean :isWarmup, default: false
+      t.integer :belongs_to_workout
 
       t.timestamps
     end

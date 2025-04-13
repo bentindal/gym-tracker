@@ -8,26 +8,16 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-# Delete existing demo user and associated records if any
-demo_user = User.find_by(email: 'demo@example.com')
-if demo_user
-  demo_user.workouts.destroy_all
-  demo_user.exercises.destroy_all
-  demo_user.sets.destroy_all
-  demo_user.destroy
-end
+# Delete existing demo user if any
+User.where(email: 'demo@example.com').destroy_all
 
-# Create demo user if it doesn't exist
-demo_user = User.find_or_initialize_by(email: 'demo@example.com')
-demo_user.assign_attributes(
+# Create demo user
+demo_user = User.create!(
   first_name: 'Demo',
   last_name: 'User',
-  password: 'password123',
-  password_confirmation: 'password123'
+  email: 'demo@example.com',
+  password: 'password123'
 )
-demo_user.save!
-
-Rails.logger.debug 'Demo user created/updated successfully!'
 
 # Create exercises with their categories and units
 exercises = [
@@ -49,16 +39,16 @@ end
 
 # Create workouts for the past week
 workout_dates = [
-  6.days.ago - 14.hours,  # 6 days ago at 10 AM
-  4.days.ago - 15.hours,  # 4 days ago at 9 AM
-  3.days.ago - 13.hours,  # 3 days ago at 11 AM
-  1.day.ago - 14.hours # Yesterday at 10 AM
+  Time.zone.now - 6.days - 14.hours,  # 6 days ago at 10 AM
+  Time.zone.now - 4.days - 15.hours,  # 4 days ago at 9 AM
+  Time.zone.now - 3.days - 13.hours,  # 3 days ago at 11 AM
+  Time.zone.now - 1.day - 14.hours,   # Yesterday at 10 AM
 ]
 
 workout_dates.each do |date|
   # Select 3 random exercises for this workout
   workout_exercises = exercise_records.sample(3)
-
+  
   workout = Workout.create!(
     user: demo_user,
     started_at: date,
@@ -76,7 +66,7 @@ workout_dates.each do |date|
         user: demo_user,
         weight: rand(50..150),
         repetitions: rand(5..12),
-        workout: workout,
+        belongs_to_workout: workout.id,
         created_at: date + rand(5..55).minutes
       )
     end
@@ -85,7 +75,7 @@ end
 
 # Create today's workout
 today_exercises = exercise_records.sample(3)
-today_time = 2.hours.ago # 2 hours ago
+today_time = Time.zone.now - 2.hours  # 2 hours ago
 
 today_workout = Workout.create!(
   user: demo_user,
@@ -104,7 +94,7 @@ today_exercises.each do |exercise|
       user: demo_user,
       weight: rand(50..150),
       repetitions: rand(5..12),
-      workout: today_workout,
+      belongs_to_workout: today_workout.id,
       created_at: today_time + rand(5..55).minutes
     )
   end

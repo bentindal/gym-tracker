@@ -13,7 +13,7 @@ class FriendController < ApplicationController
 
   def add
     @friend = Friend.new(user: current_user.id, follows: params[:id])
-    @friend.confirmed = true if User.find_by(id: params[:id])&.is_public
+    @friend.confirmed = true if User.find_by(id: params[:id])&.isPublic
     @friend.save
     redirect_to user_view_path(params[:id])
   end

@@ -86,11 +86,8 @@ SimpleForm.setup do |config|
   end
 
   # vertical input for inline radio buttons and check boxes
-  config.wrappers :vertical_collection_inline,
-                  item_wrapper_class: 'form-check form-check-inline',
-                  item_label_class: 'form-check-label',
-                  tag: 'fieldset',
-                  class: 'mb-3' do |b|
+  config.wrappers :vertical_collection_inline, item_wrapper_class: 'form-check form-check-inline',
+                                               item_label_class: 'form-check-label', tag: 'fieldset', class: 'mb-3' do |b|
     b.use :html5
     b.optional :readonly
     b.wrapper :legend_tag, tag: 'legend', class: 'col-form-label pt-0' do |ba|

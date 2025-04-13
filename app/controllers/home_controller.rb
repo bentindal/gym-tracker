@@ -6,7 +6,7 @@ class HomeController < ApplicationController
   def index
     redirect_to dashboard_path if user_signed_in?
 
-    @page_title = 'Free Online Gym Tracker & Workout Diary'
+    @page_title = "Free Online Gym Tracker & Workout Diary"
     @page_description = t('.page_description')
     @block_mobile_nav_bar = true
   end

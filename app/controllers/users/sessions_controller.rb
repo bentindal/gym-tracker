@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 module Users
-  # Controller for handling user authentication sessions
-  # Inherits from Devise::SessionsController to provide sign in/out functionality
   class SessionsController < Devise::SessionsController
     # before_action :configure_sign_in_params, only: [:create]
 

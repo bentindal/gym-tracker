@@ -10,22 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_04_13_162610) do
+ActiveRecord::Schema[7.1].define(version: 2025_04_12_211630) do
   create_table "allsets", force: :cascade do |t|
-    t.integer "exercise_id", null: false
-    t.integer "user_id", null: false
-    t.decimal "weight", precision: 5, scale: 1
+    t.integer "exercise_id"
     t.integer "repetitions"
-    t.boolean "warmup", default: false, null: false
+    t.decimal "weight"
+    t.integer "user_id"
+    t.boolean "isFailure", default: false, null: false
+    t.boolean "isDropset", default: false, null: false
+    t.boolean "isWarmup", default: false
+    t.integer "belongs_to_workout"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "isFailure", default: false
-    t.boolean "isDropset", default: false
-    t.boolean "isWarmup", default: false
-    t.integer "workout_id"
-    t.index ["exercise_id"], name: "index_allsets_on_exercise_id"
-    t.index ["user_id"], name: "index_allsets_on_user_id"
-    t.index ["workout_id"], name: "index_allsets_on_workout_id"
   end
 
   create_table "exercises", force: :cascade do |t|
@@ -41,7 +37,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_13_162610) do
   create_table "friends", force: :cascade do |t|
     t.integer "user"
     t.integer "follows"
-    t.boolean "confirmed", default: false, null: false
+    t.boolean "confirmed", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -55,16 +51,23 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_13_162610) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "first_name", null: false
-    t.string "last_name", null: false
-    t.string "email", null: false
-    t.string "encrypted_password", null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
+    t.string "first_name"
+    t.string "last_name"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.boolean "isPublic", default: true
+    t.integer "streakcount", default: 0
+    t.integer "highest_streak", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "is_public"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -88,14 +91,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_04_13_162610) do
     t.string "title"
     t.integer "exercises_used"
     t.integer "sets_completed"
-    t.integer "allset_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["allset_id"], name: "index_workouts_on_allset_id"
   end
 
-  add_foreign_key "allsets", "exercises"
-  add_foreign_key "allsets", "users"
   add_foreign_key "workout_analyses", "workouts"
-  add_foreign_key "workouts", "allsets"
 end

@@ -29,7 +29,7 @@
     .text-muted
         = @user.workout_count.to_s + ' workouts logged in total'
 
-- if @user.is_public != false || current_user == @user || @is_friend
+- if @user.isPublic != false || current_user == @user || @is_friend
     .container.container-md.border.bg-white.py-2
         .card.border-top-0.border-bottom-0.justify-content-center.d-flex
             .row
