@@ -5,3 +5,33 @@ config/master.key
 tmp/*
 coverage/*
 .env
+
+# Ignore bundler config
+/.bundle
+
+# Ignore Mac system files
+.DS_Store
+
+# Ignore node modules
+/node_modules
+
+# Ignore precompiled javascript packs
+/public/packs
+/public/packs-test
+/public/assets
+
+# Ignore yarn files
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
+# Ignore uploaded files in development
+/storage/*
+!/storage/.keep
+
+# Ignore master key for decrypting credentials
+/config/master.key
+
+# Ignore environment specific files
+.env.*
+!.env.example
