@@ -56,7 +56,7 @@ gem 'logger'
 # OpenAI API client
 gem 'ruby-openai'
 
-gem 'dotenv-rails', groups: [:development, :test]
+gem 'dotenv-rails', groups: %i[development test]
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
@@ -90,6 +90,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'rspec-rails'
+  gem 'ostruct'
 end
 
 group :development do

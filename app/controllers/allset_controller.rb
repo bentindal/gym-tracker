@@ -35,17 +35,7 @@ class AllsetController < ApplicationController
 
   def update
     @workout = Allset.find(params[:id])
-
-    if authorized_user?(@workout.user_id)
-      if @workout.update(allset_params2)
-        redirect_to allset_path(@workout.exercise_id), notice: t('.success')
-      else
-        Rails.logger.error("Allset update failed: #{@workout.errors.full_messages}")
-        redirect_to edit_allset_path(@workout), alert: t('.failure')
-      end
-    else
-      redirect_to permission_error_path
-    end
+    handle_workout_update
   end
 
   def destroy
@@ -53,7 +43,7 @@ class AllsetController < ApplicationController
     if current_user.id == @workout.user_id
       @id = @workout.exercise_id
       @workout.destroy
-      redirect_to "/allset/#{@id}", notice: 'Workout was successfully destroyed.'
+      redirect_to "/allset/#{@id}", notice: t('.success')
     else
       redirect_to '/error/permission'
     end
@@ -62,7 +52,11 @@ class AllsetController < ApplicationController
   private
 
   def build_workout_from_params
-    Allset.new(
+    Allset.new(workout_params)
+  end
+
+  def workout_params
+    {
       exercise_id: params[:exercise_id],
       user_id: params[:user_id],
       repetitions: params[:repetitions].to_i,
@@ -70,7 +64,7 @@ class AllsetController < ApplicationController
       isFailure: params[:isFailure] == 'on',
       isDropset: params[:isDropset] == 'on',
       isWarmup: params[:isWarmup] == 'on'
-    )
+    }
   end
 
   def update_exercise_last_set(exercise_id, last_set_time)
@@ -96,5 +90,24 @@ class AllsetController < ApplicationController
 
   def allset_params2
     params.require(:allset).permit(:exercise_id, :user_id, :repetitions, :weight, :isFailure, :isDropset, :isWarmup)
+  end
+
+  def handle_workout_update
+    return redirect_to permission_error_path unless authorized_user?(@workout.user_id)
+
+    if update_workout
+      redirect_to allset_path(@workout.exercise_id), notice: t('.success')
+    else
+      handle_update_failure
+    end
+  end
+
+  def update_workout
+    @workout.update(allset_params2)
+  end
+
+  def handle_update_failure
+    Rails.logger.error("Allset update failed: #{@workout.errors.full_messages}")
+    redirect_to edit_allset_path(@workout), alert: t('.failure')
   end
 end

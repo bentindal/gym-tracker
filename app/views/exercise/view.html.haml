@@ -10,19 +10,15 @@
 
 .mb-3.container.text-center
     %form{action: exercise_view_path, method: "GET"}
-        
         %input{type: "date", name: "from", id: "from", value: params[:from] ? DateTime.parse(params[:from]).strftime("%Y-%m-%d") : 1.month.ago.strftime("%Y-%m-%d")}
         %label{for: "to"} to
-
         %input{type: "date", name: "to", id: "to", value: params[:to] ? DateTime.parse(params[:to]).strftime("%Y-%m-%d") : Time.current.strftime("%Y-%m-%d")}
         %input{type: "hidden", name: "id", id: "id", value: @exercise.id}
         %br
         %button.btn.btn-primary.w-50{type: "submit"} Submit
 
-        
-        
 .container
-    .card.mb-3
+    .card
         - data = @exercise.graph_orm(params[:from], params[:to])
         - if data.values.length == 0
             %p.bg-white.border.rounded.p-3.text-muted Not enough data available.
@@ -62,7 +58,7 @@
         - if data.values.length == 0
             %p.bg-white.border.rounded.p-3.text-muted Not enough data available.
         - else
-            - increase = (data.values.last - data.values.first)
+            - increase = (data.values.last - data.values.first).round(1)
             - gradient = increase / data.values.count
             .card-body
                 %h5.card-title

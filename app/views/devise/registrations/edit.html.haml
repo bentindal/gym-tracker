@@ -11,7 +11,7 @@
         = f.input :first_name, required: true, autofocus: true
         = f.input :last_name, required: false
         = f.input :email, required: false
-        = f.input :isPublic, :as => :boolean, :label => "Would you like your profile to be public? (Enabled by default)"
+        = f.input :is_public, :as => :boolean, :label => "Would you like your profile to be public? (Enabled by default)"
         - if devise_mapping.confirmable? && resource.pending_reconfirmation?
           %p
             = "Currently waiting confirmation for: #{resource.unconfirmed_email}"

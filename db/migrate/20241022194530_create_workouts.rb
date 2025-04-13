@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Migration to create the workouts table for storing workout information
 class CreateWorkouts < ActiveRecord::Migration[6.1]
   def change
     create_table :workouts, if_not_exists: true do |t|
@@ -9,7 +10,7 @@ class CreateWorkouts < ActiveRecord::Migration[6.1]
       t.string :title
       t.integer :exercises_used
       t.integer :sets_completed
-
+      t.references :allset, foreign_key: true
       t.timestamps
     end
   end

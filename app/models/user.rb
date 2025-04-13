@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
+# Represents a user in the system
+# Handles user authentication, profile management, and workout tracking
 class User < ApplicationRecord
+  include TimeFormatting
+  include StreakTracking
+  include WorkoutTracking
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -12,24 +18,22 @@ class User < ApplicationRecord
   has_many :sets, class_name: 'Allset', dependent: :destroy
 
   validates :first_name, :last_name, :email, presence: true
-  validates :email, uniqueness: true
+  validates :email, uniqueness: { case_sensitive: false }
 
-  # First name and last name must be at least 2 characters long & only letters
+  # First name and last name must be at least 2 characters long
   validates :first_name, :last_name, length: { minimum: 2 }
-  validates :first_name, :last_name, format: { with: /\A[a-zA-Z]+\z/,
-                                               message: 'only allows letters' }
-
-  validates :last_name, :last_name, length: { minimum: 2 }
-  validates :last_name, :last_name, format: { with: /\A[a-zA-Z]+\z/,
-                                              message: 'only allows letters' }
+  validates :first_name, :last_name, format: { with: /\A[a-zA-Z\s\-']+\z/,
+                                               message: 'only allows letters, spaces, hyphens, and apostrophes' }
 
   # Email must be in correct format
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
 
-  # Password must be at least 6 characters long, contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character
+  # Password validation is handled by Devise
   # validates :password, length: { minimum: 6 }
-  # validates :password, format: { with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[[:^alnum:]])/x,
-  #  message: "must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character" }
+  # validates :password, format: { with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[[:^alnum:]])/x }
+
+  has_many :friends, class_name: 'Friend', foreign_key: 'user', dependent: :destroy, inverse_of: :follower
+  has_many :followed_by, class_name: 'Friend', foreign_key: 'follows', dependent: :destroy, inverse_of: :followed
 
   def exercises
     Exercise.where(user_id: id)
@@ -70,8 +74,16 @@ class User < ApplicationRecord
   end
 
   def has_worked_out_today
-    workouts.where('started_at >= ?', Time.zone.today.beginning_of_day).exists? ||
-      sets.where('created_at >= ?', Time.zone.today.beginning_of_day).exists?
+    workouts.exists?(['started_at >= ?', Time.zone.today.beginning_of_day]) ||
+      sets.exists?(['created_at >= ?', Time.zone.today.beginning_of_day])
+  end
+
+  def worked_out_yesterday?
+    worked_out_on_date(Date.yesterday.day, Date.yesterday.month, Date.yesterday.year)
+  end
+
+  def worked_out_two_days_ago?
+    worked_out_on_date(Date.yesterday.yesterday.day, Date.yesterday.yesterday.month, Date.yesterday.yesterday.year)
   end
 
   def streak_msg_other
@@ -101,7 +113,7 @@ class User < ApplicationRecord
       "You had a day off yesterday, workout today to keep the #{streakcount} day streak going or it will be reset!"
     else
       if streakcount.zero?
-        "You worked out today!"
+        'You worked out today!'
       else
         "You have a #{streakcount} day streak!"
       end
@@ -114,16 +126,19 @@ class User < ApplicationRecord
 
   def midworkout
     return false if sets.empty?
-    sets.where(belongs_to_workout: nil).exists?
+
+    sets.exists?(workout_id: nil)
   end
 
   def last_exercise
     return nil if sets.empty?
+
     sets.last.exercise
   end
 
   def last_set
     return nil if sets.empty?
+
     sets.last
   end
 
@@ -161,7 +176,6 @@ class User < ApplicationRecord
       return "#{minutes} minute ago" if minutes == 1
 
       "#{minutes} minutes ago"
-
     end
   end
 
@@ -171,49 +185,58 @@ class User < ApplicationRecord
 
   def worked_out_on_date(day, month, year)
     date = Date.new(year, month, day)
-    workouts.where('started_at >= ? AND started_at < ?', date.beginning_of_day, date.end_of_day).exists? ||
-      sets.where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.end_of_day).exists?
+    workouts.exists?(['started_at >= ? AND started_at < ?', date.beginning_of_day, date.end_of_day]) ||
+      sets.exists?(['created_at >= ? AND created_at < ?', date.beginning_of_day, date.end_of_day])
   end
 
   def streak_count
-    return 0 if workouts.empty? && sets.empty?
+    return 0 if sets.empty?
 
-    date_pointer = if has_worked_out_today
-                    Time.zone.today
-                  else
-                    Date.yesterday
-                  end
+    streak = 0
+    current_date = Time.zone.today
+
+    while worked_out_on_date(current_date.day, current_date.month, current_date.year)
+      streak += 1
+      current_date -= 1.day
+    end
+
+    streak
+  end
+
+  def manually_end_workout
+    unassigned_sets = sets.where(workout_id: nil)
+    return nil if unassigned_sets.empty?
+
+    workout = workouts.create!(
+      title: "Workout #{Time.current.strftime('%Y-%m-%d %H:%M')}",
+      started_at: unassigned_sets.minimum(:created_at),
+      ended_at: unassigned_sets.maximum(:created_at),
+      exercises_used: unassigned_sets.select(:exercise_id).distinct.count,
+      sets_completed: unassigned_sets.count
+    )
+    unassigned_sets.update_all(workout_id: workout.id)
+    workout
+  end
+
+  def calculate_streak(start_date)
     streak_count = 0
     gaps_used = 0
-    streak_ended = false
+    date_pointer = start_date
 
-    while !streak_ended
+    until streak_ended?(gaps_used)
       if worked_out_on_date(date_pointer.day, date_pointer.month, date_pointer.year)
         streak_count += 1
-        date_pointer -= 1
         gaps_used = 0
-      elsif gaps_used.zero?
-        date_pointer -= 1
-        gaps_used += 1
       else
-        streak_ended = true
+        gaps_used += 1
       end
+      date_pointer -= 1
     end
 
     streak_count
   end
 
-  def manually_end_workout
-    unassigned_sets = sets.where(belongs_to_workout: nil)
-    return if unassigned_sets.empty?
-
-    workout = Workout.create!(
-      user_id: id,
-      started_at: unassigned_sets.first.created_at,
-      ended_at: unassigned_sets.last.created_at,
-      title: "Workout #{Time.zone.now.strftime('%Y-%m-%d %H:%M')}"
-    )
-
-    unassigned_sets.update_all(belongs_to_workout: workout.id)
+  def streak_ended?(gaps_used)
+    gaps_used > 1
   end
 end
