@@ -148,6 +148,7 @@
                             Get AI Analysis
                         %p.text-muted.mb-4 Get personalized insights about your workout performance and progress
                         = form_tag "/ai/analyze", method: :post, class: "d-inline-block", data: { controller: "loading", action: "submit->loading#submit" } do
+                        = form_tag "/ai/analyze", method: :post, class: "d-inline-block", data: { controller: "loading", action: "submit->loading#submit" } do
                             = hidden_field_tag :workout_id, @workout.id
                             = hidden_field_tag :authenticity_token, form_authenticity_token
                             = button_tag type: "submit", class: "btn btn-primary btn-lg position-relative", data: { loading_target: "button" } do
@@ -158,7 +159,10 @@
                                     Generate Analysis
                         .mt-3.d-none{data: { loading_target: "error" }}
                             .alert.alert-danger
+                        .mt-3.d-none{data: { loading_target: "error" }}
+                            .alert.alert-danger
                                 %i.fa-solid.fa-exclamation-circle.mr-2
+                                %span{data: { loading_target: "errorMessage" }}
                                 %span{data: { loading_target: "errorMessage" }}
 
     
