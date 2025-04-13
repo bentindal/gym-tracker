@@ -6,11 +6,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  # Associations
-  has_many :workouts, dependent: :destroy
-  has_many :exercises, dependent: :destroy
-  has_many :sets, class_name: 'Allset', dependent: :destroy
-
   validates :first_name, :last_name, :email, presence: true
   validates :email, uniqueness: true
 
@@ -52,6 +47,10 @@ class User < ApplicationRecord
   end
 
   def streak_status
+    streakcount
+    Time.zone.today.day
+    Time.zone.today.day
+
     # Worked out today
     if has_worked_out_today
       'active'
@@ -70,8 +69,11 @@ class User < ApplicationRecord
   end
 
   def has_worked_out_today
-    workouts.where('started_at >= ?', Time.zone.today.beginning_of_day).exists? ||
-      sets.where('created_at >= ?', Time.zone.today.beginning_of_day).exists?
+    all_workouts = sets
+    all_workouts.each do |workout|
+      return true if workout.created_at.strftime('%d/%m') == Time.zone.today.strftime('%d/%m')
+    end
+    false
   end
 
   def streak_msg_other
@@ -83,11 +85,7 @@ class User < ApplicationRecord
     when 'at_risk'
       "#{first_name} had a day off yesterday, workout today to keep the #{streakcount} day streak going or it will be reset!"
     else
-      if streakcount.zero?
-        "#{first_name} worked out today!"
-      else
-        "#{first_name} has a #{streakcount} day streak going!"
-      end
+      "#{first_name} has a #{streakcount} day streak going!"
     end
   end
 
@@ -100,35 +98,31 @@ class User < ApplicationRecord
     when 'at_risk'
       "You had a day off yesterday, workout today to keep the #{streakcount} day streak going or it will be reset!"
     else
-      if streakcount.zero?
-        "You worked out today!"
-      else
-        "You have a #{streakcount} day streak!"
-      end
+      "You have a #{streakcount} day streak!"
     end
   end
 
-  def streakcount
-    streak_count
-  end
-
   def midworkout
-    return false if sets.empty?
-    sets.where(belongs_to_workout: nil).exists?
+    return false if sets == []
+    return true if last_set.belongs_to_workout.nil?
+
+    false
   end
 
   def last_exercise
-    return nil if sets.empty?
+    return nil if sets == []
+
     sets.last.exercise
   end
 
   def last_set
-    return nil if sets.empty?
+    return nil if sets == []
+
     sets.last
   end
 
   def last_seen
-    return nil if sets.empty?
+    return nil if sets == []
 
     last = last_set.created_at
     # If greater than a month, print > 1 month
@@ -166,54 +160,71 @@ class User < ApplicationRecord
   end
 
   def workout_count
-    workouts.count
+    Workout.where(user_id: id).count
   end
 
   def worked_out_on_date(day, month, year)
-    date = Date.new(year, month, day)
-    workouts.where('started_at >= ? AND started_at < ?', date.beginning_of_day, date.end_of_day).exists? ||
-      sets.where('created_at >= ? AND created_at < ?', date.beginning_of_day, date.end_of_day).exists?
+    all_workouts = sets
+    # Pad day and month values with a 0 if they are less than 10
+    day = "0#{day}" if day.to_i < 10
+    month = "0#{month}" if month.to_i < 10
+
+    all_workouts.each do |workout|
+      return true if workout.created_at.strftime('%d/%m/%Y') == "#{day}/#{month}/#{year}"
+    end
+    false
   end
 
   def streak_count
-    return 0 if workouts.empty? && sets.empty?
+    return 0 if sets == []
 
-    date_pointer = if has_worked_out_today
+    datePointer = if has_worked_out_today
                     Time.zone.today
                   else
                     Date.yesterday
                   end
-    streak_count = 0
-    gaps_used = 0
-    streak_ended = false
+    streakCount = 0
+    gapsUsed = 0
+    streakEnded = false
 
-    while !streak_ended
-      if worked_out_on_date(date_pointer.day, date_pointer.month, date_pointer.year)
-        streak_count += 1
-        date_pointer -= 1
-        gaps_used = 0
-      elsif gaps_used.zero?
-        date_pointer -= 1
-        gaps_used += 1
+    while streakEnded == false
+      if worked_out_on_date(datePointer.day, datePointer.month, datePointer.year) == true
+        # puts "worked out on #{datePointer.day.to_s}/#{datePointer.month.to_s}/#{datePointer.year.to_s}"
+        streakCount += 1
+        datePointer -= 1
+        gapsUsed = 0
+      elsif gapsUsed.zero?
+        # puts "did not workout out, 1 gap used #{datePointer.day.to_s}/#{datePointer.month.to_s}/#{datePointer.year.to_s}"
+        datePointer -= 1
+        gapsUsed += 1
       else
-        streak_ended = true
+        # puts "didn't work out on #{datePointer.day.to_s}/#{datePointer.month.to_s}/#{datePointer.year.to_s}"
+        streakEnded = true
       end
     end
 
-    streak_count
+    streakCount
   end
 
   def manually_end_workout
-    unassigned_sets = sets.where(belongs_to_workout: nil)
-    return if unassigned_sets.empty?
+    @unassigned_sets = Allset.where(user_id: id, belongs_to_workout: nil).group_by(&:exercise)
+    @sets = Allset.where(user_id: id, belongs_to_workout: nil)
 
-    workout = Workout.create!(
-      user_id: id,
-      started_at: unassigned_sets.first.created_at,
-      ended_at: unassigned_sets.last.created_at,
-      title: "Workout #{Time.zone.now.strftime('%Y-%m-%d %H:%M')}"
-    )
+    if @unassigned_sets.length.positive?
+      @workout = Workout.new
+      @workout.user_id = id
+      @workout.started_at = @sets.first.created_at
+      @workout.ended_at = @sets.last.created_at
+      @workout.save
 
-    unassigned_sets.update_all(belongs_to_workout: workout.id)
+      @sets.each do |item|
+        item.belongs_to_workout = @workout.id
+        item.save
+      end
+
+      Rails.logger.debug { "#{@sets.length} sets assigned to workout #{@workout.id} successfully for user #{id}" }
+    else
+      Rails.logger.debug 'Cannot end a workout with no sets.'
+    end
   end
 end

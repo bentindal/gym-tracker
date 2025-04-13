@@ -41,9 +41,6 @@ Rails.application.routes.draw do
   get 'users/find'
   get 'feed' => 'feed#view'
 
-  # AI Analysis endpoint
-  post 'ai/analyze' => 'ai#analyze_workouts'
-
   get '/service_worker.js' => 'service_worker#service_worker', defaults: { format: 'js' }
   get '/manifest.json' => 'service_worker#manifest', defaults: { format: 'json' }
 

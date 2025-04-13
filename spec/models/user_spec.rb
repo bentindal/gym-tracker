@@ -142,8 +142,8 @@ describe User do
 
   describe '#workout_count' do
     it 'returns number of workouts' do
-      user.workouts.create(title: 'Workout 1', started_at: 1.day.ago, ended_at: 1.day.ago + 1.hour)
-      user.workouts.create(title: 'Workout 2', started_at: 2.days.ago, ended_at: 2.days.ago + 1.hour)
+      Workout.create(user_id: user.id, started_at: 1.day.ago, ended_at: 1.day.ago + 1.hour)
+      Workout.create(user_id: user.id, started_at: 2.days.ago, ended_at: 2.days.ago + 1.hour)
 
       expect(user.workout_count).to eq(2)
     end
@@ -404,7 +404,7 @@ describe User do
     context 'when all user sets belong to workouts' do
       it 'returns false' do
         exercise = create(:exercise, user_id: user.id)
-        workout = user.workouts.create(title: 'Workout 1', started_at: 1.day.ago, ended_at: 1.day.ago + 1.hour)
+        workout = Workout.create(user_id: user.id)
         Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10,
                       belongs_to_workout: workout.id)
 
