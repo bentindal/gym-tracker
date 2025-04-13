@@ -5,19 +5,15 @@
 # and manages the sets that belong to it
 class Workout < ApplicationRecord
   belongs_to :user
-  has_many :exercises, dependent: :destroy
   has_one :workout_analysis, dependent: :destroy
+  has_many :sets, class_name: 'Allset', dependent: :destroy
   validates :title, presence: true
-
-  def allsets
-    Allset.where(belongs_to_workout: id)
-  end
 
   def feed
     # Put into feed format [date, user, [[exercises, sets]]]
     @feed = []
     # Get all sets that belong_to_workout this
-    all_sets = Allset.where(belongs_to_workout: id)
+    all_sets = sets
     # Split all_sets into groups by exercise
     all_sets_by_exercise = all_sets.group_by(&:exercise)
     # Change from hash to list
@@ -44,7 +40,7 @@ class Workout < ApplicationRecord
   end
 
   def group_colour
-    Allset.where(belongs_to_workout: id).first.exercise.group_colour
+    sets.first.exercise.group_colour
   end
 
   def length_string

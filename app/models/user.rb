@@ -18,16 +18,12 @@ class User < ApplicationRecord
   has_many :sets, class_name: 'Allset', dependent: :destroy
 
   validates :first_name, :last_name, :email, presence: true
-  validates :email, uniqueness: true
+  validates :email, uniqueness: { case_sensitive: false }
 
-  # First name and last name must be at least 2 characters long & only letters
+  # First name and last name must be at least 2 characters long
   validates :first_name, :last_name, length: { minimum: 2 }
-  validates :first_name, :last_name, format: { with: /\A[a-zA-Z]+\z/,
-                                               message: 'only allows letters' }
-
-  validates :last_name, :last_name, length: { minimum: 2 }
-  validates :last_name, :last_name, format: { with: /\A[a-zA-Z]+\z/,
-                                              message: 'only allows letters' }
+  validates :first_name, :last_name, format: { with: /\A[a-zA-Z\s\-']+\z/,
+                                             message: 'only allows letters, spaces, hyphens, and apostrophes' }
 
   # Email must be in correct format
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -130,7 +126,7 @@ class User < ApplicationRecord
 
   def midworkout
     return false if sets.empty?
-    sets.where(belongs_to_workout: nil).exists?
+    sets.where(workout_id: nil).exists?
   end
 
   def last_exercise
@@ -198,14 +194,25 @@ class User < ApplicationRecord
 
     while worked_out_on_date(current_date.day, current_date.month, current_date.year)
       streak += 1
-      current_date -= 1.day
+      current_date = current_date - 1.day
     end
 
     streak
   end
 
   def manually_end_workout
-    sets.where(belongs_to_workout: nil).update_all(belongs_to_workout: 0)
+    unassigned_sets = sets.where(belongs_to_workout_id: nil)
+    return nil if unassigned_sets.empty?
+
+    workout = workouts.create!(
+      title: "Workout #{Time.current.strftime('%Y-%m-%d %H:%M')}",
+      started_at: unassigned_sets.minimum(:created_at),
+      ended_at: unassigned_sets.maximum(:created_at),
+      exercises_used: unassigned_sets.select(:exercise_id).distinct.count,
+      sets_completed: unassigned_sets.count
+    )
+    unassigned_sets.update_all(belongs_to_workout_id: workout.id)
+    workout
   end
 
   def calculate_streak(start_date)

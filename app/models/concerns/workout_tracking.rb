@@ -1,9 +1,38 @@
 # frozen_string_literal: true
 
-# Module for tracking workout-related functionality
-# Handles workout status, set management, and workout completion
+# Provides methods for tracking workouts and managing workout-related functionality
 module WorkoutTracking
   extend ActiveSupport::Concern
+
+  included do
+    has_many :workouts, dependent: :destroy
+  end
+
+  def last_workout
+    workouts.order(started_at: :desc).first
+  end
+
+  def last_workout_date
+    last_workout&.started_at&.to_date
+  end
+
+  def last_workout_time
+    last_workout&.started_at
+  end
+
+  def in_workout?
+    return false if last_set.nil?
+    return true if last_set.workout.nil?
+
+    false
+  end
+
+  def current_workout_duration
+    return 0 if last_set.nil?
+    return 0 unless in_workout?
+
+    (Time.zone.now - last_set.created_at).to_i
+  end
 
   def worked_out_today?
     all_workouts = sets
@@ -57,11 +86,29 @@ module WorkoutTracking
   end
 
   def manually_end_workout
-    unassigned_sets = Allset.where(user_id: id, belongs_to_workout: nil)
-    return if unassigned_sets.empty?
+    return false if last_set.nil?
+    return false unless in_workout?
 
-    workout = create_workout_from_sets(unassigned_sets)
-    unassigned_sets.each { |set| set.update!(belongs_to_workout: workout.id) }
+    # Get all unassigned sets
+    unassigned_sets = sets.where(workout_id: nil)
+
+    # Create a new workout
+    workout = Workout.new(
+      user: self,
+      started_at: unassigned_sets.first.created_at,
+      ended_at: Time.zone.now,
+      title: "Workout on #{Time.zone.now.strftime('%A')}",
+      exercises_used: unassigned_sets.group_by(&:exercise).length,
+      sets_completed: unassigned_sets.length
+    )
+
+    if workout.save
+      # Assign all sets to this workout
+      unassigned_sets.each { |set| set.update!(workout: workout) }
+      true
+    else
+      false
+    end
   end
 
   private

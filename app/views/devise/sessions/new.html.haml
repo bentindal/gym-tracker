@@ -3,17 +3,21 @@
     %h1.text-center
       Sign In
     %h5.text-muted.text-center Please sign in or create an account.
-    = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+    = simple_form_for(resource, as: resource_name, url: session_path(resource_name), html: { method: :post, data: { turbo: false } }) do |f|
+      = f.error_notification
+      - if flash[:alert]
+        .alert.alert-danger
+          = flash[:alert]
       .form-inputs
         = f.input :email,                       
-          required: false,                      
+          required: true,                      
           autofocus: true,                      
           input_html: { autocomplete: "email" } 
         = f.input :password,                               
-          required: false,                                 
+          required: true,                                 
           input_html: { autocomplete: "current-password" } 
         = f.input :remember_me, as: :boolean if devise_mapping.rememberable?
       .form-actions
-        %button{class: "w-100 mb-2 btn btn-primary"} Log in
+        = f.button :submit, "Log in", class: "w-100 mb-2 btn btn-primary", data: { disable_with: "Logging in..." }
         %a.btn.btn-outline-info.w-100.mb-2{href: "/users/sign_up"} Create an Account
         %a.btn.btn-outline-secondary.w-100{href: "/users/password/new"} Forgot your password?

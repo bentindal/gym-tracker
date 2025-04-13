@@ -8,16 +8,26 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-# Delete existing demo user if any
-User.where(email: 'demo@example.com').destroy_all
+# Delete existing demo user and associated records if any
+demo_user = User.find_by(email: 'demo@example.com')
+if demo_user
+  demo_user.workouts.destroy_all
+  demo_user.exercises.destroy_all
+  demo_user.sets.destroy_all
+  demo_user.destroy
+end
 
-# Create demo user
-demo_user = User.create!(
+# Create demo user if it doesn't exist
+demo_user = User.find_or_initialize_by(email: 'demo@example.com')
+demo_user.assign_attributes(
   first_name: 'Demo',
   last_name: 'User',
-  email: 'demo@example.com',
-  password: 'password123'
+  password: 'password123',
+  password_confirmation: 'password123'
 )
+demo_user.save!
+
+puts 'Demo user created/updated successfully!'
 
 # Create exercises with their categories and units
 exercises = [
@@ -66,7 +76,7 @@ workout_dates.each do |date|
         user: demo_user,
         weight: rand(50..150),
         repetitions: rand(5..12),
-        belongs_to_workout: workout.id,
+        workout: workout,
         created_at: date + rand(5..55).minutes
       )
     end
@@ -94,7 +104,7 @@ today_exercises.each do |exercise|
       user: demo_user,
       weight: rand(50..150),
       repetitions: rand(5..12),
-      belongs_to_workout: today_workout.id,
+      workout: today_workout,
       created_at: today_time + rand(5..55).minutes
     )
   end

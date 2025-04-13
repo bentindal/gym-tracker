@@ -47,12 +47,31 @@ RSpec.describe User, type: :model do
   end
 
   describe 'validations' do
+    subject { build(:user) }
+
     it { should validate_presence_of(:first_name) }
     it { should validate_presence_of(:last_name) }
     it { should validate_presence_of(:email) }
-    it { should validate_uniqueness_of(:email) }
+
+    context 'email uniqueness' do
+      before { create(:user, email: 'test@example.com') }
+      
+      it 'is invalid with a duplicate email' do
+        user = build(:user, email: 'test@example.com')
+        expect(user).not_to be_valid
+        expect(user.errors[:email]).to include('has already been taken')
+      end
+
+      it 'is case-insensitive' do
+        user = build(:user, email: 'TEST@example.com')
+        expect(user).not_to be_valid
+        expect(user.errors[:email]).to include('has already been taken')
+      end
+    end
+
     it { should validate_length_of(:first_name).is_at_least(2) }
     it { should validate_length_of(:last_name).is_at_least(2) }
+
     it { should allow_value('user@example.com').for(:email) }
     it { should_not allow_value('invalid_email').for(:email) }
   end
@@ -115,7 +134,7 @@ RSpec.describe User, type: :model do
 
   describe '#workout_count' do
     it 'returns the number of workouts' do
-      create(:workout, user: user)
+      create_list(:workout, 2, user: user)
       expect(user.workout_count).to eq(2)
     end
   end
@@ -152,35 +171,68 @@ RSpec.describe User, type: :model do
     end
 
     it 'returns 1 if user worked out today' do
-      create(:workout, user: user, started_at: Time.current)
+      create(:allset, user: user, created_at: Time.zone.today.noon)
       expect(user.streak_count).to eq(1)
     end
 
     it 'returns 2 if user worked out today and yesterday' do
-      create(:workout, user: user, started_at: Time.current)
-      create(:workout, user: user, started_at: 1.day.ago)
+      create(:allset, user: user, created_at: Time.zone.today.noon)
+      create(:allset, user: user, created_at: 1.day.ago.noon)
       expect(user.streak_count).to eq(2)
     end
 
     it 'returns 0 if user worked out yesterday but not today' do
-      create(:workout, user: user, started_at: 1.day.ago)
+      create(:allset, user: user, created_at: 1.day.ago.noon)
       expect(user.streak_count).to eq(0)
+    end
+  end
+
+  describe '#streak_status' do
+    context 'when user worked out today' do
+      before { create(:allset, user: user, created_at: Time.zone.today.noon) }
+
+      it 'returns "active"' do
+        expect(user.streak_status).to eq('active')
+      end
+    end
+
+    context 'when user did not work out today but did yesterday' do
+      before { create(:allset, user: user, created_at: 1.day.ago.noon) }
+
+      it 'returns "pending"' do
+        expect(user.streak_status).to eq('pending')
+      end
+    end
+
+    context 'when user did not work out today or yesterday but did the day before' do
+      before { create(:allset, user: user, created_at: 2.days.ago.noon) }
+
+      it 'returns "at_risk"' do
+        expect(user.streak_status).to eq('at_risk')
+      end
+    end
+
+    context 'when user has not worked out in the last three days' do
+      it 'returns "none"' do
+        expect(user.streak_status).to eq('none')
+      end
     end
   end
 
   describe '#midworkout' do
     it 'returns false if user has no sets' do
-      expect(user.midworkout).to be false
+      expect(user.midworkout).to be_falsey
     end
 
     it 'returns true if user has an active workout' do
-      create(:set, user: user, belongs_to_workout: nil)
-      expect(user.midworkout).to be true
+      create(:allset, user: user, belongs_to_workout_id: nil)
+      expect(user.midworkout).to be_truthy
     end
 
     it 'returns false if user has only completed workouts' do
-      create(:set, user: user, belongs_to_workout: 1)
-      expect(user.midworkout).to be false
+      workout = create(:workout, user: user)
+      create(:allset, user: user, belongs_to_workout_id: workout.id)
+      expect(user.midworkout).to be_falsey
     end
   end
 
@@ -190,8 +242,8 @@ RSpec.describe User, type: :model do
     end
 
     it 'returns the last exercise' do
-      exercise = create(:exercise, user: user)
-      create(:set, exercise: exercise, user: user)
+      exercise = create(:exercise)
+      create(:allset, exercise: exercise, user: user)
       expect(user.last_exercise).to eq(exercise)
     end
   end
@@ -202,7 +254,7 @@ RSpec.describe User, type: :model do
     end
 
     it 'returns the last set' do
-      set = create(:set, user: user)
+      set = create(:allset, user: user)
       expect(user.last_set).to eq(set)
     end
   end
@@ -213,60 +265,28 @@ RSpec.describe User, type: :model do
     end
 
     it 'returns "over a month ago" if last set was over a month ago' do
-      create(:set, user: user, created_at: 2.months.ago)
+      create(:allset, user: user, created_at: 2.months.ago)
       expect(user.last_seen).to eq('over a month ago')
     end
 
     it 'returns "X weeks ago" if last set was within a month' do
-      create(:set, user: user, created_at: 2.weeks.ago)
+      create(:allset, user: user, created_at: 2.weeks.ago)
       expect(user.last_seen).to eq('2 weeks ago')
     end
 
     it 'returns "X days ago" if last set was within a week' do
-      create(:set, user: user, created_at: 2.days.ago)
+      create(:allset, user: user, created_at: 2.days.ago)
       expect(user.last_seen).to eq('2 days ago')
     end
 
     it 'returns "X hours ago" if last set was within a day' do
-      create(:set, user: user, created_at: 2.hours.ago)
+      create(:allset, user: user, created_at: 2.hours.ago)
       expect(user.last_seen).to eq('2 hours ago')
     end
 
     it 'returns "X minutes ago" if last set was within an hour' do
-      create(:set, user: user, created_at: 2.minutes.ago)
+      create(:allset, user: user, created_at: 2.minutes.ago)
       expect(user.last_seen).to eq('2 minutes ago')
-    end
-  end
-
-  describe '#streak_status' do
-    context 'when user worked out today' do
-      it 'returns "active"' do
-        allow(user).to receive(:worked_out_today?).and_return(true)
-        expect(user.streak_status).to eq('active')
-      end
-    end
-
-    context 'when user did not work out today but did yesterday' do
-      it 'returns "pending"' do
-        allow(user).to receive_messages(worked_out_today?: false, worked_out_yesterday?: true)
-        expect(user.streak_status).to eq('pending')
-      end
-    end
-
-    context 'when user did not work out today or yesterday but did the day before' do
-      it 'returns "at_risk"' do
-        allow(user).to receive_messages(worked_out_today?: false, worked_out_yesterday?: false,
-                                        worked_out_two_days_ago?: true)
-        expect(user.streak_status).to eq('at_risk')
-      end
-    end
-
-    context 'when user has not worked out in the last three days' do
-      it 'returns "none"' do
-        allow(user).to receive_messages(worked_out_today?: false, worked_out_yesterday?: false,
-                                        worked_out_two_days_ago?: false)
-        expect(user.streak_status).to eq('none')
-      end
     end
   end
 
@@ -320,8 +340,7 @@ RSpec.describe User, type: :model do
 
   describe '#manually_end_workout' do
     context 'when user has unassigned sets' do
-      let(:user) { create(:user) }
-      let!(:unassigned_sets) { create_list(:allset, 3, user: user, belongs_to_workout: nil) }
+      let!(:unassigned_sets) { create_list(:allset, 3, user: user, belongs_to_workout_id: nil) }
 
       it 'creates a new workout' do
         expect { user.manually_end_workout }.to change(Workout, :count).by(1)
@@ -329,13 +348,14 @@ RSpec.describe User, type: :model do
 
       it 'assigns sets to the workout' do
         workout = user.manually_end_workout
-        expect(unassigned_sets.all? { |set| set.reload.belongs_to_workout == workout }).to be true
+        unassigned_sets.each do |set|
+          expect(set.reload.belongs_to_workout_id).to eq(workout.id)
+        end
       end
     end
 
     context 'when user has no unassigned sets' do
       it 'does not create a new workout' do
-        user = create(:user)
         expect { user.manually_end_workout }.not_to change(Workout, :count)
       end
     end

@@ -5,7 +5,6 @@
 # calculating workout statistics and visualizing data.
 class Exercise < ApplicationRecord
   belongs_to :user
-  belongs_to :workout, optional: true
   has_many :sets, class_name: 'Allset', dependent: :destroy
   validates :name, presence: true
 
@@ -26,7 +25,12 @@ class Exercise < ApplicationRecord
     sets.where(created_at: from..to, isWarmup: false)
   end
 
-  def workouts_on_date(date)
+  def workouts_on_date(*args)
+    date = if args.length == 3
+             Time.zone.local(args[2], args[1], args[0])
+           else
+             args[0]
+           end
     sets.where(created_at: date.all_day, isWarmup: false)
   end
 
@@ -46,7 +50,7 @@ class Exercise < ApplicationRecord
     calculate_graph_data(from, to) do |sets|
       sets.map do |set|
         unless set.isWarmup || set.weight.nil? || set.repetitions.nil?
-          (set.weight.to_f * (1 + (set.repetitions.to_i / 30.0))).round(2)
+          (set.weight.to_f * (1 + (set.repetitions.to_i / 30.0))).round
         end
       end.compact.max
     end

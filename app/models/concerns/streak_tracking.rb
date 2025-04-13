@@ -28,7 +28,7 @@ module StreakTracking
 
   def streak_msg_own
     I18n.t("user.streak.messages.own.#{streak_status}",
-           count: streak_count,
+           count: streak_count)
   end
 
   def worked_out_today?
