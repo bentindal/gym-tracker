@@ -201,7 +201,7 @@ class User < ApplicationRecord
   end
 
   def manually_end_workout
-    unassigned_sets = sets.where(belongs_to_workout_id: nil)
+    unassigned_sets = sets.where(workout_id: nil)
     return nil if unassigned_sets.empty?
 
     workout = workouts.create!(
@@ -211,7 +211,7 @@ class User < ApplicationRecord
       exercises_used: unassigned_sets.select(:exercise_id).distinct.count,
       sets_completed: unassigned_sets.count
     )
-    unassigned_sets.update_all(belongs_to_workout_id: workout.id)
+    unassigned_sets.update_all(workout_id: workout.id)
     workout
   end
 

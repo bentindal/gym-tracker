@@ -225,13 +225,13 @@ RSpec.describe User, type: :model do
     end
 
     it 'returns true if user has an active workout' do
-      create(:allset, user: user, belongs_to_workout_id: nil)
+      create(:allset, user: user, workout_id: nil)
       expect(user.midworkout).to be_truthy
     end
 
     it 'returns false if user has only completed workouts' do
       workout = create(:workout, user: user)
-      create(:allset, user: user, belongs_to_workout_id: workout.id)
+      create(:allset, user: user, workout_id: workout.id)
       expect(user.midworkout).to be_falsey
     end
   end
@@ -340,7 +340,7 @@ RSpec.describe User, type: :model do
 
   describe '#manually_end_workout' do
     context 'when user has unassigned sets' do
-      let!(:unassigned_sets) { create_list(:allset, 3, user: user, belongs_to_workout_id: nil) }
+      let!(:unassigned_sets) { create_list(:allset, 3, user: user, workout_id: nil) }
 
       it 'creates a new workout' do
         expect { user.manually_end_workout }.to change(Workout, :count).by(1)
@@ -349,7 +349,7 @@ RSpec.describe User, type: :model do
       it 'assigns sets to the workout' do
         workout = user.manually_end_workout
         unassigned_sets.each do |set|
-          expect(set.reload.belongs_to_workout_id).to eq(workout.id)
+          expect(set.reload.workout_id).to eq(workout.id)
         end
       end
     end
