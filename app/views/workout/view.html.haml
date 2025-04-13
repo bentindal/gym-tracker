@@ -147,10 +147,9 @@
                             %i.fa-solid.fa-robot.mr-2
                             Get AI Analysis
                         %p.text-muted.mb-4 Get personalized insights about your workout performance and progress
-                        = form_tag "/ai/analyze", method: :post, class: "d-inline-block", data: { turbo: true, controller: "loading", action: "turbo:submit-start->loading#start turbo:submit-end->loading#stop" } do
+                        = form_tag "/ai/analyze", method: :post, class: "d-inline-block", data: { turbo: true, controller: "loading", action: "turbo:submit-start->loading#start turbo:submit-end->loading#stop turbo:before-cache->loading#stop" } do
                             = hidden_field_tag :workout_id, @workout.id
-                            = hidden_field_tag :authenticity_token, form_authenticity_token
-                            = button_tag type: "submit", class: "btn btn-primary btn-lg position-relative", data: { loading_target: "button", disable_with: "Generating..." } do
+                            = button_tag type: "submit", class: "btn btn-primary btn-lg position-relative", data: { loading_target: "button" } do
                                 %span.d-none{data: { loading_target: "spinner" }}
                                     %i.fa-solid.fa-spinner.fa-spin.mr-2
                                 %span{data: { loading_target: "text" }}
