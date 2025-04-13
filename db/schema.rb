@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,76 +10,90 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_241_022_194_530) do
-  create_table 'allsets', force: :cascade do |t|
-    t.integer 'exercise_id'
-    t.integer 'repetitions'
-    t.decimal 'weight'
-    t.integer 'user_id'
-    t.boolean 'isFailure', default: false, null: false
-    t.boolean 'isDropset', default: false, null: false
-    t.boolean 'isWarmup', default: false
-    t.integer 'belongs_to_workout'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
+ActiveRecord::Schema[7.1].define(version: 2025_04_12_211630) do
+  create_table "allsets", force: :cascade do |t|
+    t.integer "exercise_id"
+    t.integer "repetitions"
+    t.decimal "weight"
+    t.integer "user_id"
+    t.boolean "isFailure", default: false, null: false
+    t.boolean "isDropset", default: false, null: false
+    t.boolean "isWarmup", default: false
+    t.integer "belongs_to_workout"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table 'exercises', force: :cascade do |t|
-    t.integer 'user_id'
-    t.string 'name'
-    t.string 'unit'
-    t.string 'group'
-    t.datetime 'last_set', precision: nil
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
+  create_table "exercises", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "name"
+    t.string "unit"
+    t.string "group"
+    t.datetime "last_set", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table 'friends', force: :cascade do |t|
-    t.integer 'user'
-    t.integer 'follows'
-    t.boolean 'confirmed', default: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
+  create_table "friends", force: :cascade do |t|
+    t.integer "user"
+    t.integer "follows"
+    t.boolean "confirmed", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table 'likes', force: :cascade do |t|
-    t.integer 'user_id'
-    t.integer 'workout_id'
-    t.string 'name'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
+  create_table "likes", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "workout_id"
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table 'users', force: :cascade do |t|
-    t.string 'email', default: '', null: false
-    t.string 'encrypted_password', default: '', null: false
-    t.string 'reset_password_token'
-    t.datetime 'reset_password_sent_at', precision: nil
-    t.datetime 'remember_created_at', precision: nil
-    t.string 'first_name'
-    t.string 'last_name'
-    t.integer 'sign_in_count', default: 0, null: false
-    t.datetime 'current_sign_in_at', precision: nil
-    t.datetime 'last_sign_in_at', precision: nil
-    t.string 'current_sign_in_ip'
-    t.string 'last_sign_in_ip'
-    t.boolean 'isPublic', default: true
-    t.integer 'streakcount', default: 0
-    t.integer 'highest_streak', default: 0
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['email'], name: 'index_users_on_email', unique: true
-    t.index ['reset_password_token'], name: 'index_users_on_reset_password_token', unique: true
+  create_table "users", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
+    t.string "first_name"
+    t.string "last_name"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.boolean "isPublic", default: true
+    t.integer "streakcount", default: 0
+    t.integer "highest_streak", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  create_table 'workouts', force: :cascade do |t|
-    t.datetime 'started_at', precision: nil
-    t.datetime 'ended_at', precision: nil
-    t.integer 'user_id'
-    t.string 'title'
-    t.integer 'exercises_used'
-    t.integer 'sets_completed'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
+  create_table "workout_analyses", force: :cascade do |t|
+    t.integer "workout_id", null: false
+    t.decimal "total_volume", precision: 10, scale: 2
+    t.integer "total_sets"
+    t.integer "total_reps"
+    t.decimal "average_weight", precision: 10, scale: 2
+    t.text "feedback"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["workout_id"], name: "index_workout_analyses_on_workout_id"
   end
+
+  create_table "workouts", force: :cascade do |t|
+    t.datetime "started_at", precision: nil
+    t.datetime "ended_at", precision: nil
+    t.integer "user_id"
+    t.string "title"
+    t.integer "exercises_used"
+    t.integer "sets_completed"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "workout_analyses", "workouts"
 end
