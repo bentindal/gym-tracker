@@ -3,14 +3,12 @@
 # The FriendController manages friend relationships, including listing friends,
 # adding, confirming, and removing friendships.
 class FriendController < ApplicationController
-  before_action :authenticate_user!
-
   def list
     set_page_metadata('Friends', 'View your friends on GymTracker')
     load_pending_followers
     load_pending_following
-    load_followers
-    load_following
+    load_actual_followers
+    load_actual_following
   end
 
   def add
@@ -36,42 +34,6 @@ class FriendController < ApplicationController
     redirect_to friend_list_path
   end
 
-  def follow
-    @friend = Friend.new(user: current_user.id, follows: params[:id], confirmed: false)
-    if @friend.save
-      redirect_to friend_list_path, notice: 'Friend request sent!'
-    else
-      redirect_to friend_list_path, alert: 'Failed to send friend request!'
-    end
-  end
-
-  def unfollow
-    @friend = Friend.find_by(user: current_user.id, follows: params[:id])
-    if @friend&.destroy
-      redirect_to friend_list_path, notice: 'Unfollowed successfully!'
-    else
-      redirect_to friend_list_path, alert: 'Failed to unfollow!'
-    end
-  end
-
-  def accept
-    @friend = Friend.find_by(user: params[:id], follows: current_user.id)
-    if @friend&.update(confirmed: true)
-      redirect_to friend_list_path, notice: 'Friend request accepted!'
-    else
-      redirect_to friend_list_path, alert: 'Failed to accept friend request!'
-    end
-  end
-
-  def reject
-    @friend = Friend.find_by(user: params[:id], follows: current_user.id)
-    if @friend&.destroy
-      redirect_to friend_list_path, notice: 'Friend request rejected!'
-    else
-      redirect_to friend_list_path, alert: 'Failed to reject friend request!'
-    end
-  end
-
   private
 
   def set_page_metadata(title, description)
@@ -80,23 +42,19 @@ class FriendController < ApplicationController
   end
 
   def load_pending_followers
-    @pending_followers = User.joins(:passive_friendships)
-                            .where(friends: { user: current_user.id, confirmed: false })
+    @pending_followers = User.joins(:friends).where(friends: { follows: current_user.id, confirmed: false })
   end
 
   def load_pending_following
-    @pending_following = User.joins(:active_friendships)
-                            .where(friends: { follows: current_user.id, confirmed: false })
+    @pending_following = User.joins(:friends).where(friends: { user: current_user.id, confirmed: false })
   end
 
-  def load_followers
-    @followers = User.joins(:passive_friendships)
-                     .where(friends: { user: current_user.id, confirmed: true })
+  def load_actual_followers
+    @actual_followers = User.joins(:friends).where(friends: { follows: current_user.id, confirmed: true })
   end
 
-  def load_following
-    @following = User.joins(:active_friendships)
-                     .where(friends: { follows: current_user.id, confirmed: true })
+  def load_actual_following
+    @actual_following = User.joins(:friends).where(friends: { user: current_user.id, confirmed: true })
   end
 
   def user_view_path(user_id)
