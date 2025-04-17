@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   get 'friend/remove'
   get 'friend/confirm'
   get 'friend/remove_follower'
+  post 'friend/unfollow'
 
   post 'allset/create'
   get 'allset/destroy'
