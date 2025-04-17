@@ -4,55 +4,38 @@ class AiController < ApplicationController
 
   def analyze_workouts
     if params[:workout_id].present?
-      # Analyze specific workout
-      workout = Workout.find(params[:workout_id])
-      
-      # Verify user owns the workout
-      if workout.user_id != current_user.id
-        render json: { success: false, error: "Unauthorized" }, status: :unauthorized
-        render json: { error: "Unauthorized" }, status: :unauthorized
-        return
-      end
-      
-      # Check if analysis already exists
-      existing_analysis = WorkoutAnalysis.find_by(workout_id: workout.id)
-      
-      if existing_analysis
-        render json: { success: false, error: "Analysis already exists" }, status: :conflict
-        render json: { error: "Analysis already exists" }, status: :conflict
-        return
-      end
-      
-      # Add a small delay to ensure the loading state is visible
-      sleep(1)
-      
-      # Get recent workouts (last 30 days)
-      recent_workouts = current_user.workouts
-        .where('started_at >= ?', 30.days.ago)
-        .where.not(id: workout.id)
-        .order(started_at: :desc)
-
-      # Prepare current workout data
-      current_workout_data = {
-        date: workout.started_at,
-        duration: workout.length_string,
-        exercises: workout.allsets.map do |set|
-          {
-            name: set.exercise.name,
-            group: set.exercise.group,
-            unit: set.exercise.unit,
-            repetitions: set.repetitions,
-            weight: set.weight
-          }
+      begin
+        # Analyze specific workout
+        workout = Workout.find(params[:workout_id])
+        
+        # Verify user owns the workout
+        if workout.user_id != current_user.id
+          render json: { error: "Unauthorized" }, status: :unauthorized
+          return
         end
-      }
+        
+        # Check if analysis already exists
+        existing_analysis = WorkoutAnalysis.find_by(workout_id: workout.id)
+        
+        if existing_analysis
+          render json: { error: "Analysis already exists" }, status: :conflict
+          return
+        end
+        
+        # Add a small delay to ensure the loading state is visible
+        sleep(1)
+        
+        # Get recent workouts (last 30 days)
+        recent_workouts = current_user.workouts
+          .where('started_at >= ?', 30.days.ago)
+          .where.not(id: workout.id)
+          .order(started_at: :desc)
 
-      # Prepare recent workouts data
-      recent_workouts_data = recent_workouts.map do |w|
-        {
-          date: w.started_at,
-          duration: w.length_string,
-          exercises: w.allsets.map do |set|
+        # Prepare current workout data
+        current_workout_data = {
+          date: workout.started_at,
+          duration: workout.length_string,
+          exercises: workout.allsets.map do |set|
             {
               name: set.exercise.name,
               group: set.exercise.group,
@@ -62,32 +45,24 @@ class AiController < ApplicationController
             }
           end
         }
-      end
 
-      # Format data for OpenAI
-      prompt = format_workout_data_for_ai(current_workout_data, recent_workouts_data)
-      
-      # Get AI feedback
-      feedback = get_ai_feedback(prompt)
-      
-      # Create and save the analysis
-      analysis = WorkoutAnalysis.create!(
-        workout: workout,
-        total_volume: calculate_total_volume(workout),
-        total_sets: workout.allsets.count,
-        total_reps: calculate_total_reps(workout),
-        average_weight: calculate_average_weight(workout),
-        feedback: feedback
-      )
-      
-      render json: { 
-        success: true, 
-        analysis: {
-          id: analysis.id,
-          created_at: analysis.created_at,
-          feedback: analysis.feedback
-        }
-      }
+        # Prepare recent workouts data
+        recent_workouts_data = recent_workouts.map do |w|
+          {
+            date: w.started_at,
+            duration: w.length_string,
+            exercises: w.allsets.map do |set|
+              {
+                name: set.exercise.name,
+                group: set.exercise.group,
+                unit: set.exercise.unit,
+                repetitions: set.repetitions,
+                weight: set.weight
+              }
+            end
+          }
+        end
+
         # Format data for OpenAI
         prompt = format_workout_data_for_ai(current_workout_data, recent_workouts_data)
         
@@ -109,14 +84,20 @@ class AiController < ApplicationController
           feedback: feedback
         )
         
-        render json: { success: true }
+        render json: { 
+          success: true, 
+          analysis: {
+            id: analysis.id,
+            created_at: analysis.created_at,
+            feedback: analysis.feedback
+          }
+        }
       rescue StandardError => e
         Rails.logger.error("AI Analysis failed: #{e.message}")
         Rails.logger.error(e.backtrace.join("\n"))
         render json: { error: "Failed to generate analysis" }, status: :internal_server_error
       end
     else
-      render json: { success: false, error: "No workout specified" }, status: :bad_request
       render json: { error: "No workout specified" }, status: :bad_request
     end
   end
