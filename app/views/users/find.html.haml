@@ -1,24 +1,29 @@
-.container.text-center.w-100
+.container-fluid.py-4
+    .row.justify-content-center
+        .col-md-8
+            .d-flex.justify-content-between.align-items-center.mb-4
+                %h1.mb-0 All Users
+                %h6.text-muted.mb-0 (Sorted Alphabetically)
 
-    %h1.mt-3 All Users 
-    %h6.mb-3 (Sorted Alphabetically)
-
-    .container
-        - @users.each do |user|
-            .d-flex.border.text-primary.btn.btn-white.mb-1.bg-white
-                %a{href: "/users/view?id=#{user.id}"}
-                    = user.first_name + " " + user.last_name
-                - if user.streakcount > 1
-                    %span
-                        .badge.badge-pill.badge-dark.px-2.font-weight-bold.ml-2
-                            🔥 #{user.streakcount}
-                - if user.midworkout
-                    %span
-                        .badge.badge-pill.badge-success.px-2.font-weight-light.ml-2
-                            Online
-                // Add last seen
-                - if user.last_set != nil
-                    %span
-                        .badge.badge-pill.badge-secondary.px-2.font-weight-light.ml-2
-                            Last seen #{user.last_seen}
+            .card
+                .card-body.p-0
+                    - if @users.empty?
+                        .text-muted.text-center.py-4
+                            No users found.
+                    - else
+                        .list-group.list-group-flush
+                            - @users.each do |user|
+                                .list-group-item.d-flex.justify-content-between.align-items-center
+                                    %a.text-decoration-none.text-dark{href: "/users/view?id=#{user.id}"}
+                                        = user.first_name + " " + user.last_name
+                                    .d-flex.align-items-center
+                                        - if user.streakcount > 1
+                                            .badge.badge-pill.badge-dark.px-2.font-weight-bold.mr-2
+                                                🔥 #{user.streakcount}
+                                        - if user.midworkout
+                                            .badge.badge-pill.badge-success.px-2.font-weight-light.mr-2
+                                                Online
+                                        - if user.last_set != nil
+                                            .badge.badge-pill.badge-secondary.px-2.font-weight-light
+                                                Last seen #{user.last_seen}
                 

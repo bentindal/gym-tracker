@@ -1,51 +1,58 @@
-.container-fluid.text-center
-    %h1.mt-3
-        Friends
-    .text-center.mb-3
-        %a{href: "/users/find", class: "btn btn-primary w-50"} Add Users
+.container-fluid.py-4
+    .row.justify-content-center
+        .col-md-8
+            .d-flex.justify-content-between.align-items-center.mb-4
+                %h1.mb-0 Friends
+                %a{href: "/users/find", class: "btn btn-primary"} Add Users
 
-    .container.bg-white.border.border-rounded.py-3
-        %h2 Pending Followers
-        - if @pending_followers.empty?
-            %p.text-muted
-                You have no pending follower requests.
-        - else
-            %ul
-                - @pending_followers.each do |follower|
-                    %li
-                        = follower.name
-                        = button_to "Accept", friend_accept_path(follower), method: :post, class: "btn btn-success"
-                        = button_to "Reject", friend_reject_path(follower), method: :post, class: "btn btn-danger"
+            - unless @pending_followers.empty?
+                .card.mb-4
+                    .card-header.bg-light
+                        %h3.mb-0 Pending Followers
+                    .card-body
+                        .list-group
+                            - @pending_followers.each do |follower|
+                                .list-group-item.d-flex.justify-content-between.align-items-center
+                                    %span= follower.name
+                                    .btn-group
+                                        = button_to "Accept", friend_accept_path(follower), method: :post, class: "btn btn-success btn-sm"
+                                        = button_to "Reject", friend_reject_path(follower), method: :post, class: "btn btn-danger btn-sm"
 
-        %h2 Pending Following
-        - if @pending_following.empty?
-            %p.text-muted
-                You have no pending following requests.
-        - else
-            %ul
-                - @pending_following.each do |following|
-                    %li
-                        = following.name
-                        = button_to "Cancel Request", friend_unfollow_path(following), method: :post, class: "btn btn-warning"
+            - unless @pending_following.empty?
+                .card.mb-4
+                    .card-header.bg-light
+                        %h3.mb-0 Pending Following
+                    .card-body
+                        .list-group
+                            - @pending_following.each do |following|
+                                .list-group-item.d-flex.justify-content-between.align-items-center
+                                    %span= following.name
+                                    = button_to "Cancel Request", friend_unfollow_path(following), method: :post, class: "btn btn-warning btn-sm"
 
-        %h2 Followers
-        - if @followers.empty?
-            %p.text-muted
-                You have no followers yet.
-        - else
-            %ul
-                - @followers.each do |follower|
-                    %li
-                        = follower.name
-                        = button_to "Remove Follower", friend_remove_follower_path(follower), method: :post, class: "btn btn-danger"
+            .card.mb-4
+                .card-header.bg-light
+                    %h3.mb-0 Followers
+                .card-body
+                    - if @followers.empty?
+                        .text-muted.text-center.py-3
+                            You have no followers yet.
+                    - else
+                        .list-group
+                            - @followers.each do |follower|
+                                .list-group-item.d-flex.justify-content-between.align-items-center
+                                    %span= follower.name
+                                    = button_to "Remove Follower", friend_remove_follower_path(follower), method: :post, class: "btn btn-danger btn-sm"
 
-        %h2 Following
-        - if @following.empty?
-            %p.text-muted
-                You are not following anyone yet.
-        - else
-            %ul
-                - @following.each do |following|
-                    %li
-                        = following.name
-                        = button_to "Unfollow", friend_unfollow_path(following), method: :post, class: "btn btn-danger"
+            .card.mb-4
+                .card-header.bg-light
+                    %h3.mb-0 Following
+                .card-body
+                    - if @following.empty?
+                        .text-muted.text-center.py-3
+                            You are not following anyone yet.
+                    - else
+                        .list-group
+                            - @following.each do |following|
+                                .list-group-item.d-flex.justify-content-between.align-items-center
+                                    %span= following.name
+                                    = button_to "Unfollow", friend_unfollow_path(following), method: :post, class: "btn btn-danger btn-sm"
