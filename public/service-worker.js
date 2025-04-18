@@ -1,5 +1,15 @@
+const CACHE_VERSION = 'v1.0.1'; // Increment this version number when you make changes
+
 self.addEventListener('install', event => {
-    // No caching during the install phase
+    // Skip waiting to activate the new service worker immediately
+    self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
+    // Claim all clients to ensure the new service worker takes control
+    event.waitUntil(
+        clients.claim()
+    );
 });
 
 self.addEventListener('fetch', event => {
