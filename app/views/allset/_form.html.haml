@@ -51,6 +51,17 @@
         step: "1",
         min: "0",
         max: "100"}
-    .d-flex
-      %button{type: "submit", class: "btn btn-sm w-100 btn-primary"} Add Set
-      = link_to '', "/exercise/view?id=#{@exercise.id.to_s}", {class: "fa-solid fa-chart-line btn btn btn-success ml-1"}
+    .d-flex.flex-column
+      .d-flex.justify-content-center.mb-2
+        %label.mr-2
+          %input{type: "checkbox", name: "isFailure", class: "text-danger"}
+          Failure
+        %label.mr-2
+          %input{type: "checkbox", name: "isDropset", class: "text-info"}
+          Dropset
+        %label
+          %input{type: "checkbox", name: "isWarmup", class: "text-secondary"}
+          Warmup
+      .d-flex
+        %button{type: "submit", class: "btn btn-sm w-100 btn-primary"} Add Set
+        = link_to '', "/exercise/view?id=#{@exercise.id.to_s}", {class: "fa-solid fa-chart-line btn btn btn-success ml-1"}
