@@ -14,7 +14,8 @@
     .card.border-top-0.border-bottom-0.justify-content-center.d-flex
         .row
             .col-12.col-md-4.bg-white.p-2.text-center
-                = render 'workout/summary'
+                #workout-summary
+                    = render 'workout/summary'
                 %hr
                 - @user = current_user
                 = render 'feed/calendar'

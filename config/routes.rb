@@ -64,9 +64,10 @@ Rails.application.routes.draw do
   resource :exercise, only: [:show] # Use singular 'exercise' for the resource name
 
   resources :allset, except: [:update] do
-    get 'show', on: :member
-    get 'edit', on: :member
-    patch '', action: :update, on: :member
+    member do
+      get 'edit'
+      patch '', action: :update
+    end
   end
 
   root 'home#index'

@@ -5,12 +5,11 @@
 # through flash messages and redirects.
 class AllsetController < ApplicationController
   def show
-    @exercise = Exercise.find(params[:id]) # Use exercise_id instead of params[:id]
-    if current_user.id == @exercise.user_id # Check if current user is the owner of the exercise
+    @exercise = Exercise.find(params[:id])
+    if current_user.id == @exercise.user_id
       @page_title = "#{@exercise.name} | Workout"
-      @sets = Allset.where(exercise_id: @exercise.id) # Filter by exercise_id
+      @sets = Allset.where(exercise_id: @exercise.id)
       @sets = @sets.order(created_at: :desc)
-      # Sort sets by uniq date
       @setss = @sets.group_by { |set| set.created_at.to_date }
     else
       redirect_to '/error/permission'
@@ -22,14 +21,50 @@ class AllsetController < ApplicationController
   end
 
   def create
-    @workout = build_workout_from_params
+    @workout = Allset.new(
+      exercise_id: params[:exercise_id],
+      user_id: params[:user_id],
+      repetitions: params[:repetitions].to_i,
+      weight: params[:weight].to_f,
+      isFailure: params[:isFailure] == 'on',
+      isDropset: params[:isDropset] == 'on',
+      isWarmup: params[:isWarmup] == 'on'
+    )
 
-    if @workout.save
-      update_exercise_last_set(@workout.exercise_id, @workout.created_at)
-      redirect_to allset_path(@workout.exercise_id), notice: t('.success')
-    else
-      Rails.logger.error("Allset save failed: #{@workout.errors.full_messages}")
-      render :new, status: :unprocessable_entity
+    @exercise = Exercise.find(params[:exercise_id])
+
+    respond_to do |format|
+      if @workout.save
+        # Refresh sets after saving
+        @sets = Allset.where(exercise_id: @exercise.id).order(created_at: :desc)
+        @setss = @sets.group_by { |set| set.created_at.beginning_of_day }.sort_by { |date, _| date }.reverse
+
+        format.html { redirect_to allset_path(@exercise.id), notice: t('allset.create.success') }
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }),
+            turbo_stream.replace('dashboard-content', partial: 'dashboard/content')
+          ]
+        end
+      else
+        format.html { redirect_to allset_path(@exercise.id), alert: t('allset.create.error') }
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }),
+            turbo_stream.replace('dashboard-content', partial: 'dashboard/content')
+          ], status: :unprocessable_entity
+        end
+      end
+    end
+  rescue ActiveRecord::RecordNotFound
+    respond_to do |format|
+      format.html { redirect_to exercises_path, alert: 'Exercise not found' }
+      format.turbo_stream { head :not_found }
+    end
+  rescue StandardError
+    respond_to do |format|
+      format.html { redirect_to exercises_path, alert: 'An error occurred' }
+      format.turbo_stream { head :internal_server_error }
     end
   end
 
@@ -40,7 +75,6 @@ class AllsetController < ApplicationController
       if @workout.update(allset_params2)
         redirect_to allset_path(@workout.exercise_id), notice: t('.success')
       else
-        Rails.logger.error("Allset update failed: #{@workout.errors.full_messages}")
         redirect_to edit_allset_path(@workout), alert: t('.failure')
       end
     else
@@ -50,11 +84,31 @@ class AllsetController < ApplicationController
 
   def destroy
     @workout = Allset.find(params[:id])
+
     if current_user.id == @workout.user_id
-      @id = @workout.exercise_id
-      @workout.destroy
-      redirect_to "/allset/#{@id}", notice: 'Workout was successfully destroyed.'
+      @exercise = Exercise.find(@workout.exercise_id)
+
+      if @workout.destroy
+        @sets = @exercise.sets.order(created_at: :desc)
+        @setss = @sets.group_by { |set| set.created_at.beginning_of_day }.sort_by { |date, _| date }.reverse
+
+        respond_to do |format|
+          format.html do
+            redirect_to allset_path(@exercise.id), notice: 'Set was successfully deleted.'
+          end
+          format.turbo_stream do
+            render turbo_stream: [
+              turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }),
+              turbo_stream.replace('empty-sets-message', partial: 'allset/empty_sets_message', locals: { sets: @sets }),
+              turbo_stream.replace('workout-summary', partial: 'workout/summary')
+            ]
+          end
+        end
+      else
+        Rails.logger.error "Failed to destroy workout: #{@workout.errors.full_messages}"
+      end
     else
+      Rails.logger.warn "Unauthorized destroy attempt by user #{current_user.id} on workout #{@workout.id}"
       redirect_to '/error/permission'
     end
   end
@@ -96,5 +150,9 @@ class AllsetController < ApplicationController
 
   def allset_params2
     params.require(:allset).permit(:exercise_id, :user_id, :repetitions, :weight, :isFailure, :isDropset, :isWarmup)
+  end
+
+  def workout_params
+    params.permit(:weight, :repetitions, :isFailure, :isDropset, :isWarmup)
   end
 end

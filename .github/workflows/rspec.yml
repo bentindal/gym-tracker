@@ -22,7 +22,7 @@ jobs:
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.4.2 # Adjust to your Ruby version
+          ruby-version: 3.2.1 # Match production version
           bundler-cache: true
 
       - name: Install simplecov-console

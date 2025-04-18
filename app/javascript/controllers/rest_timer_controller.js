@@ -25,9 +25,9 @@ export default class extends Controller {
     
     let msg
     if (mins === 0) {
-      msg = `${secs}s ago`
+      msg = `${secs}s`
     } else {
-      msg = `${mins}m ${secs.toString().padStart(2, '0')}s ago`
+      msg = `${mins}m ${secs.toString().padStart(2, '0')}s`
     }
     
     this.displayTarget.textContent = msg

@@ -31,8 +31,8 @@ class Exercise < ApplicationRecord
   end
 
   def graph_total_volume(from, to)
-    from = from.present? ? from : 1.month.ago.to_s
-    to = to.present? ? to : Time.current.to_s
+    from = 1.month.ago.to_s unless from.present?
+    to = Time.current.to_s unless to.present?
     calculate_graph_data(from, to) do |sets|
       sets.sum do |set|
         set.weight.to_f * set.repetitions.to_i unless set.isWarmup || set.weight.nil? || set.repetitions.nil?
@@ -41,8 +41,8 @@ class Exercise < ApplicationRecord
   end
 
   def graph_orm(from, to)
-    from = from.present? ? from : 1.month.ago.to_s
-    to = to.present? ? to : Time.current.to_s
+    from = 1.month.ago.to_s unless from.present?
+    to = Time.current.to_s unless to.present?
     calculate_graph_data(from, to) do |sets|
       sets.map do |set|
         unless set.isWarmup || set.weight.nil? || set.repetitions.nil?

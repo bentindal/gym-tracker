@@ -42,13 +42,13 @@ workout_dates = [
   Time.zone.now - 6.days - 14.hours,  # 6 days ago at 10 AM
   Time.zone.now - 4.days - 15.hours,  # 4 days ago at 9 AM
   Time.zone.now - 3.days - 13.hours,  # 3 days ago at 11 AM
-  Time.zone.now - 1.day - 14.hours,   # Yesterday at 10 AM
+  Time.zone.now - 1.day - 14.hours # Yesterday at 10 AM
 ]
 
 workout_dates.each do |date|
   # Select 3 random exercises for this workout
   workout_exercises = exercise_records.sample(3)
-  
+
   workout = Workout.create!(
     user: demo_user,
     started_at: date,
@@ -75,7 +75,7 @@ end
 
 # Create today's workout
 today_exercises = exercise_records.sample(3)
-today_time = Time.zone.now - 2.hours  # 2 hours ago
+today_time = Time.zone.now - 2.hours # 2 hours ago
 
 today_workout = Workout.create!(
   user: demo_user,

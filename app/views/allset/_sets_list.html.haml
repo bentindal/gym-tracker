@@ -1,0 +1,20 @@
+#rest-timer{"data-controller": "rest-timer"}
+  - if sets.any? && sets.first.created_at > Time.now.beginning_of_day
+    #timer{"data-rest-timer-target": "timer", "data-start-time": sets.first.created_at.iso8601}
+  
+  - if setss.any?
+    - setss.each do |date, sets_for_date|
+      .text-muted
+        = format_date(date)
+      %table.table.text-center.bg-white.table-sm.border
+        %tbody
+          - sets_for_date.each do |set|
+            %tr{class: set_row_class(set)}
+              %td
+                = format_set_weight(set)
+                x
+                = format_set_repetitions(set)
+              %td
+                %small
+                  = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
+                  = link_to '', allset_path(set.id), {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white", data: { turbo_method: :delete, turbo_confirm: "Delete this set?" }} 

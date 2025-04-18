@@ -10,8 +10,8 @@ class User < ApplicationRecord
   has_many :workouts, dependent: :destroy
   has_many :exercises, dependent: :destroy
   has_many :sets, class_name: 'Allset', dependent: :destroy
-  has_many :active_friendships, class_name: 'Friend', foreign_key: 'user', dependent: :destroy
-  has_many :passive_friendships, class_name: 'Friend', foreign_key: 'follows', dependent: :destroy
+  has_many :active_friendships, -> { where(confirmed: true) }, class_name: 'Friend', foreign_key: 'user', dependent: :destroy
+  has_many :passive_friendships, -> { where(confirmed: true) }, class_name: 'Friend', foreign_key: 'follows', dependent: :destroy
   has_many :following, through: :active_friendships, source: :followed
   has_many :followers, through: :passive_friendships, source: :follower
 
@@ -97,7 +97,7 @@ class User < ApplicationRecord
       "You had a day off yesterday, workout today to keep the #{streakcount} day streak going or it will be reset!"
     else
       if streakcount.zero?
-        "You worked out today!"
+        'You worked out today!'
       else
         "You have a #{streakcount} day streak!"
       end
@@ -110,16 +110,19 @@ class User < ApplicationRecord
 
   def midworkout
     return false if sets.empty?
+
     sets.where(belongs_to_workout: nil).exists?
   end
 
   def last_exercise
     return nil if sets.empty?
+
     sets.last.exercise
   end
 
   def last_set
     return nil if sets.empty?
+
     sets.last
   end
 
@@ -175,15 +178,15 @@ class User < ApplicationRecord
     return 0 if workouts.empty? && sets.empty?
 
     date_pointer = if has_worked_out_today
-                    Time.zone.today
-                  else
-                    Date.yesterday
-                  end
+                     Time.zone.today
+                   else
+                     Date.yesterday
+                   end
     streak_count = 0
     gaps_used = 0
     streak_ended = false
 
-    while !streak_ended
+    until streak_ended
       if worked_out_on_date(date_pointer.day, date_pointer.month, date_pointer.year)
         streak_count += 1
         date_pointer -= 1

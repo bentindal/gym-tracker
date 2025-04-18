@@ -81,12 +81,12 @@ class FriendController < ApplicationController
 
   def load_pending_followers
     @pending_followers = User.joins(:passive_friendships)
-                            .where(friends: { user: current_user.id, confirmed: false })
+                             .where(friends: { user: current_user.id, confirmed: false })
   end
 
   def load_pending_following
     @pending_following = User.joins(:active_friendships)
-                            .where(friends: { follows: current_user.id, confirmed: false })
+                             .where(friends: { follows: current_user.id, confirmed: false })
   end
 
   def load_followers
