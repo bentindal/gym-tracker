@@ -31,11 +31,11 @@ class AllsetController < ApplicationController
       isWarmup: params[:isWarmup] == 'on'
     )
 
-    if @workout.save
-      @exercise = Exercise.find(params[:exercise_id])
-      @sets = @exercise.sets.order(created_at: :desc)
-      @setss = @sets.group_by { |set| set.created_at.beginning_of_day }.sort_by { |date, _| date }.reverse
+    @exercise = Exercise.find(params[:exercise_id])
+    @sets = @exercise.sets.order(created_at: :desc)
+    @setss = @sets.group_by { |set| set.created_at.beginning_of_day }.sort_by { |date, _| date }.reverse
 
+    if @workout.save
       respond_to do |format|
         format.html { redirect_to allset_show_path(id: @exercise.id), notice: t('allset.create.success') }
         format.turbo_stream { 
