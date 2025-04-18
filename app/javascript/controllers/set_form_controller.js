@@ -18,10 +18,10 @@ export default class extends Controller {
       }
     })
     .then(response => {
-      if (response.ok) {
-        return response.text()
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
       }
-      throw new Error("Network response was not ok")
+      return response.text()
     })
     .then(html => {
       // Parse the Turbo Stream response
@@ -67,6 +67,16 @@ export default class extends Controller {
     })
     .catch(error => {
       console.error("Error:", error)
+      // Show error message to user
+      const errorDiv = document.createElement('div')
+      errorDiv.className = 'alert alert-danger mt-2'
+      errorDiv.textContent = 'Failed to create set. Please try again.'
+      form.parentNode.insertBefore(errorDiv, form.nextSibling)
+      
+      // Remove error message after 3 seconds
+      setTimeout(() => {
+        errorDiv.remove()
+      }, 3000)
     })
   }
 } 

@@ -32,10 +32,12 @@ class AllsetController < ApplicationController
     )
 
     @exercise = Exercise.find(params[:exercise_id])
-    @sets = @exercise.sets.order(created_at: :desc)
-    @setss = @sets.group_by { |set| set.created_at.beginning_of_day }.sort_by { |date, _| date }.reverse
 
     if @workout.save
+      # Query sets after saving the new set
+      @sets = @exercise.sets.order(created_at: :desc)
+      @setss = @sets.group_by { |set| set.created_at.beginning_of_day }.sort_by { |date, _| date }.reverse
+
       respond_to do |format|
         format.html { redirect_to allset_path(@exercise.id), notice: t('allset.create.success') }
         format.turbo_stream do
@@ -46,13 +48,17 @@ class AllsetController < ApplicationController
         end
       end
     else
+      # Query sets even on error to show current state
+      @sets = @exercise.sets.order(created_at: :desc)
+      @setss = @sets.group_by { |set| set.created_at.beginning_of_day }.sort_by { |date, _| date }.reverse
+
       respond_to do |format|
         format.html { redirect_to allset_path(@exercise.id), alert: t('allset.create.error') }
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }),
             turbo_stream.replace('empty-sets-message', partial: 'allset/empty_sets_message', locals: { sets: @sets })
-          ]
+          ], status: :unprocessable_entity
         end
       end
     end

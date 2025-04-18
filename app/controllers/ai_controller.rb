@@ -122,15 +122,15 @@ class AiController < ApplicationController
 
   def format_workout_data_for_ai(current_workout, recent_workouts)
     <<~PROMPT
-      Provide a concise, three-paragraph analysis for #{current_user.first_name}. Write in a natural, flowing style as if you're having a conversation with them. Format your response in markdown with clear paragraph breaks:
+      Provide a balanced and concise, three-paragraph maximum, analysis for #{current_user.first_name}. Write in a natural, flowing style as if you're having a conversation with them. Format your response in markdown with clear paragraph breaks:
 
-      **First paragraph:** Highlight the most impressive or interesting aspects of their current workout. Feel free to mention specific sets or reps if they tell a compelling story about their progress. Always mention weights with their correct units (kg, lbs, kg/db for dumbbells in kg, or lbs/db for dumbbells in lbs).
+      **First paragraph:** Provide an honest assessment of their current workout. If the workout is light or minimal, acknowledge this factually. If there are impressive aspects, mention them, but don't overpraise. Always mention weights with their correct units (kg, lbs, kg/db for dumbbells in kg, or lbs/db for dumbbells in lbs).
 
-      **Second paragraph:** Compare their current workout to their recent training history. Focus on meaningful patterns or progress in their training approach. When comparing weights, always use the same unit system as the exercise (kg, lbs, kg/db, or lbs/db).
+      **Second paragraph:** Compare their current workout to their recent training history. Be honest about whether this represents progress, maintenance, or a lighter session. When comparing weights, always use the same unit system as the exercise (kg, lbs, kg/db, or lbs/db). If the workout is significantly lighter than usual, note this constructively.
 
-      **Third paragraph:** Provide one key insight about their overall training routine and consistency.
+      **Third paragraph:** Provide constructive feedback about their training routine. If the workout was minimal, suggest ways to make it more effective. If it was challenging, acknowledge the effort while maintaining realistic expectations. Always be encouraging but honest.
 
-      Keep it concise and engaging - focus on what makes their training unique or impressive. Write as if you're their personal trainer reviewing their workout data. Always respect and use the unit system specified for each exercise.
+      Keep the analysis balanced and realistic - focus on both strengths and areas for improvement. Write as if you're their personal trainer reviewing their workout data. Always respect and use the unit system specified for each exercise.
 
       Current Workout Data:
       #{current_workout.to_json}
