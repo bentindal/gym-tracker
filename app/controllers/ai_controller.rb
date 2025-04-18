@@ -41,7 +41,7 @@ class AiController < ApplicationController
               group: set.exercise.group,
               unit: set.exercise.unit,
               repetitions: set.repetitions,
-              weight: set.weight
+              weight: "#{set.weight} #{set.exercise.unit}"
             }
           end
         }
@@ -57,7 +57,7 @@ class AiController < ApplicationController
                 group: set.exercise.group,
                 unit: set.exercise.unit,
                 repetitions: set.repetitions,
-                weight: set.weight
+                weight: "#{set.weight} #{set.exercise.unit}"
               }
             end
           }
