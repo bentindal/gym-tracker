@@ -5,12 +5,13 @@ import "chartkick"
 import "Chart.bundle"
 import "./chartkick/chart.js"
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/service_worker.js').then(function(registration) {
-      console.log('ServiceWorker registration successful with scope: ', registration.scope);
-    }, function(error) {
-      console.log('ServiceWorker registration failed: ', error);
-    });
-  });
-}
+// Service Worker registration disabled
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', function() {
+//     navigator.serviceWorker.register('/service_worker.js').then(function(registration) {
+//       console.log('ServiceWorker registration successful with scope: ', registration.scope);
+//     }, function(error) {
+//       console.log('ServiceWorker registration failed: ', error);
+//     });
+//   });
+// }
