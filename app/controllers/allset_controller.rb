@@ -37,7 +37,7 @@ class AllsetController < ApplicationController
 
     if @workout.save
       respond_to do |format|
-        format.html { redirect_to allset_show_path(id: @exercise.id), notice: t('allset.create.success') }
+        format.html { redirect_to allset_path(@exercise.id), notice: t('allset.create.success') }
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }),
@@ -47,7 +47,7 @@ class AllsetController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { redirect_to allset_show_path(id: @exercise.id), alert: t('allset.create.error') }
+        format.html { redirect_to allset_path(@exercise.id), alert: t('allset.create.error') }
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }),
@@ -90,7 +90,7 @@ class AllsetController < ApplicationController
         respond_to do |format|
           format.html do
             Rails.logger.info 'Rendering HTML response'
-            redirect_to allset_show_path(id: @exercise.id), notice: 'Set was successfully deleted.'
+            redirect_to allset_path(@exercise.id), notice: 'Set was successfully deleted.'
           end
           format.turbo_stream do
             Rails.logger.info 'Rendering Turbo Stream response'

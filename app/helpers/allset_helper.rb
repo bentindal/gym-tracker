@@ -2,6 +2,8 @@
 
 module AllsetHelper
   def format_date(date)
+    return '' if date.nil?
+
     if date > Time.now.beginning_of_day - 10.minutes
       content_tag(:div, '0s ago', 'data-rest-timer-target': 'display', style: 'min-height: 1.2em')
     elsif date > Time.now.beginning_of_day - 1.day

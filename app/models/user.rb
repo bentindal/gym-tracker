@@ -10,8 +10,8 @@ class User < ApplicationRecord
   has_many :workouts, dependent: :destroy
   has_many :exercises, dependent: :destroy
   has_many :sets, class_name: 'Allset', dependent: :destroy
-  has_many :active_friendships, class_name: 'Friend', foreign_key: 'user', dependent: :destroy
-  has_many :passive_friendships, class_name: 'Friend', foreign_key: 'follows', dependent: :destroy
+  has_many :active_friendships, -> { where(confirmed: true) }, class_name: 'Friend', foreign_key: 'user', dependent: :destroy
+  has_many :passive_friendships, -> { where(confirmed: true) }, class_name: 'Friend', foreign_key: 'follows', dependent: :destroy
   has_many :following, through: :active_friendships, source: :followed
   has_many :followers, through: :passive_friendships, source: :follower
 
