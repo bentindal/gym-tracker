@@ -21,46 +21,50 @@ class AllsetController < ApplicationController
   end
 
   def create
-    begin
-      @workout = Allset.new(
-        exercise_id: params[:exercise_id],
-        user_id: params[:user_id],
-        repetitions: params[:repetitions].to_i,
-        weight: params[:weight].to_f,
-        isFailure: params[:isFailure] == 'on',
-        isDropset: params[:isDropset] == 'on',
-        isWarmup: params[:isWarmup] == 'on'
-      )
+    @workout = Allset.new(
+      exercise_id: params[:exercise_id],
+      user_id: params[:user_id],
+      repetitions: params[:repetitions].to_i,
+      weight: params[:weight].to_f,
+      isFailure: params[:isFailure] == 'on',
+      isDropset: params[:isDropset] == 'on',
+      isWarmup: params[:isWarmup] == 'on'
+    )
 
-      @exercise = Exercise.find(params[:exercise_id])
+    @exercise = Exercise.find(params[:exercise_id])
 
-      respond_to do |format|
-        if @workout.save
-          # Refresh sets after saving
-          @sets = Allset.where(exercise_id: @exercise.id).order(created_at: :desc)
-          @setss = @sets.group_by { |set| set.created_at.beginning_of_day }.sort_by { |date, _| date }.reverse
-          
-          format.html { redirect_to allset_path(@exercise.id), notice: t('allset.create.success') }
-          format.turbo_stream do
-            render turbo_stream: turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss })
-          end
-        else
-          format.html { redirect_to allset_path(@exercise.id), alert: t('allset.create.error') }
-          format.turbo_stream do
-            render turbo_stream: turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }), status: :unprocessable_entity
-          end
+    respond_to do |format|
+      if @workout.save
+        # Refresh sets after saving
+        @sets = Allset.where(exercise_id: @exercise.id).order(created_at: :desc)
+        @setss = @sets.group_by { |set| set.created_at.beginning_of_day }.sort_by { |date, _| date }.reverse
+
+        format.html { redirect_to allset_path(@exercise.id), notice: t('allset.create.success') }
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }),
+            turbo_stream.replace('dashboard-content', partial: 'dashboard/content')
+          ]
+        end
+      else
+        format.html { redirect_to allset_path(@exercise.id), alert: t('allset.create.error') }
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }),
+            turbo_stream.replace('dashboard-content', partial: 'dashboard/content')
+          ], status: :unprocessable_entity
         end
       end
-    rescue ActiveRecord::RecordNotFound => e
-      respond_to do |format|
-        format.html { redirect_to exercises_path, alert: "Exercise not found" }
-        format.turbo_stream { head :not_found }
-      end
-    rescue => e
-      respond_to do |format|
-        format.html { redirect_to exercises_path, alert: "An error occurred" }
-        format.turbo_stream { head :internal_server_error }
-      end
+    end
+  rescue ActiveRecord::RecordNotFound
+    respond_to do |format|
+      format.html { redirect_to exercises_path, alert: 'Exercise not found' }
+      format.turbo_stream { head :not_found }
+    end
+  rescue StandardError
+    respond_to do |format|
+      format.html { redirect_to exercises_path, alert: 'An error occurred' }
+      format.turbo_stream { head :internal_server_error }
     end
   end
 
