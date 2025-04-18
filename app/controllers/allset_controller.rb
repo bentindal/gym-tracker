@@ -39,34 +39,34 @@ class AllsetController < ApplicationController
       if @workout.save
         # Refresh sets after saving
         @sets = Allset.where(exercise_id: @exercise.id).order(created_at: :desc)
-        @setss = @sets.group_by { |set| set.created_at.beginning_of_day }.sort_by { |date, _| date }.reverse
+        @setss = @sets.group_by { |set| set.created_at.to_date }
 
         format.html { redirect_to allset_path(@exercise.id), notice: t('allset.create.success') }
         format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }),
-            turbo_stream.replace('dashboard-content', partial: 'dashboard/content')
-          ]
+          render turbo_stream: turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss })
         end
       else
+        # Get existing sets for the error case
+        @sets = Allset.where(exercise_id: @exercise.id).order(created_at: :desc)
+        @setss = @sets.group_by { |set| set.created_at.to_date }
+
         format.html { redirect_to allset_path(@exercise.id), alert: t('allset.create.error') }
         format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }),
-            turbo_stream.replace('dashboard-content', partial: 'dashboard/content')
-          ], status: :unprocessable_entity
+          render turbo_stream: turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }), status: :unprocessable_entity
         end
       end
     end
-  rescue ActiveRecord::RecordNotFound
+  rescue ActiveRecord::RecordNotFound => e
+    Rails.logger.error "Record not found: #{e.message}"
     respond_to do |format|
       format.html { redirect_to exercises_path, alert: 'Exercise not found' }
       format.turbo_stream { head :not_found }
     end
-  rescue StandardError
+  rescue StandardError => e
+    Rails.logger.error "Error creating set: #{e.message}"
     respond_to do |format|
       format.html { redirect_to exercises_path, alert: 'An error occurred' }
-      format.turbo_stream { head :internal_server_error }
+      format.turbo_stream { head :unprocessable_entity }
     end
   end
 
@@ -92,18 +92,14 @@ class AllsetController < ApplicationController
 
       if @workout.destroy
         @sets = @exercise.sets.order(created_at: :desc)
-        @setss = @sets.group_by { |set| set.created_at.beginning_of_day }.sort_by { |date, _| date }.reverse
+        @setss = @sets.group_by { |set| set.created_at.to_date }
 
         respond_to do |format|
           format.html do
             redirect_to allset_path(@exercise.id), notice: 'Set was successfully deleted.'
           end
           format.turbo_stream do
-            render turbo_stream: [
-              turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }),
-              turbo_stream.replace('empty-sets-message', partial: 'allset/empty_sets_message', locals: { sets: @sets }),
-              turbo_stream.replace('workout-summary', partial: 'workout/summary')
-            ]
+            render turbo_stream: turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss })
           end
         end
       else

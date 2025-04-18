@@ -18,8 +18,9 @@ export default class extends Controller {
       }
     })
     .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+      // Only throw error for actual failures (500, 404, etc.)
+      if (response.status >= 500) {
+        throw new Error(`Server error! status: ${response.status}`)
       }
       return response.text()
     })
@@ -45,6 +46,7 @@ export default class extends Controller {
       })
     })
     .catch(error => {
+      console.error('Error:', error)
       // Show error message to user
       const errorDiv = document.createElement('div')
       errorDiv.className = 'alert alert-danger mt-2'
