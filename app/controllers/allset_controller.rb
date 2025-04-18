@@ -4,6 +4,8 @@
 # It ensures that users can only manage their own sets and provides feedback
 # through flash messages and redirects.
 class AllsetController < ApplicationController
+  include AllsetHelper
+
   def show
     @exercise = Exercise.find(params[:id])
     if current_user.id == @exercise.user_id
