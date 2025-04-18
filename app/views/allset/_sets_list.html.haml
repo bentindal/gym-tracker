@@ -2,13 +2,13 @@
   - if sets.any? && sets.first.created_at > Time.now.beginning_of_day
     #timer{"data-rest-timer-target": "timer", "data-start-time": sets.first.created_at.iso8601}
   
-  - if sets.any?
-    - sets.each do |info|
+  - if setss.any?
+    - setss.each do |date, sets_for_date|
       .text-muted
-        = format_date(info[0])
+        = format_date(date)
       %table.table.text-center.bg-white.table-sm.border
         %tbody
-          - info[1].to_a.each do |set|
+          - sets_for_date.each do |set|
             %tr{class: set_row_class(set)}
               %td
                 = format_set_weight(set)
