@@ -42,7 +42,9 @@ export default class extends Controller {
               element.replaceWith(content)
             }
             break
-          // Add other actions as needed
+          default:
+            console.warn(`Unhandled Turbo Stream action: ${action} for target: ${target}`)
+            break
         }
       })
       
