@@ -44,8 +44,11 @@ class WorkoutController < ApplicationController
   end
 
   def load_unassigned_sets
-    @unassigned_sets = Allset.where(user_id: current_user.id, belongs_to_workout: nil).group_by(&:exercise)
+    @unassigned_sets = Allset.where(user_id: current_user.id, belongs_to_workout: nil)
+                            .where('created_at >= ?', Time.current.beginning_of_day)
+                            .group_by(&:exercise)
     @sets = Allset.where(user_id: current_user.id, belongs_to_workout: nil)
+                  .where('created_at >= ?', Time.current.beginning_of_day)
   end
 
   def create_workout_from_sets

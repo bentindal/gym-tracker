@@ -1,5 +1,5 @@
 .container.text-center
-    - @unassigned_sets = Allset.where(user_id: current_user.id, belongs_to_workout: nil).group_by(&:exercise)
+    - @unassigned_sets = Allset.where(user_id: current_user.id, belongs_to_workout: nil).where('created_at >= ?', Time.current.beginning_of_day).group_by(&:exercise)
     - if @unassigned_sets.empty? == false
         %h4.text-center.font-weight-light.mb-3
             %strong
@@ -25,13 +25,11 @@
             = link_to 'View', allset_path(item[0]), {class: "btn w-100 border-top-0 mb-3 font-weight-light"}
         %br
           
-
         = link_to 'New Exercise', "/exercises", {class: "btn btn-primary btn-lg w-75 mb-3 font-weight-bold"}
         %br
         = link_to 'Finish Workout', "/workout/finish", {class: "btn btn-outline-danger w-50 mb-2 font-weight-bold"}
     - else
         .container.py-5
-
             %h3.mt-3 No Workout in Progress
             %p.text-muted Click on the button below to start your first exercise
             = link_to 'Begin your Workout', "/exercises", {class: "btn btn-secondary"}
@@ -58,8 +56,6 @@
             timer.innerHTML = (hours ? (hours > 9 ? hours : "0" + hours) : "00")
                 + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00")
                 + ":" + (seconds > 9 ? seconds : "0" + seconds);
-
-
         }
     }
     updateTimer()

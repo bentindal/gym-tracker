@@ -1,5 +1,5 @@
-.card-body.justify-content-center.d-flex.text-center.py-1.mb-3
-  %form{action: allset_create_path, method: "POST"}
+.card-body.justify-content-center.d-flex.text-center.py-1.mb-3{"data-controller": "set-form"}
+  %form{action: allset_create_path, method: "POST", "data-set-form-target": "form", "data-action": "submit->set-form#submit"}
     %input{name: "authenticity_token", type: "hidden", value: form_authenticity_token}
     %input{name: "exercise_id", placeholder: "ExID", value: @exercise.id.to_s, hidden: true}
     %input{name: "user_id", placeholder: "UserID", value: @exercise.user_id.to_s, hidden: true}
@@ -54,13 +54,13 @@
     .d-flex.flex-column
       .d-flex.justify-content-center.mb-2
         %label.mr-2
-          %input{type: "checkbox", name: "isFailure", class: "text-danger"}
+          %input{type: "checkbox", name: "isFailure", class: "text-danger", checked: @sets.any? && @sets.first.isFailure}
           Failure
         %label.mr-2
-          %input{type: "checkbox", name: "isDropset", class: "text-info"}
+          %input{type: "checkbox", name: "isDropset", class: "text-info", checked: @sets.any? && @sets.first.isDropset}
           Dropset
         %label
-          %input{type: "checkbox", name: "isWarmup", class: "text-secondary"}
+          %input{type: "checkbox", name: "isWarmup", class: "text-secondary", checked: @sets.any? && @sets.first.isWarmup}
           Warmup
       .d-flex
         %button{type: "submit", class: "btn btn-sm w-100 btn-primary"} Add Set
