@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateWorkoutAnalyses < ActiveRecord::Migration[6.1]
   def change
     create_table :workout_analyses do |t|
@@ -11,4 +13,4 @@ class CreateWorkoutAnalyses < ActiveRecord::Migration[6.1]
       t.timestamps
     end
   end
-end 
+end

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe 'Exercise Recording', type: :system do
   let(:user) { create(:user) }
-  
+
   before do
     # Use Rack::Test driver which is more stable for basic tests
     driven_by(:rack_test)
@@ -24,12 +24,12 @@ RSpec.describe 'Exercise Recording', type: :system do
 
     # Verify login success using the exact HTML content
     expect(page).to have_css('.alert-success', text: /Success.*signed in successfully/i)
-    
+
     # Navigate to exercises page using a more specific selector for the navbar link
     within('.navbar-nav') do
       click_link('Exercises')
     end
-    
+
     # Click Add New button - using click_link instead of find
     click_link('Add New')
 
@@ -41,7 +41,7 @@ RSpec.describe 'Exercise Recording', type: :system do
 
     # Look for heading with display-5 class containing "Bench Press"
     expect(page).to have_css('h2.display-5', text: 'Bench Press')
-    
+
     # Get the created exercise from database
     exercise = Exercise.find_by(name: 'Bench Press')
     expect(exercise).to be_present

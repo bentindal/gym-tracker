@@ -1,20 +1,8 @@
-plugins:
-  - rubocop-capybara
-  - rubocop-factory_bot
-  - rubocop-rails
-  - rubocop-rspec
-  - rubocop-rspec_rails
-
 AllCops:
   NewCops: enable
+  SuggestExtensions: false
   Exclude:
     - 'db/schema.rb'
     - 'bin/*'
     - 'node_modules/**/*'
     - 'vendor/**/*'
-
-Rails:
-  Enabled: true
-
-RSpec:
-  Enabled: true

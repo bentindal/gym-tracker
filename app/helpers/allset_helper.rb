@@ -1,37 +1,39 @@
+# frozen_string_literal: true
+
 module AllsetHelper
   def format_date(date)
     if date > Time.now.beginning_of_day - 10.minutes
-      content_tag(:div, "0s ago", "data-rest-timer-target": "display", style: "min-height: 1.2em")
+      content_tag(:div, '0s ago', 'data-rest-timer-target': 'display', style: 'min-height: 1.2em')
     elsif date > Time.now.beginning_of_day - 1.day
-      "Today"
+      'Today'
     elsif date > Time.now.beginning_of_day - 2.day
-      "Yesterday"
+      'Yesterday'
     elsif date > Time.now.beginning_of_day - 6.days
-      date.strftime("%A")
+      date.strftime('%A')
     else
-      date.strftime("%d %B, %Y")
+      date.strftime('%d %B, %Y')
     end
   end
 
   def set_row_class(set)
     classes = []
-    classes << "text-danger" if set.isFailure
-    classes << "text-info" if set.isDropset
-    classes << "small text-muted" if set.isWarmup
-    classes.join(" ")
+    classes << 'text-danger' if set.isFailure
+    classes << 'text-info' if set.isDropset
+    classes << 'small text-muted' if set.isWarmup
+    classes.join(' ')
   end
 
   def format_set_weight(set)
-    if set.weight == 0
-      "BW"
+    if set.weight.zero?
+      'BW'
     elsif set.weight.nil?
-      "?"
+      '?'
     else
       "#{set.weight}#{@exercise.unit}"
     end
   end
 
   def format_set_repetitions(set)
-    set.repetitions.nil? ? "?" : set.repetitions
+    set.repetitions.nil? ? '?' : set.repetitions
   end
-end 
+end

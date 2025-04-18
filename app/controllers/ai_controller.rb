@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AiController < ApplicationController
   before_action :authenticate_user!
   require 'openai'
@@ -7,29 +9,29 @@ class AiController < ApplicationController
       begin
         # Analyze specific workout
         workout = Workout.find(params[:workout_id])
-        
+
         # Verify user owns the workout
         if workout.user_id != current_user.id
-          render json: { error: "Unauthorized" }, status: :unauthorized
+          render json: { error: 'Unauthorized' }, status: :unauthorized
           return
         end
-        
+
         # Check if analysis already exists
         existing_analysis = WorkoutAnalysis.find_by(workout_id: workout.id)
-        
+
         if existing_analysis
-          render json: { error: "Analysis already exists" }, status: :conflict
+          render json: { error: 'Analysis already exists' }, status: :conflict
           return
         end
-        
+
         # Add a small delay to ensure the loading state is visible
         sleep(1)
-        
+
         # Get recent workouts (last 30 days)
         recent_workouts = current_user.workouts
-          .where('started_at >= ?', 30.days.ago)
-          .where.not(id: workout.id)
-          .order(started_at: :desc)
+                                      .where('started_at >= ?', 30.days.ago)
+                                      .where.not(id: workout.id)
+                                      .order(started_at: :desc)
 
         # Prepare current workout data
         current_workout_data = {
@@ -65,15 +67,15 @@ class AiController < ApplicationController
 
         # Format data for OpenAI
         prompt = format_workout_data_for_ai(current_workout_data, recent_workouts_data)
-        
+
         # Get AI feedback
         feedback = get_ai_feedback(prompt)
-        
+
         if feedback.blank?
-          render json: { error: "Failed to get AI feedback" }, status: :service_unavailable
+          render json: { error: 'Failed to get AI feedback' }, status: :service_unavailable
           return
         end
-        
+
         # Create and save the analysis
         analysis = WorkoutAnalysis.create!(
           workout: workout,
@@ -83,9 +85,9 @@ class AiController < ApplicationController
           average_weight: calculate_average_weight(workout),
           feedback: feedback
         )
-        
-        render json: { 
-          success: true, 
+
+        render json: {
+          success: true,
           analysis: {
             id: analysis.id,
             created_at: analysis.created_at,
@@ -95,10 +97,10 @@ class AiController < ApplicationController
       rescue StandardError => e
         Rails.logger.error("AI Analysis failed: #{e.message}")
         Rails.logger.error(e.backtrace.join("\n"))
-        render json: { error: "Failed to generate analysis" }, status: :internal_server_error
+        render json: { error: 'Failed to generate analysis' }, status: :internal_server_error
       end
     else
-      render json: { error: "No workout specified" }, status: :bad_request
+      render json: { error: 'No workout specified' }, status: :bad_request
     end
   end
 
@@ -139,17 +141,17 @@ class AiController < ApplicationController
   end
 
   def get_ai_feedback(prompt)
-    client = OpenAI::Client.new(access_token: ENV['OPENAI_API_KEY'])
-    
+    client = OpenAI::Client.new(access_token: ENV.fetch('OPENAI_API_KEY', nil))
+
     response = client.completions(
       parameters: {
-        model: "gpt-3.5-turbo-instruct",
+        model: 'gpt-3.5-turbo-instruct',
         prompt: prompt,
         max_tokens: 400,
         temperature: 0.7
       }
     )
-    
-    response.dig("choices", 0, "text")
+
+    response.dig('choices', 0, 'text')
   end
-end 
+end
