@@ -1,0 +1,12 @@
+- if group == "Back"
+  - badge_class = "badge-danger"
+- elsif group == "Chest"
+  - badge_class = "badge-primary"
+- elsif group == "Legs"
+  - badge_class = "badge-success"
+- elsif group == "Shoulders"
+  - badge_class = "badge-warning"
+- else
+  - badge_class = "badge-warning"
+.badge{ class: "#{badge_class} badge-pill" }
+  = group.gsub("badge-", "")

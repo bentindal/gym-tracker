@@ -6,21 +6,7 @@
         %h2.display-5
             = @exercise.name
         %h4
-            - if @exercise.group == "Back"
-                .badge.badge-danger.badge-pill
-                    = @exercise.group
-            - elsif @exercise.group == "Chest"
-                .badge.badge-primary.badge-pill
-                    = @exercise.group
-            - elsif @exercise.group == "Legs"
-                .badge.badge-success.badge-pill
-                    = @exercise.group
-            - elsif @exercise.group == "Shoulders"
-                .badge.badge-warning.text-white.badge-pill
-                    = @exercise.group
-            - else
-                .badge.badge-warning.badge-pill
-                    = @exercise.group
+            = render 'exercise_group_badge', group: @exercise.group
 
     = render 'form'
     
@@ -33,91 +19,16 @@
             
             - @setss.each do |info|
                 .text-muted
-                    - if info[0] > Time.now.beginning_of_day - 10.minutes
-                        %div{"data-rest-timer-target": "display", style: "min-height: 1.2em"}
-                            = "0s ago"
-                    - elsif info[0] > Time.now.beginning_of_day - 1.day
-                        = "Today"
-                    - elsif info[0] > Time.now.beginning_of_day - 2.day
-                        = "Yesterday"
-                    - elsif info[0] > Time.now.beginning_of_day - 6.days
-                        = info[0].strftime("%A")
-                    - else
-                        = info[0].strftime("%d %B, %Y")
+                    = format_date(info[0])
                 %table.table.text-center.bg-white.table-sm.border
                     %tbody
                         - info[1].each do |set|
-                            - if set.isFailure
-                                %tr.text-danger
-                                    %td
-                                        %u
-                                            - if set.weight == 0
-                                                = "BW"
-                                            - elsif set.weight == nil
-                                                = "?"
-                                            - else
-                                                = set.weight.to_s + @exercise.unit
-                                        x
-                                        %u 
-                                            - if set.repetitions == nil
-                                                = "?"
-                                            - else
-                                                = set.repetitions
-                                    %td
-                                        %small
-                                            = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
-                                            = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
-                            - elsif set.isDropset
-                                %tr.text-info
-                                    %td
-                                        - if set.weight == 0
-                                            = "BW"
-                                        - elsif set.weight == nil
-                                            = "?"
-                                        - else
-                                            = set.weight.to_s + @exercise.unit
-                                        x
-                                        - if set.repetitions == nil
-                                            = "?"
-                                        - else
-                                            = set.repetitions
-                                    %td
-                                        %small
-                                            = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
-                                            = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
-                            - elsif set.isWarmup
-                                %tr.small.text-muted
-                                    %td
-                                        - if set.weight == 0
-                                            = "BW"
-                                        - elsif set.weight == nil
-                                            = "?"
-                                        - else
-                                            = set.weight.to_s + @exercise.unit
-                                        x
-                                        - if set.repetitions == nil
-                                            = "?"
-                                        - else
-                                            = set.repetitions
-                                    %td
-                                        %small
-                                            = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
-                                            = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
-                            - else
-                                %tr
-                                    %td
-                                        - if set.weight == 0
-                                            = "BW"
-                                        - elsif set.weight == nil
-                                            = "?"
-                                        - else
-                                            = set.weight.to_s + @exercise.unit
-                                        x
-                                        - if set.repetitions == nil
-                                            = "?"
-                                        - else
-                                            = set.repetitions
-                                    %td
-                                        %small
-                                            = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
-                                            = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
+                            %tr{class: set_row_class(set)}
+                                %td
+                                    = format_set_weight(set)
+                                    x
+                                    = format_set_repetitions(set)
+                                %td
+                                    %small
+                                        = link_to '', edit_allset_path(set), {class: "fa-solid fa-pencil btn btn-sm btn-outline-primary bg-white"}
+                                        = link_to '', "/allset/destroy?id="+set.id.to_s, {class: "fa-solid fa-trash-can btn btn-sm btn-outline-danger bg-white"}
