@@ -33,11 +33,11 @@ class AllsetController < ApplicationController
 
     @exercise = Exercise.find(params[:exercise_id])
 
-    if @workout.save
-      # Query sets after saving the new set
-      @sets = @exercise.sets.order(created_at: :desc)
-      @setss = @sets.group_by { |set| set.created_at.beginning_of_day }.sort_by { |date, _| date }.reverse
+    # Query sets to show current state
+    @sets = @exercise.sets.order(created_at: :desc)
+    @setss = @sets.group_by { |set| set.created_at.beginning_of_day }.sort_by { |date, _| date }.reverse
 
+    if @workout.save
       respond_to do |format|
         format.html { redirect_to allset_path(@exercise.id), notice: t('allset.create.success') }
         format.turbo_stream do
@@ -48,10 +48,6 @@ class AllsetController < ApplicationController
         end
       end
     else
-      # Query sets even on error to show current state
-      @sets = @exercise.sets.order(created_at: :desc)
-      @setss = @sets.group_by { |set| set.created_at.beginning_of_day }.sort_by { |date, _| date }.reverse
-
       respond_to do |format|
         format.html { redirect_to allset_path(@exercise.id), alert: t('allset.create.error') }
         format.turbo_stream do
