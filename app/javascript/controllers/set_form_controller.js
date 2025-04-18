@@ -24,29 +24,8 @@ export default class extends Controller {
       return response.text()
     })
     .then(html => {
-      // Parse the Turbo Stream response
-      const parser = new DOMParser()
-      const doc = parser.parseFromString(html, "text/html")
-      
-      // Find and execute all turbo-stream elements
-      const turboStreams = doc.querySelectorAll("turbo-stream")
-      turboStreams.forEach(stream => {
-        const action = stream.getAttribute("action")
-        const target = stream.getAttribute("target")
-        const content = stream.querySelector("template").content
-        
-        switch(action) {
-          case "replace":
-            const element = document.getElementById(target)
-            if (element) {
-              element.replaceWith(content)
-            }
-            break
-          default:
-            console.warn(`Unhandled Turbo Stream action: ${action} for target: ${target}`)
-            break
-        }
-      })
+      // Let Turbo handle the stream response
+      Turbo.renderStreamMessage(html)
       
       // Reset the form but preserve checkbox states
       const checkboxes = form.querySelectorAll("input[type='checkbox']")
@@ -66,7 +45,6 @@ export default class extends Controller {
       })
     })
     .catch(error => {
-      console.error("Error:", error)
       // Show error message to user
       const errorDiv = document.createElement('div')
       errorDiv.className = 'alert alert-danger mt-2'

@@ -21,41 +21,45 @@ class AllsetController < ApplicationController
   end
 
   def create
-    @workout = Allset.new(
-      exercise_id: params[:exercise_id],
-      user_id: params[:user_id],
-      repetitions: params[:repetitions].to_i,
-      weight: params[:weight].to_f,
-      isFailure: params[:isFailure] == 'on',
-      isDropset: params[:isDropset] == 'on',
-      isWarmup: params[:isWarmup] == 'on'
-    )
+    begin
+      @workout = Allset.new(
+        exercise_id: params[:exercise_id],
+        user_id: params[:user_id],
+        repetitions: params[:repetitions].to_i,
+        weight: params[:weight].to_f,
+        isFailure: params[:isFailure] == 'on',
+        isDropset: params[:isDropset] == 'on',
+        isWarmup: params[:isWarmup] == 'on'
+      )
 
-    @exercise = Exercise.find(params[:exercise_id])
+      @exercise = Exercise.find(params[:exercise_id])
 
-    # Query sets to show current state
-    @sets = @exercise.sets.order(created_at: :desc)
-    @setss = @sets.group_by { |set| set.created_at.beginning_of_day }.sort_by { |date, _| date }.reverse
-
-    if @workout.save
       respond_to do |format|
-        format.html { redirect_to allset_path(@exercise.id), notice: t('allset.create.success') }
-        format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }),
-            turbo_stream.replace('empty-sets-message', partial: 'allset/empty_sets_message', locals: { sets: @sets })
-          ]
+        if @workout.save
+          # Refresh sets after saving
+          @sets = Allset.where(exercise_id: @exercise.id).order(created_at: :desc)
+          @setss = @sets.group_by { |set| set.created_at.beginning_of_day }.sort_by { |date, _| date }.reverse
+          
+          format.html { redirect_to allset_path(@exercise.id), notice: t('allset.create.success') }
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss })
+          end
+        else
+          format.html { redirect_to allset_path(@exercise.id), alert: t('allset.create.error') }
+          format.turbo_stream do
+            render turbo_stream: turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }), status: :unprocessable_entity
+          end
         end
       end
-    else
+    rescue ActiveRecord::RecordNotFound => e
       respond_to do |format|
-        format.html { redirect_to allset_path(@exercise.id), alert: t('allset.create.error') }
-        format.turbo_stream do
-          render turbo_stream: [
-            turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }),
-            turbo_stream.replace('empty-sets-message', partial: 'allset/empty_sets_message', locals: { sets: @sets })
-          ], status: :unprocessable_entity
-        end
+        format.html { redirect_to exercises_path, alert: "Exercise not found" }
+        format.turbo_stream { head :not_found }
+      end
+    rescue => e
+      respond_to do |format|
+        format.html { redirect_to exercises_path, alert: "An error occurred" }
+        format.turbo_stream { head :internal_server_error }
       end
     end
   end
@@ -67,7 +71,6 @@ class AllsetController < ApplicationController
       if @workout.update(allset_params2)
         redirect_to allset_path(@workout.exercise_id), notice: t('.success')
       else
-        Rails.logger.error("Allset update failed: #{@workout.errors.full_messages}")
         redirect_to edit_allset_path(@workout), alert: t('.failure')
       end
     else
@@ -76,26 +79,20 @@ class AllsetController < ApplicationController
   end
 
   def destroy
-    Rails.logger.info "Destroy action called with params: #{params.inspect}"
     @workout = Allset.find(params[:id])
-    Rails.logger.info "Found workout: #{@workout.inspect}"
 
     if current_user.id == @workout.user_id
       @exercise = Exercise.find(@workout.exercise_id)
-      Rails.logger.info "Found exercise: #{@exercise.inspect}"
 
       if @workout.destroy
-        Rails.logger.info 'Workout successfully destroyed'
         @sets = @exercise.sets.order(created_at: :desc)
         @setss = @sets.group_by { |set| set.created_at.beginning_of_day }.sort_by { |date, _| date }.reverse
 
         respond_to do |format|
           format.html do
-            Rails.logger.info 'Rendering HTML response'
             redirect_to allset_path(@exercise.id), notice: 'Set was successfully deleted.'
           end
           format.turbo_stream do
-            Rails.logger.info 'Rendering Turbo Stream response'
             render turbo_stream: [
               turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }),
               turbo_stream.replace('empty-sets-message', partial: 'allset/empty_sets_message', locals: { sets: @sets }),
