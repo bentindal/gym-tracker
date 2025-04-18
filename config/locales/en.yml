@@ -31,3 +31,6 @@
 
 en:
   hello: "Hello world"
+  allset:
+    create:
+      success: "Set was successfully created."
