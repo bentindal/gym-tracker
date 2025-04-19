@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get 'workout/edit'
   patch 'workout/update'
   get 'workout/view'
+  delete 'workout/destroy' => 'workout#destroy'
 
   get 'dashboard/view'
   get 'dashboard' => 'dashboard#view'
