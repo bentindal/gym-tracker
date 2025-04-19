@@ -16,7 +16,7 @@ class WorkoutController < ApplicationController
     Rails.logger.info("Updating workout #{@workout.id} with params: #{params.inspect}")
 
     if authorized_user?(@workout.user_id)
-      Rails.logger.info("Authorized user attempting update")
+      Rails.logger.info('Authorized user attempting update')
       if @workout.update(workout_params)
         Rails.logger.info("Successfully updated workout #{@workout.id}")
         redirect_to workout_view_path(@workout.id), notice: 'Workout was successfully updated.'
