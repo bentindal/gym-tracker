@@ -1,17 +1,17 @@
 %h1.text-center.mt-3
   Edit Workout
-.card-body.justify-content-center.d-flex
+.card-body.mx-auto{style: "max-width: 500px;"}
   = form_with model: @workout, url: "/workout/update?id=#{@workout.id}", method: :patch, local: true do |f|
     = f.label :custom_Title, class: "font-weight-bold"
     add a custom title to your workout
 
     = f.text_field :title, value: @workout.title, class: "form-control"
 
-    .mt-2
-      = f.submit "Update Workout", class: "btn btn-primary"
+    .mt-4
+      = f.submit "Update Workout", class: "btn btn-primary w-100"
 
   .mt-2
     = button_to "Delete Workout", "/workout/destroy?id=#{@workout.id}", 
         method: :delete,
         data: { confirm: 'Are you sure you want to delete this workout? This action cannot be undone.' },
-        class: "btn btn-danger"
+        class: "btn btn-outline-danger w-100"
