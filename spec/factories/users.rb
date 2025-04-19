@@ -3,8 +3,11 @@
 FactoryBot.define do
   factory :user do
     sequence(:email) { |n| "user#{n}@example.com" }
-    password { 'password' }
-    first_name { 'John' }
-    last_name { 'Doe' }
+    password { "password123" }
+    first_name { "Test" }
+    last_name { "User" }
+    streakcount { 0 }
+    highest_streak { 0 }
+    isPublic { true }
   end
 end
