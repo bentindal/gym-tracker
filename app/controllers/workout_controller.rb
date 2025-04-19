@@ -32,14 +32,11 @@ class WorkoutController < ApplicationController
 
   def destroy
     @workout = Workout.find(params[:id])
-    Rails.logger.info("Attempting to delete workout #{@workout.id}")
 
     if authorized_user?(@workout.user_id)
       if @workout.update(deleted_at: Time.current)
-        Rails.logger.info("Successfully deleted workout #{@workout.id}")
-        redirect_to workout_list_path, notice: 'Workout was successfully deleted.'
+        redirect_to workout_view_path(@workout.id), notice: 'Workout was successfully deleted.'
       else
-        Rails.logger.error("Failed to delete workout #{@workout.id}: #{@workout.errors.full_messages}")
         redirect_to workout_view_path(@workout.id), alert: 'Failed to delete workout.'
       end
     else
