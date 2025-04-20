@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_04_19_104508) do
+ActiveRecord::Schema[6.1].define(version: 2025_04_19_104508) do
   create_table "allsets", force: :cascade do |t|
     t.integer "exercise_id"
     t.integer "repetitions"
