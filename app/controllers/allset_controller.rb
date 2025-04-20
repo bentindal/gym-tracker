@@ -36,10 +36,10 @@ class AllsetController < ApplicationController
     @exercise = Exercise.find(params[:exercise_id])
 
     respond_to do |format|
+      @sets = Allset.where(exercise_id: @exercise.id).order(created_at: :desc)
+      @setss = @sets.group_by { |set| set.created_at.to_date }
       if @workout.save
         # Refresh sets after saving
-        @sets = Allset.where(exercise_id: @exercise.id).order(created_at: :desc)
-        @setss = @sets.group_by { |set| set.created_at.to_date }
 
         format.html { redirect_to allset_path(@exercise.id), notice: t('allset.create.success') }
         format.turbo_stream do
@@ -47,12 +47,11 @@ class AllsetController < ApplicationController
         end
       else
         # Get existing sets for the error case
-        @sets = Allset.where(exercise_id: @exercise.id).order(created_at: :desc)
-        @setss = @sets.group_by { |set| set.created_at.to_date }
 
         format.html { redirect_to allset_path(@exercise.id), alert: t('allset.create.error') }
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }), status: :unprocessable_entity
+          render turbo_stream: turbo_stream.replace('rest-timer', partial: 'allset/sets_list', locals: { sets: @sets, setss: @setss }),
+                 status: :unprocessable_entity
         end
       end
     end
