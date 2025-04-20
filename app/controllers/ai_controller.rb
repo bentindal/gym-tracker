@@ -7,12 +7,11 @@ class AiController < ApplicationController
   def analyze_workouts
     if params[:workout_id].present?
       begin
-        # Analyze specific workout
         workout = Workout.find(params[:workout_id])
 
         # Verify user owns the workout
         if workout.user_id != current_user.id
-          render json: { error: 'Unauthorized' }, status: :unauthorized
+          redirect_to workout_view_path(id: workout.id), alert: 'Unauthorized'
           return
         end
 
@@ -20,7 +19,7 @@ class AiController < ApplicationController
         existing_analysis = WorkoutAnalysis.find_by(workout_id: workout.id)
 
         if existing_analysis
-          render json: { error: 'Analysis already exists' }, status: :conflict
+          redirect_to workout_view_path(id: workout.id), alert: 'Analysis already exists'
           return
         end
 
@@ -29,9 +28,9 @@ class AiController < ApplicationController
 
         # Get recent workouts (last 30 days)
         recent_workouts = current_user.workouts
-                                      .where('started_at >= ?', 30.days.ago)
-                                      .where.not(id: workout.id)
-                                      .order(started_at: :desc)
+                                    .where('started_at >= ?', 30.days.ago)
+                                    .where.not(id: workout.id)
+                                    .order(started_at: :desc)
 
         # Prepare current workout data
         current_workout_data = {
@@ -72,7 +71,7 @@ class AiController < ApplicationController
         feedback = get_ai_feedback(prompt)
 
         if feedback.blank?
-          render json: { error: 'Failed to get AI feedback' }, status: :service_unavailable
+          redirect_to workout_view_path(id: workout.id), alert: 'Failed to get AI feedback'
           return
         end
 
@@ -86,21 +85,15 @@ class AiController < ApplicationController
           feedback: feedback
         )
 
-        render json: {
-          success: true,
-          analysis: {
-            id: analysis.id,
-            created_at: analysis.created_at,
-            feedback: analysis.feedback
-          }
-        }
+        # Redirect back to the workout view with success message
+        redirect_to workout_view_path(id: workout.id), notice: 'Analysis generated successfully'
       rescue StandardError => e
         Rails.logger.error("AI Analysis failed: #{e.message}")
         Rails.logger.error(e.backtrace.join("\n"))
-        render json: { error: 'Failed to generate analysis' }, status: :internal_server_error
+        redirect_to workout_view_path(id: workout.id), alert: 'Failed to generate analysis'
       end
     else
-      render json: { error: 'No workout specified' }, status: :bad_request
+      redirect_to dashboard_path, alert: 'No workout specified'
     end
   end
 
