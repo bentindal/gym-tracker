@@ -82,7 +82,8 @@ gem 'sassc-rails', '2.1.2'
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
-gem 'msgpack', '~> 1.7.0', force_ruby_platform: true
+# Explicitly set msgpack version and platform
+gem 'msgpack', '1.6.0', platform: :ruby
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
