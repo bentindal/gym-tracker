@@ -28,9 +28,11 @@ class AiController < ApplicationController
 
         # Get recent workouts (last 30 days)
         recent_workouts = current_user.workouts
-                                    .where('started_at >= ?', 30.days.ago)
-                                    .where.not(id: workout.id)
-                                    .order(started_at: :desc)
+                                      .where('started_at >= ? AND started_at <= ?', 
+                                             workout.started_at - 30.days,
+                                             workout.started_at)
+                                      .where.not(id: workout.id)
+                                      .order(started_at: :desc)
 
         # Prepare current workout data
         current_workout_data = {
@@ -115,13 +117,13 @@ class AiController < ApplicationController
 
   def format_workout_data_for_ai(current_workout, recent_workouts)
     <<~PROMPT
-      Provide a balanced and concise, three-paragraph maximum, analysis for #{current_user.first_name}. Write in a natural, flowing style as if you're having a conversation with them. Format your response in markdown with clear paragraph breaks:
+      Provide a balanced and concise, two-paragraph maximum, analysis for #{current_user.first_name}. Write in a natural, flowing style as if you're having a conversation with them. Format your response in markdown with clear paragraph breaks:
 
-      **First paragraph:** Provide an honest assessment of their current workout. If the workout is light or minimal, acknowledge this factually. If there are impressive aspects, mention them, but don't overpraise. Always mention weights with their correct units (kg, lbs, kg/db for dumbbells in kg, or lbs/db for dumbbells in lbs).
+      Provide an honest assessment of their current workout. If the workout is light or minimal, acknowledge this factually. If there are impressive aspects, mention them, but don't overpraise. Always mention weights with their correct units (kg, lbs, kg/db for dumbbells in kg, or lbs/db for dumbbells in lbs).
 
-      **Second paragraph:** Compare their current workout to their recent training history. Be honest about whether this represents progress, maintenance, or a lighter session. When comparing weights, always use the same unit system as the exercise (kg, lbs, kg/db, or lbs/db). If the workout is significantly lighter than usual, note this constructively.
+      Compare their current workout to their recent training history. Be honest about whether this represents progress, maintenance, or a lighter session. When comparing weights, always use the same unit system as the exercise (kg, lbs, kg/db, or lbs/db). If the workout is significantly lighter than usual, note this constructively.
 
-      **Third paragraph:** Provide constructive feedback about their training routine. If the workout was minimal, suggest ways to make it more effective. If it was challenging, acknowledge the effort while maintaining realistic expectations. Always be encouraging but honest.
+      Provide constructive feedback about their training routine. If the workout was minimal, suggest ways to make it more effective. If it was challenging, acknowledge the effort while maintaining realistic expectations. Always be encouraging but honest.
 
       Keep the analysis balanced and realistic - focus on both strengths and areas for improvement. Write as if you're their personal trainer reviewing their workout data. Always respect and use the unit system specified for each exercise.
 
