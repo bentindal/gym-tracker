@@ -142,7 +142,7 @@ class AiController < ApplicationController
       parameters: {
         model: 'gpt-3.5-turbo-instruct',
         prompt: prompt,
-        max_tokens: 400,
+        max_tokens: 300,
         temperature: 0.7
       }
     )
