@@ -146,15 +146,14 @@
                 = f.hidden_field :workout_id, value: @workout.id
                 = f.button type: "submit", class: "btn btn-primary btn-lg position-relative", data: { loading_target: "button" } do
                   %span.d-none{data: { loading_target: "spinner" }}
-                    %i.fa-solid.fa-spinner.fa-spin.mr-2
+                    .loading-spinner
+                      .spinner-border.text-primary{role: "status"}
+                        %span.visually-hidden Loading...
                   %span{data: { loading_target: "text" }}
                     %i.fa-solid.fa-magic.mr-2
                     Generate Analysis
               .mt-3.d-none{data: { loading_target: "error" }}
                 .alert.alert-danger
-              .mt-3.d-none{data: { loading_target: "error" }}
-                .alert.alert-danger
                   %i.fa-solid.fa-exclamation-circle.mr-2
-                  %span{data: { loading_target: "errorMessage" }}
                   %span{data: { loading_target: "errorMessage" }}
     

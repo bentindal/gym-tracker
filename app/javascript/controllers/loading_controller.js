@@ -32,21 +32,29 @@ export default class extends Controller {
     const form = this.element
     const formData = new FormData(form)
     
+    // Add a loading class to the body to handle Safari-specific styles
+    document.body.classList.add('loading-analysis')
+    
     fetch(form.action, {
       method: form.method,
       body: formData,
       headers: {
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+        'Accept': 'text/html' // Change from turbo-stream to html for better Safari support
       }
     })
     .then(response => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
+      // Remove loading class
+      document.body.classList.remove('loading-analysis')
       // After successful submission, reload the page to show the analysis
       window.location.reload()
     })
     .catch(error => {
+      // Remove loading class on error
+      document.body.classList.remove('loading-analysis')
       this.hideLoading()
       if (this.hasErrorTarget && this.hasErrorMessageTarget) {
         this.errorTarget.classList.remove("d-none")

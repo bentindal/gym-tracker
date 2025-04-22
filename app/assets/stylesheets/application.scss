@@ -30,3 +30,29 @@
   background-image: url('home-background-image.jpeg');
   height: 100vh;
 }
+
+// Safari-specific loading styles
+body.loading-analysis {
+  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  
+  .loading-spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    
+    .spinner-border {
+      width: 3rem;
+      height: 3rem;
+      border-width: 0.25em;
+    }
+  }
+}
