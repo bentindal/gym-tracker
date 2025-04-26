@@ -3,7 +3,7 @@
     %h1.text-center
       Sign In
     %h5.text-muted.text-center Please sign in or create an account.
-    = simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+    = simple_form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }) do |f|
       .form-inputs
         = f.input :email,                       
           required: false,                      
