@@ -146,9 +146,7 @@
                 = f.hidden_field :workout_id, value: @workout.id
                 = f.button type: "submit", class: "btn btn-primary btn-lg position-relative", data: { loading_target: "button" } do
                   %span.d-none{data: { loading_target: "spinner" }}
-                    .loading-spinner
-                      .spinner-border.text-primary{role: "status"}
-                        %span.visually-hidden Loading...
+                    %i.fa-solid.fa-spinner.fa-spin.mr-2
                   %span{data: { loading_target: "text" }}
                     %i.fa-solid.fa-magic.mr-2
                     Generate Analysis
