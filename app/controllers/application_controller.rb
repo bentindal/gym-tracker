@@ -5,10 +5,8 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!, except: %i[index new create]
   
-  # Skip CSRF token validation for GitHub Codespaces
-  skip_before_action :verify_authenticity_token, if: :github_codespaces?
-
-  protect_from_forgery with: :exception
+  # Handle CSRF protection for GitHub Codespaces
+  protect_from_forgery with: :exception, unless: :github_codespaces?
 
   def index
     # Define the index action explicitly to satisfy RuboCop's LexicallyScopedActionFilter.
@@ -17,6 +15,6 @@ class ApplicationController < ActionController::Base
   private
 
   def github_codespaces?
-    request.base_url.include?('github.dev')
+    ENV['CODESPACES'] == 'true' || request.base_url.include?('github.dev')
   end
 end
