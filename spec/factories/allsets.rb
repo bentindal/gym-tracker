@@ -2,12 +2,24 @@
 
 FactoryBot.define do
   factory :allset do
-    exercise_id { create(:exercise).id }
-    weight { 100 }
+    exercise
+    user
+    weight { 100.0 }
     repetitions { 10 }
+    belongs_to_workout { nil }
     isWarmup { false }
     created_at { Time.current }
-    user_id { exercise.user_id }
+
+    trait :with_workout do
+      transient do
+        workout { nil }
+      end
+
+      after(:build) do |allset, evaluator|
+        allset.belongs_to_workout = evaluator.workout&.id
+      end
+    end
+
     trait :warmup do
       isWarmup { true }
       weight { 50 }

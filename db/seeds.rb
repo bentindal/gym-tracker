@@ -8,9 +8,6 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-# Delete existing demo user if any
-User.where(email: 'demo@example.com').destroy_all
-
 # Create demo user
 demo_user = User.create!(
   first_name: 'Demo',

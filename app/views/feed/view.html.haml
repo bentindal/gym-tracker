@@ -1,57 +1,65 @@
-.container
-    %h1.text-center.mt-3
-        My Feed
+.container.container-md.border.bg-white.py-2
+    .card.border-top-0.border-bottom-0.justify-content-center.d-flex
+        .row
+            .col-12.bg-white.p-2
+                %h1.text-center
+                    My Feed
 
-    .text-center.mb-3
-        - if params[:filter] == "you"
-            %a.btn.btn-outline-primary.btn-sm{href: "/feed"} You + Friends
-            %a.btn.btn-primary.btn-sm{href: "/feed?filter=you"} You
-        - else
-            %a.btn.btn-primary.btn-sm{href: "/feed"} You + Friends
-            %a.btn.btn-outline-primary.btn-sm{href: "/feed?filter=you"} You
+                .text-center.mb-3
+                    - if params[:filter] == "you"
+                        %a.btn.btn-outline-primary.btn-sm{href: "/feed"} You + Friends
+                        %a.btn.btn-primary.btn-sm{href: "/feed?filter=you"} You
+                    - else
+                        %a.btn.btn-primary.btn-sm{href: "/feed"} You + Friends
+                        %a.btn.btn-outline-primary.btn-sm{href: "/feed?filter=you"} You
 
-    %nav{"aria-label" => "Page navigation for feed"}
-        %ul.pagination.justify-content-center
-            - if params[:tab] < 10
-                %li.page-item.disabled
-                    %a.page-link{href: "#", tabindex: "-1"} <<
-            - else
-                %li.page-item.active
-                    %a.page-link{href: "?from=#{params[:from].to_i - 10}"} <<
+                %nav{"aria-label" => "Page navigation for feed"}
+                    %ul.pagination.justify-content-center
+                        - if params[:tab].to_i < 10
+                            %li.page-item.disabled
+                                %a.page-link{href: "#", tabindex: "-1"} <<
+                        - else
+                            - pagination_url = "/feed?tab=#{params[:tab].to_i - 10}"
+                            - pagination_url += "&filter=#{params[:filter]}" if params[:filter]
+                            %li.page-item.active
+                                %a.page-link{href: pagination_url} <<
 
-            %li.page-item
-                %a.page-link Page #{params[:tab] / 10 + 1}
+                        %li.page-item
+                            %a.page-link Page #{(params[:tab].to_i / 10) + 1}
+                            
+
+                        - if params[:tab].to_i >= @max - 10
+                            %li.page-item.disabled
+                                %a.page-link{href: "#", tabindex: "-1"} >>
+                        - else
+                            - pagination_url = "/feed?tab=#{params[:tab].to_i + 10}"
+                            - pagination_url += "&filter=#{params[:filter]}" if params[:filter]
+                            %li.page-item.active
+                                %a.page-link{href: pagination_url} >>
                 
+                - @hide_header = false
+                = render 'feed/feed'
 
-            - if params[:tab] >= @max - 10
-                %li.page-item.disabled
-                    %a.page-link{href: "#", tabindex: "-1"} >>
-            - else
-                %li.page-item.active
-                    %a.page-link{href: "/feed?tab=#{params[:tab] + 10}"} >>
-    
-    
-    
+                %nav.mt-3{"aria-label" => "Page navigation for feed"}
+                    %ul.pagination.justify-content-center
+                        - if params[:tab].to_i < 10
+                            %li.page-item.disabled
+                                %a.page-link{href: "#", tabindex: "-1"} <<
+                        - else
+                            - pagination_url = "/feed?tab=#{params[:tab].to_i - 10}"
+                            - pagination_url += "&filter=#{params[:filter]}" if params[:filter]
+                            %li.page-item.active
+                                %a.page-link{href: pagination_url} <<
 
-- @hide_header = false
-= render 'feed/feed'
+                        %li.page-item
+                            %a.page-link Page #{(params[:tab].to_i / 10) + 1}
+                            
 
-%nav.mt-3{"aria-label" => "Page navigation for feed"}
-    %ul.pagination.justify-content-center
-        - if params[:tab] < 10
-            %li.page-item.disabled
-                %a.page-link{href: "#", tabindex: "-1"} <<
-        - else
-            %li.page-item.active
-                %a.page-link{href: "?from=#{params[:from].to_i - 10}"} <<
-
-        %li.page-item
-            %a.page-link Page #{params[:tab] / 10 + 1}
-            
-
-        - if params[:tab] >= @max - 10
-            %li.page-item.disabled
-                %a.page-link{href: "#", tabindex: "-1"} >>
-        - else
-            %li.page-item.active
-                %a.page-link{href: "/feed?tab=#{params[:tab] + 10}"} >>
+                        - if params[:tab].to_i >= @max - 10
+                            %li.page-item.disabled
+                                %a.page-link{href: "#", tabindex: "-1"} >>
+                        - else
+                            - pagination_url = "/feed?tab=#{params[:tab].to_i + 10}"
+                            - pagination_url += "&filter=#{params[:filter]}" if params[:filter]
+                            %li.page-item.active
+                                %a.page-link{href: pagination_url} >>

@@ -20,20 +20,7 @@
                 - @user = current_user
                 = render 'feed/calendar'
                 %span
-                    - if current_user.streak_status == "none"
-                        .label.py-2.bg-danger.border.rounded.px-1.text-dark.font-weight-light
-                            %b Uh oh!
-                            = current_user.streak_msg_own
-
-                    - elsif current_user.streak_status == "pending" || current_user.streak_status == "at_risk"
-                        .label.py-2.label-warning.border.rounded.px-1.bg-warning.font-weight-light
-                            %b Keep it going!
-                            = current_user.streak_msg_own
-
-                    - else
-                        .label.py-2.bg-success.border.rounded.px-1.text-dark.font-weight-light
-                            %b Great Job!
-                            = current_user.streak_msg_own
+                    = render 'shared/streak_message', user: current_user
                     %hr
                 
 

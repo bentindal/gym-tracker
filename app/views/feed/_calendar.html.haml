@@ -52,23 +52,31 @@
         - (1..@daysInMonth).each do |dayCount|
             - rowCount += 1
             - dateFound = false
+            - workoutId = nil
+            - workoutGroup = nil
+            - textColor = nil
             - if rowCount % 7 == 1
                 %tr
-            - dateThatWasFound = ""
             - @dates.each do |date|
                 - if dayCount == date.day && date.strftime("%B") == Date.new(@year, @month, -1).strftime("%B") && date.year == @year
                     - dateFound = true
-                    - dateThatWasFound = date.strftime("%B%d%y") + @user.id.to_s
+                    - workout = Workout.where(user_id: @user.id, started_at: date.all_day).first
+                    - workoutId = workout&.id
+                    - workoutGroup = workout&.group_colour
+                    - textColor = workoutGroup == 'warning' || workoutGroup == 'info' ? 'text-dark' : 'text-white'
             - if dateFound
-                %td.bg-success.border.font-decoration-none
-                    %a{href: "#workout-#{dateThatWasFound}"}
+                %td{class: "bg-#{workoutGroup} border font-decoration-none"}
+                    %a{class: textColor, href: "/workout/view?id=#{workoutId}"}
                         = dayCount
-            - elsif dayCount == Date.today.day && Date.today.strftime("%B") == Date.new(@year, @month, -1).strftime("%B")
+            - elsif dayCount == Date.today.day && Date.today.strftime("%B") == Date.new(@year, @month, -1).strftime("%B") && Date.today.year == @year
                 %td.bg-warning.border.border-warning
-                    = dayCount
-            - elsif dayCount < Date.today.day && Date.today.month == @month || Date.today.month > @month && Date.today.year == @year || Date.today.year > @year
+                    %span.text-dark
+                        = dayCount
+            - elsif @year < Date.today.year || (@year == Date.today.year && (@month < Date.today.month || (@month == Date.today.month && dayCount < Date.today.day)))
                 %td.bg-secondary.border
-                    = dayCount
+                    %span.text-white
+                        = dayCount
             - else
                 %td.border.bg-light
-                    = dayCount
+                    %span.text-dark
+                        = dayCount

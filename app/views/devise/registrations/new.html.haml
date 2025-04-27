@@ -1,28 +1,88 @@
-.container.justify-content-center.d-flex
-  .span
-    %h1.text-center.mt-3.mb-3
-      Sign Up
-    .container.border.border-rounded.bg-white.p-3
-      = simple_form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: false }) do |f|
-        = f.error_notification
-        = f.input :first_name,                       
-          required: true,                            
-          autofocus: true,                           
-          input_html: { autocomplete: "given-name" } 
-        = f.input :last_name,                         
-          required: true,                             
-          input_html: { autocomplete: "family-name" } 
-        = f.input :email,                       
-          required: true,                       
-          input_html: { autocomplete: "email" }
-        = f.input :isPublic, :as => :boolean, :input_html => { :checked => "checked" }, :label => "Would you like your profile to be public? (ticked by default)"
-        = f.input :password,                                                                    
-          required: true,                                                                       
-          hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), 
-          input_html: { autocomplete: "new-password" }                                          
-        = f.input :password_confirmation,              
-          required: true,                              
-          input_html: { autocomplete: "new-password" } 
-        .form-actions
-          = f.button :submit, "Sign up", class: "w-100 mb-2 btn btn-primary"
+.container.justify-content-center.d-flex.px-3.signup-page
+  .span.bg-white.mt-3.border.rounded.p-3.px-4.px-md-5.shadow-sm{role: "main", "aria-label": "Sign up form", style: "width: 100%; max-width: 500px; min-width: 300px;"}
+    .text-center.mb-4
+      %h1.text-primary{id: "sign-up-heading", style: "font-size: 2rem;"}
+        Sign Up
+      %p.text-muted{id: "sign-up-description", style: "font-size: 1rem;"}
+        Create an account to start tracking your workouts and connecting with friends.
+    = simple_form_for(resource, as: resource_name, url: registration_path(resource_name), data: { turbo: false }, html: { "aria-labelledby": "sign-up-heading", "aria-describedby": "sign-up-description" }) do |f|
+      = f.error_notification
+      .form-inputs
+        .form-group.mb-4
+          %label.text-muted.small.mb-1{for: "user_first_name"}
+            %i.fa-solid.fa-user.mr-1
+            First Name
+          = f.input :first_name, required: true, autofocus: true, input_html: { autocomplete: "given-name", "aria-required": "true", "aria-label": "First name", class: "form-control-lg", style: "border-left: 3px solid #009dff;" }, label_html: { class: "sr-only" }
+        .form-group.mb-4
+          %label.text-muted.small.mb-1{for: "user_last_name"}
+            %i.fa-solid.fa-user.mr-1
+            Last Name
+          = f.input :last_name, required: true, input_html: { autocomplete: "family-name", "aria-required": "true", "aria-label": "Last name", class: "form-control-lg", style: "border-left: 3px solid #009dff;" }, label_html: { class: "sr-only" }
+        .form-group.mb-4
+          %label.text-muted.small.mb-1{for: "user_email"}
+            %i.fa-solid.fa-envelope.mr-1
+            Email Address
+          = f.input :email, required: true, input_html: { autocomplete: "email", "aria-required": "true", "aria-label": "Email address", class: "form-control-lg", style: "border-left: 3px solid #009dff;" }, label_html: { class: "sr-only" }
+        .form-group.mb-4
+          %label.text-muted.small.mb-1{for: "user_password"}
+            %i.fa-solid.fa-lock.mr-1
+            Password
+          = f.input :password, required: true, input_html: { autocomplete: "new-password", "aria-required": "true", "aria-label": "Password", class: "form-control-lg", style: "border-left: 3px solid #009dff;" }, label_html: { class: "sr-only" }
+          - if @minimum_password_length
+            %small.text-muted
+              = "#{@minimum_password_length} characters minimum"
+        .form-group.mb-4
+          %label.text-muted.small.mb-1{for: "user_password_confirmation"}
+            %i.fa-solid.fa-lock.mr-1
+            Confirm Password
+          = f.input :password_confirmation, required: true, input_html: { autocomplete: "new-password", "aria-required": "true", "aria-label": "Confirm password", class: "form-control-lg", style: "border-left: 3px solid #009dff;" }, label_html: { class: "sr-only" }
+        .form-check.mb-4
+          = f.input :isPublic, as: :boolean, label: "Do you want your profile to be publicly visible?", hint: "Public profiles and workouts can be seen by other users. You can change this later.", input_html: { class: "form-check-input public-profile-checkbox", "aria-label": "Make profile public", checked: true }, label_html: { class: "form-check-label", style: "font-size: 1.1rem; padding-left: 0.5rem;" }
+      .form-actions
+        %button{class: "w-100 mb-3 btn btn-primary btn-lg", type: "submit", "aria-label": "Create your account", style: "background-color: #009dff; border-color: #009dff;"}
+          %i.fa-solid.fa-user-plus.mr-2
+          Sign Up
+        .text-center
+          %p.text-muted.mb-0
+            Already have an account?
+            = link_to "Sign in", new_session_path(resource_name), class: "text-primary", style: "color: #009dff !important;"
+
+:css
+  .public-profile-checkbox {
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    margin-top: 0.3rem;
+    border: 2px solid #dc3545 !important;
+    background-color: #dc3545 !important;
+    cursor: pointer;
+  }
+  
+  .public-profile-checkbox:checked {
+    background-color: #198754 !important;
+    border-color: #198754 !important;
+  }
+
+  .signup-page ~ .bottom-navbar {
+    display: none !important;
+  }
+
+:javascript
+  document.addEventListener('DOMContentLoaded', function() {
+    const checkbox = document.querySelector('.public-profile-checkbox');
+    if (checkbox) {
+      // Set initial state
+      if (checkbox.checked) {
+        checkbox.classList.add('checked');
+      }
+
+      // Handle changes
+      checkbox.addEventListener('change', function() {
+        if (this.checked) {
+          this.classList.add('checked');
+        } else {
+          this.classList.remove('checked');
+        }
+      });
+    }
+  });
     

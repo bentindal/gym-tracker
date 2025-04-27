@@ -22,5 +22,8 @@ module GymTrackerRails
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
     config.time_zone = 'London'
+
+    # Configure allowed origins for GitHub Codespaces
+    config.action_controller.forgery_protection_origin_check = false if ENV['CODESPACES'] == 'true'
   end
 end
