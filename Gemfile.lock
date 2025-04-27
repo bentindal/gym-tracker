@@ -127,7 +127,7 @@ GEM
       sassc (~> 2.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
-    haml (6.1.1)
+    haml (6.0.7)
       temple (>= 0.8.2)
       thor
       tilt
@@ -327,7 +327,7 @@ GEM
     sqlite3 (1.6.2-x86_64-linux)
     stimulus-rails (1.2.1)
       railties (>= 6.0.0)
-    temple (0.10.0)
+    temple (0.10.3)
     terminal-table (4.0.0)
       unicode-display_width (>= 1.1.1, < 4)
     thor (1.2.1)
@@ -382,6 +382,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   font-awesome-sass (= 6.4.0)
+  haml (= 6.0.7)
   haml-rails (= 2.1.0)
   importmap-rails (= 1.1.5)
   jbuilder (= 2.11.5)
