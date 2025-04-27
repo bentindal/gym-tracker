@@ -11,9 +11,13 @@
             %a.btn.btn-danger.btn-sm{href: "/friend/remove?id=" + @user.id.to_s}
                 Unfollow
         - elsif current_user.id == @user.id
-            = link_to edit_user_registration_path, class: "btn btn-primary btn-sm" do
-                %i.fa-solid.fa-pencil
-                Edit Profile
+            .d-flex.justify-content-center
+                = link_to edit_user_registration_path, class: "btn btn-primary btn-sm me-5" do
+                    %i.fa-solid.fa-pencil
+                    Edit Profile
+                = link_to destroy_user_session_path, method: :delete, class: "btn btn-outline-danger btn-sm ms-5 ml-2" do
+                    %i.fa-solid.fa-right-from-bracket
+                    Logout
         %h1
             %strong
                 = @user.first_name + ' ' + @user.last_name + "'s"

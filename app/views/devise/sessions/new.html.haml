@@ -1,19 +1,32 @@
-.container.justify-content-center.d-flex
-  .span.bg-white.mt-3.border.rounded.p-3.px-5
-    %h1.text-center
-      Sign In
-    %h5.text-muted.text-center Please sign in or create an account.
-    = simple_form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }) do |f|
+.container.justify-content-center.d-flex.px-3
+  .span.bg-white.mt-3.border.rounded.p-3.px-4.px-md-5.shadow-sm{role: "main", "aria-label": "Sign in form", style: "width: 100%; max-width: 500px; min-width: 300px;"}
+    .text-center.mb-4
+      %h1.text-primary{id: "sign-in-heading", style: "font-size: 2rem;"}
+        Sign In
+      %p.text-muted{id: "sign-in-description", style: "font-size: 1rem;"}
+        Please sign in or create an account to access your workout tracking features.
+    = simple_form_for(resource, as: resource_name, url: session_path(resource_name), data: { turbo: false }, html: { "aria-labelledby": "sign-in-heading", "aria-describedby": "sign-in-description" }) do |f|
       .form-inputs
-        = f.input :email,                       
-          required: false,                      
-          autofocus: true,                      
-          input_html: { autocomplete: "email" } 
-        = f.input :password,                               
-          required: false,                                 
-          input_html: { autocomplete: "current-password" } 
-        = f.input :remember_me, as: :boolean if devise_mapping.rememberable?
+        .form-group.mb-4
+          %label.text-muted.small.mb-1{for: "user_email"}
+            %i.fa-solid.fa-envelope.mr-1
+            Email Address
+          = f.input :email, required: true, autofocus: true, input_html: { autocomplete: "email", "aria-required": "true", "aria-label": "Email address", class: "form-control-lg", style: "border-left: 3px solid #009dff;" }, label_html: { class: "sr-only" }
+        .form-group.mb-4
+          %label.text-muted.small.mb-1{for: "user_password"}
+            %i.fa-solid.fa-lock.mr-1
+            Password
+          = f.input :password, required: true, input_html: { autocomplete: "current-password", "aria-required": "true", "aria-label": "Password", class: "form-control-lg", style: "border-left: 3px solid #009dff;" }, label_html: { class: "sr-only" }
+        - if devise_mapping.rememberable?
+          .form-check.mb-4
+            = f.input :remember_me, as: :boolean, input_html: { class: "form-check-input", "aria-label": "Remember me" }, label_html: { class: "form-check-label" }
       .form-actions
-        %button{class: "w-100 mb-2 btn btn-primary"} Log in
-        %a.btn.btn-outline-info.w-100.mb-2{href: "/users/sign_up"} Create an Account
-        %a.btn.btn-outline-secondary.w-100{href: "/users/password/new"} Forgot your password?
+        %button{class: "w-100 mb-3 btn btn-primary btn-lg", type: "submit", "aria-label": "Sign in to your account", style: "background-color: #009dff; border-color: #009dff;"}
+          %i.fa-solid.fa-right-to-bracket.mr-2
+          Sign In
+        %a.btn.btn-outline-primary.btn-lg.w-100.mb-3{href: "/users/sign_up", "aria-label": "Create a new account", style: "border-color: #009dff; color: #009dff;"}
+          %i.fa-solid.fa-user-plus.mr-2
+          Create an Account
+        %a.btn.btn-link.w-100{href: "/users/password/new", "aria-label": "Reset your password", style: "color: #009dff;"}
+          %i.fa-solid.fa-key.mr-2
+          Forgot your password?
