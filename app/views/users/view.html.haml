@@ -39,15 +39,15 @@
             .row
                 .col-12.col-md-4.bg-white.text-center.py-2
                     - if current_user.streak_status == "none"
-                        %h6.label.py-2.bg-danger.border.px-2.text-dark.font-weight-light
+                        %h6.label.py-2.bg-danger.border.px-2.text-white.font-weight-light
                             = @user.streak_msg_other
 
                     - elsif current_user.streak_status == "pending" || current_user.streak_status == "at_risk"
-                        %h6.label.py-2.label-warning.border.px-2.bg-warning.font-weight-light
+                        %h6.label.py-2.label-warning.border.px-2.bg-warning.text-white.font-weight-light
                             = @user.streak_msg_other
 
                     - else
-                        %h6.label.py-2.bg-success.border.px-2.text-dark.font-weight-light
+                        %h6.label.py-2.bg-success.border.px-2.text-white.font-weight-light
                             = @user.streak_msg_other
                     
                     = render 'feed/calendar'
