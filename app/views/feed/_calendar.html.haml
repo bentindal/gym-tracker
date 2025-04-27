@@ -68,11 +68,11 @@
                 %td{class: "bg-#{workoutGroup} border font-decoration-none"}
                     %a{class: textColor, href: "/workout/view?id=#{workoutId}"}
                         = dayCount
-            - elsif dayCount == Date.today.day && Date.today.strftime("%B") == Date.new(@year, @month, -1).strftime("%B")
+            - elsif dayCount == Date.today.day && Date.today.strftime("%B") == Date.new(@year, @month, -1).strftime("%B") && Date.today.year == @year
                 %td.bg-warning.border.border-warning
                     %span.text-dark
                         = dayCount
-            - elsif dayCount < Date.today.day && Date.today.month == @month || Date.today.month > @month && Date.today.year == @year || Date.today.year > @year
+            - elsif @year < Date.today.year || (@year == Date.today.year && (@month < Date.today.month || (@month == Date.today.month && dayCount < Date.today.day)))
                 %td.bg-secondary.border
                     %span.text-white
                         = dayCount
