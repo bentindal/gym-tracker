@@ -20,7 +20,7 @@ gem 'haml', '6.0.7'
 gem 'haml-rails', '2.1.0'
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem 'puma', '5.6.5'
+gem 'puma', '5.5.2'
 
 # jquery for confirmations
 gem 'jquery-rails', '4.5.1'
