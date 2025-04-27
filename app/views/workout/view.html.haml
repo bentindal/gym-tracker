@@ -12,7 +12,7 @@
 - else
   .container.bg-white.border.rounded.my-3.pt-3{id: "workout-#{@workout.started_at.strftime("%B%d%y")+@owner.id.to_s}"}
     .row
-      .col-12
+      .col-12.d-flex.justify-content-between.align-items-center
         %h5.font-weight-bold
           %a.text-dark{href: "/users/view?id=#{@owner.id}"}
             = @owner.name
@@ -23,6 +23,7 @@
             %span.badge.badge-pill.badge-warning.text-white.ml-1
               %i.fa-solid.fa-eye
               New
+        = link_to "Back", @location || "/dashboard", class: "btn btn-outline-secondary"
     .row
       .col-12
         %h6.text-muted.pb-3

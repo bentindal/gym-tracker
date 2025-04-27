@@ -163,6 +163,6 @@
       %strong GymTracker,
       made by Ben Tindal
 
-- if !@block_mobile_nav_bar.present?
+- unless @block_mobile_nav_bar
   .d-block.d-md-none
     = render 'layouts/mobilenav'
