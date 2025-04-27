@@ -11,6 +11,7 @@ RSpec.describe AiController, type: :controller do
   before do
     sign_in user
     allow(OpenAI::Client).to receive(:new).and_return(openai_client)
+    allow(ENV).to receive(:fetch).with('OPENAI_API_KEY', nil).and_return('test-key')
   end
 
   describe '#analyze_workouts' do
@@ -23,14 +24,14 @@ RSpec.describe AiController, type: :controller do
             temperature: 0.7
           }
         ).and_return({
-          'choices' => [{ 'message' => { 'content' => 'Test feedback' } }]
-        })
+                       'choices' => [{ 'message' => { 'content' => 'Test feedback' } }]
+                     })
       end
 
       it 'creates a workout analysis' do
-        expect {
+        expect do
           post :analyze_workouts, params: { workout_id: workout.id }
-        }.to change(WorkoutAnalysis, :count).by(1)
+        end.to change(WorkoutAnalysis, :count).by(1)
 
         analysis = WorkoutAnalysis.last
         expect(analysis.workout_id).to eq(workout.id)
@@ -51,8 +52,8 @@ RSpec.describe AiController, type: :controller do
               temperature: 0.7
             }
           ).and_return({
-            'choices' => [{ 'message' => { 'content' => '' } }]
-          })
+                         'choices' => [{ 'message' => { 'content' => '' } }]
+                       })
         end
 
         it 'handles empty response gracefully' do
@@ -130,21 +131,21 @@ RSpec.describe AiController, type: :controller do
       it 'calculates total volume correctly' do
         create(:allset, :with_workout, exercise: exercise, user: user, workout: workout, weight: 100, repetitions: 10)
         create(:allset, :with_workout, exercise: exercise, user: user, workout: workout, weight: 50, repetitions: 5)
-        
+
         expect(controller.send(:calculate_total_volume, workout)).to eq(1250.0)
       end
 
       it 'handles decimal weights correctly' do
         create(:allset, :with_workout, exercise: exercise, user: user, workout: workout, weight: 100.5, repetitions: 10)
         create(:allset, :with_workout, exercise: exercise, user: user, workout: workout, weight: 50.25, repetitions: 5)
-        
+
         expect(controller.send(:calculate_total_volume, workout)).to eq(1256.25)
       end
 
       it 'handles large numbers correctly' do
         create(:allset, :with_workout, exercise: exercise, user: user, workout: workout, weight: 1000, repetitions: 100)
-        
-        expect(controller.send(:calculate_total_volume, workout)).to eq(100000.0)
+
+        expect(controller.send(:calculate_total_volume, workout)).to eq(100_000.0)
       end
 
       it 'returns 0 when no sets exist' do
@@ -157,14 +158,14 @@ RSpec.describe AiController, type: :controller do
       it 'calculates average weight correctly' do
         create(:allset, :with_workout, exercise: exercise, user: user, workout: workout, weight: 100)
         create(:allset, :with_workout, exercise: exercise, user: user, workout: workout, weight: 50)
-        
+
         expect(controller.send(:calculate_average_weight, workout)).to eq(75.0)
       end
 
       it 'handles decimal weights correctly' do
         create(:allset, :with_workout, exercise: exercise, user: user, workout: workout, weight: 100.5)
         create(:allset, :with_workout, exercise: exercise, user: user, workout: workout, weight: 50.25)
-        
+
         expect(controller.send(:calculate_average_weight, workout)).to eq(75.38)
       end
 

@@ -58,4 +58,4 @@ RSpec.describe ApplicationController, type: :controller do
       expect(controller.send(:github_codespaces?)).to be false
     end
   end
-end 
+end
