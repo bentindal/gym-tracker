@@ -18,8 +18,8 @@ RSpec.describe 'Exercise Recording', type: :system do
     # Fill in login details with explicit identification
     within('#new_user') do
       fill_in 'user_email', with: user.email
-      fill_in 'user_password', with: 'password'
-      click_button 'Log in'
+      fill_in 'user_password', with: 'password123'
+      click_button 'Sign In'
     end
 
     # Verify login success using the exact HTML content
