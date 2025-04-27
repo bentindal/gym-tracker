@@ -5,7 +5,7 @@
 class ApplicationController < ActionController::Base
   before_action :authenticate_user!, except: %i[index new create]
   before_action :set_location
-  
+
   # Handle CSRF protection for GitHub Codespaces
   protect_from_forgery with: :exception, unless: :github_codespaces?
 
@@ -25,9 +25,7 @@ class ApplicationController < ActionController::Base
       @location = '/dashboard'
     elsif referrer.include?('/users/view')
       # Extract user ID from the referrer URL
-      if referrer =~ /\/users\/view\?id=(\d+)/
-        @location = "/users/view?id=#{$1}"
-      end
+      @location = "/users/view?id=#{::Regexp.last_match(1)}" if referrer =~ %r{/users/view\?id=(\d+)}
     end
   end
 
