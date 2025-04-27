@@ -16,6 +16,7 @@ gem 'sqlite3', '1.6.2'
 gem 'devise', '4.8.1'
 
 # Prefer use of haml over erb
+gem 'haml', '6.0.7'
 gem 'haml-rails', '2.1.0'
 
 # Use the Puma web server [https://github.com/puma/puma]
