@@ -130,7 +130,7 @@
               .p-3.rounded.bg-light.border-left.border-primary.border-4
                 - feedback_paragraphs = @workout.workout_analysis.feedback.split("\n\n")
                 - feedback_paragraphs.each do |paragraph|
-                  %p.mb-3
+                  %p.mb-3.small
                     = paragraph.gsub(/\*\*(.*?)\*\*/, '<strong>\1</strong>')
   - elsif @owner == current_user
     .container
