@@ -143,7 +143,7 @@
                 %i.fa-solid.fa-robot.mr-2
                 Get AI Analysis
               %p.text-muted.mb-4 Get personalized insights about your workout performance and progress
-              = form_with url: ai_analyze_path, method: :post, data: { turbo: true } do |f|
+              = form_with url: ai_analyze_path, method: :post, data: { controller: "loading", action: "submit->loading#submit" } do |f|
                 = f.hidden_field :workout_id, value: @workout.id
                 = f.button type: "submit", class: "btn btn-primary btn-lg position-relative", data: { loading_target: "button" } do
                   %span.d-none{data: { loading_target: "spinner" }}
