@@ -1,34 +1,67 @@
-.container.pt-1
-  .text-right
-    = link_to "Head Back", :back 
-  %h2.text-center.mb-3
-    = "Edit #{resource_name.to_s.humanize}"
-  
-  .container.bg-white.border.border-rounded.p-3
-    = simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }, data: {turbo: false}) do |f|
-      = f.error_notification
-      .form-inputs
-        = f.input :first_name, required: true, autofocus: true
-        = f.input :last_name, required: false
-        = f.input :email, required: false
-        = f.input :isPublic, :as => :boolean, :label => "Would you like your profile to be public? (Enabled by default)"
-        - if devise_mapping.confirmable? && resource.pending_reconfirmation?
-          %p
-            = "Currently waiting confirmation for: #{resource.unconfirmed_email}"
-        = f.input :password,                                     
-          hint: "leave it blank if you don't want to change it", 
-          required: false,                                       
-          input_html: { autocomplete: "new-password" }           
-        = f.input :password_confirmation,              
-          required: false,                             
-          input_html: { autocomplete: "new-password" } 
-        = f.input :current_password,                                     
-          hint: "we need your current password to confirm your changes", 
-          required: true,                                                
-          input_html: { autocomplete: "current-password" }               
-      .form-actions
-        = f.button :submit, "Update"
-    %br
-    %h3 Cancel my account
-    %p
-      = "Unhappy? #{link_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete}"
+.container.py-5
+  .row.justify-content-center
+    .col-md-8.col-lg-6
+      .card.shadow-sm
+        .card-header.bg-white.border-bottom-0.pt-4
+          .d-flex.justify-content-between.align-items-center
+            %h3.mb-0 Edit Profile
+            = link_to "Back", :back, class: "btn btn-outline-secondary btn-sm"
+        
+        .card-body.px-4
+          = simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }, data: {turbo: false}) do |f|
+            = f.error_notification
+            
+            .form-inputs
+              .row
+                .col-md-6
+                  = f.input :first_name, required: true, autofocus: true, wrapper_html: { class: "mb-3" }
+                .col-md-6
+                  = f.input :last_name, required: false, wrapper_html: { class: "mb-3" }
+              
+              = f.input :email, required: false, wrapper_html: { class: "mb-3" }
+              
+              .mb-3
+                = f.input :isPublic, 
+                  as: :boolean, 
+                  label: "Make profile public?",
+                  hint: "Your profile will be visible to other users",
+                  wrapper_html: { class: "mb-3" }
+              
+              - if devise_mapping.confirmable? && resource.pending_reconfirmation?
+                .alert.alert-info.mb-3
+                  %i.fa-solid.fa-info-circle.mr-2
+                  Currently waiting confirmation for: #{resource.unconfirmed_email}
+              
+              %h5.mt-4.mb-3 Change Password
+              .text-muted.small.mb-3
+                Leave password fields blank if you don't want to change it
+              
+              = f.input :password,
+                required: false,
+                input_html: { autocomplete: "new-password", class: "form-control" },
+                wrapper_html: { class: "mb-3" }
+              
+              = f.input :password_confirmation,
+                required: false,
+                input_html: { autocomplete: "new-password", class: "form-control" },
+                wrapper_html: { class: "mb-3" }
+              
+              = f.input :current_password,
+                required: true,
+                hint: "We need your current password to confirm your changes",
+                input_html: { autocomplete: "current-password", class: "form-control" },
+                wrapper_html: { class: "mb-4" }
+            
+            .form-actions
+              = f.button :submit, "Update Profile", class: "btn btn-primary btn-lg w-100"
+        
+        .card-footer.bg-light.border-top-0.pt-4.pb-4
+          .text-center
+            %h5.mb-3 Cancel Account
+            %p.text-muted.mb-3
+              Once you delete your account, there is no going back. Please be certain.
+            = link_to "Delete Account", 
+              registration_path(resource_name), 
+              class: "btn btn-outline-danger",
+              data: { confirm: "Are you sure you want to delete your account? This action cannot be undone." }, 
+              method: :delete
