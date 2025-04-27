@@ -17,11 +17,16 @@ class AiController < ApplicationController
     prompt = format_workout_data_for_ai(@workout, recent_workouts)
     feedback = get_ai_feedback(prompt)
 
+    if feedback.blank?
+      redirect_to dashboard_path, alert: 'Error generating analysis'
+      return
+    end
+
     create_workout_analysis(feedback)
     redirect_to workout_view_path(id: @workout.id)
   rescue StandardError => e
     Rails.logger.error("AI Analysis Error: #{e.message}")
-    redirect_to workout_view_path(id: @workout.id), alert: 'Error generating analysis'
+    redirect_to dashboard_path, alert: 'Error generating analysis'
   end
 
   private
@@ -34,6 +39,9 @@ class AiController < ApplicationController
     return false if analysis_exists?
 
     true
+  rescue ActiveRecord::RecordNotFound
+    redirect_to dashboard_path, alert: 'Error generating analysis'
+    false
   end
 
   def workout_authorized?
@@ -75,13 +83,13 @@ class AiController < ApplicationController
     total_sets.positive? ? (total_weight / total_sets).round(2) : 0
   end
 
-  def format_workout_data_for_ai(current_workout, recent_workouts)
+  def format_workout_data_for_ai(workout, recent_workouts)
     <<~PROMPT
       Analyze this workout and provide feedback on progress and suggestions for improvement.
       Consider the following recent workouts for context.
 
       Current Workout:
-      #{format_workout_details(current_workout)}
+      #{format_workout_details(workout)}
 
       Recent Workouts:
       #{format_recent_workouts(recent_workouts)}
@@ -98,7 +106,7 @@ class AiController < ApplicationController
     exercises = workout.allsets.group_by(&:exercise).map do |exercise, sets|
       <<~EXERCISE
         #{exercise.name}:
-        #{sets.map { |set| "#{set.weight}kg x #{set.repetitions} reps" }.join(', ')}
+        #{sets.map { |set| "#{set.weight}#{exercise.unit} x #{set.repetitions} reps" }.join(', ')}
       EXERCISE
     end.join("\n")
 
@@ -114,13 +122,16 @@ class AiController < ApplicationController
     workouts.map do |workout|
       <<~WORKOUT
         #{workout.started_at.strftime('%B %d')}:
-        #{workout.allsets.map { |set| "#{set.exercise.name}: #{set.weight}kg x #{set.repetitions}" }.join(', ')}
+        #{workout.allsets.map { |set| "#{set.exercise.name}: #{set.weight}#{set.exercise.unit} x #{set.repetitions}" }.join(', ')}
       WORKOUT
     end.join("\n")
   end
 
   def get_ai_feedback(prompt)
-    client = OpenAI::Client.new(access_token: ENV.fetch('OPENAI_API_KEY', nil))
+    api_key = ENV.fetch('OPENAI_API_KEY', nil)
+    return nil if api_key.blank?
+
+    client = OpenAI::Client.new(access_token: api_key)
     response = client.chat(
       parameters: {
         model: 'gpt-4',
@@ -128,6 +139,7 @@ class AiController < ApplicationController
         temperature: 0.7
       }
     )
-    response.dig('choices', 0, 'message', 'content')
+    feedback = response.dig('choices', 0, 'message', 'content')
+    feedback.present? ? feedback : nil
   end
 end
