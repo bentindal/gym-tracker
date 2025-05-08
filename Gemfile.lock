@@ -122,9 +122,6 @@ GEM
       multipart-post (~> 2.0)
     faraday-net_http (3.4.0)
       net-http (>= 0.5.0)
-    ffi (1.15.5)
-    font-awesome-sass (6.4.0)
-      sassc (~> 2.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
     haml (6.0.7)
@@ -287,8 +284,6 @@ GEM
       faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
     rubyzip (2.3.2)
-    sassc (2.4.0)
-      ffi (~> 1.9)
     selenium-webdriver (4.8.6)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
@@ -375,7 +370,6 @@ DEPENDENCIES
   execjs (= 2.8.1)
   factory_bot_rails
   faker
-  font-awesome-sass (= 6.4.0)
   haml (= 6.0.7)
   haml-rails (= 2.1.0)
   importmap-rails (= 1.1.5)
@@ -395,7 +389,6 @@ DEPENDENCIES
   rubocop-rspec
   rubocop-rspec_rails
   ruby-openai
-  sassc (~> 2.4.0)
   selenium-webdriver (= 4.8.6)
   shoulda-matchers
   simple_form (= 5.2.0)
