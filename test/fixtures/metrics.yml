@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2025-05-08
+  total_users: 1
+  total_workouts: 1
+  total_sets: 1
+  active_users: 1
+  new_users: 1
+
+two:
+  date: 2025-05-08
+  total_users: 1
+  total_workouts: 1
+  total_sets: 1
+  active_users: 1
+  new_users: 1

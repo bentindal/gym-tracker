@@ -1,0 +1,81 @@
+.container.mt-4
+  .row
+    .col-12
+      %h1 Admin Dashboard
+      %p.text-muted= @page_description
+
+  .row.mt-4
+    .col-md-4
+      .card
+        .card-body
+          %h5.card-title Total Users
+          %p.card-text.display-4= @total_users
+    .col-md-4
+      .card
+        .card-body
+          %h5.card-title Total Workouts
+          %p.card-text.display-4= @total_workouts
+    .col-md-4
+      .card
+        .card-body
+          %h5.card-title Total Sets
+          %p.card-text.display-4= @total_sets
+
+  .row.mt-4
+    .col-12
+      .card
+        .card-header
+          %h5.mb-0 User Management
+        .card-body
+          %table.table
+            %thead
+              %tr
+                %th Name
+                %th Email
+                %th Role
+                %th Last Active
+                %th Actions
+            %tbody
+              - @users.each do |user|
+                %tr
+                  %td= user.name
+                  %td= user.email
+                  %td
+                    %span.badge.text-white{class: user.admin? ? 'bg-danger' : 'bg-primary'}= user.role
+                  %td
+                    - if user.last_active
+                      = time_ago_in_words(user.last_active) + ' ago'
+                    - else
+                      %span.text-muted Never
+                  %td
+                    - if user != current_user
+                      = link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-sm btn-outline-primary me-2'
+                      = link_to 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-outline-danger'
+
+  .row.mt-4
+    .col-12
+      .card
+        .card-header
+          %h5.mb-0 Usage Metrics (Last 30 Days)
+        .card-body
+          .row
+            .col-md-6.mb-4
+              .card
+                .card-body
+                  %h6.card-title User Growth
+                  = line_chart @user_growth_data, colors: ['#009dff'], curve: true, points: false
+            .col-md-6.mb-4
+              .card
+                .card-body
+                  %h6.card-title Active Users
+                  = line_chart @active_users_data, colors: ['#28a745'], curve: true, points: false
+            .col-md-6.mb-4
+              .card
+                .card-body
+                  %h6.card-title New Users
+                  = line_chart @new_users_data, colors: ['#ffc107'], curve: true, points: false
+            .col-md-6.mb-4
+              .card
+                .card-body
+                  %h6.card-title Workouts & Sets
+                  = line_chart [ { name: 'Workouts', data: @workouts_data }, { name: 'Sets', data: @sets_data } ], colors: ['#dc3545', '#6c757d'], curve: true, points: false
