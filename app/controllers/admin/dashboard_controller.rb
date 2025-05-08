@@ -17,25 +17,23 @@ module Admin
         generate_sample_data
       else
         @user_growth_data = Metric.order(date: :asc).pluck(:date, :total_users).to_h
-        # Fetch active users as an array of [date, active_users]
+        # Aggregate active users by week
         active_users_array = Metric.order(date: :asc).pluck(:date, :active_users)
-        # Calculate 3-day rolling average
-        rolling = []
-        active_users_array.each_with_index do |(date, value), i|
-          window = active_users_array[[i-2,0].max..i].map { |_, v| v }
-          avg = window.sum.to_f / window.size
-          rolling << [date, avg.round(2)]
+        active_users_weekly = Hash.new(0)
+        active_users_array.each do |date, value|
+          week = date.beginning_of_week(:monday)
+          active_users_weekly[week] += value.to_i
         end
-        @active_users_data = rolling.to_h
-        # Fetch new users as an array of [date, new_users]
+        @active_users_data = active_users_weekly.sort.to_h
+
+        # Aggregate new users by week
         new_users_array = Metric.order(date: :asc).pluck(:date, :new_users)
-        new_users_rolling = []
-        new_users_array.each_with_index do |(date, value), i|
-          window = new_users_array[[i-2,0].max..i].map { |_, v| v }
-          avg = window.sum.to_f / window.size
-          new_users_rolling << [date, avg.round(2)]
+        new_users_weekly = Hash.new(0)
+        new_users_array.each do |date, value|
+          week = date.beginning_of_week(:monday)
+          new_users_weekly[week] += value.to_i
         end
-        @new_users_data = new_users_rolling.to_h
+        @new_users_data = new_users_weekly.sort.to_h
         @workouts_data = Metric.order(date: :asc).pluck(:date, :total_workouts).to_h
         @sets_data = Metric.order(date: :asc).pluck(:date, :total_sets).to_h
       end
