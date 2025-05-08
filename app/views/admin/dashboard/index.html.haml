@@ -25,37 +25,6 @@
     .col-12
       .card
         .card-header
-          %h5.mb-0 User Management
-        .card-body
-          %table.table
-            %thead
-              %tr
-                %th Name
-                %th Email
-                %th Role
-                %th Last Active
-                %th Actions
-            %tbody
-              - @users.each do |user|
-                %tr
-                  %td= user.name
-                  %td= user.email
-                  %td
-                    %span.badge.text-white{class: user.admin? ? 'bg-danger' : 'bg-primary'}= user.role
-                  %td
-                    - if user.last_active
-                      = time_ago_in_words(user.last_active) + ' ago'
-                    - else
-                      %span.text-muted Never
-                  %td
-                    - if user != current_user
-                      = link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-sm btn-outline-primary me-2'
-                      = link_to 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-outline-danger'
-
-  .row.mt-4
-    .col-12
-      .card
-        .card-header
           %h5.mb-0 Usage Metrics (Last 30 Days)
         .card-body
           .row
@@ -79,3 +48,37 @@
                 .card-body
                   %h6.card-title Workouts & Sets
                   = line_chart [ { name: 'Workouts', data: @workouts_data }, { name: 'Sets', data: @sets_data } ], colors: ['#dc3545', '#6c757d'], curve: true, points: false
+
+  .row.mt-4
+    .col-12
+      .card
+        .card-header
+          %h5.mb-0 User Management
+          %button.btn.btn-link{type: 'button', 'data-bs-toggle': 'collapse', 'data-bs-target': '#userManagementTable', 'aria-expanded': 'false', 'aria-controls': 'userManagementTable'}
+            Show/Hide
+        .collapse#userManagementTable
+          .card-body
+            %table.table
+              %thead
+                %tr
+                  %th Name
+                  %th Email
+                  %th Role
+                  %th Last Active
+                  %th Actions
+              %tbody
+                - @users.each do |user|
+                  %tr
+                    %td= user.name
+                    %td= user.email
+                    %td
+                      %span.badge.text-white{class: user.admin? ? 'bg-danger' : 'bg-primary'}= user.role
+                    %td
+                      - if user.last_active
+                        = time_ago_in_words(user.last_active) + ' ago'
+                      - else
+                        %span.text-muted Never
+                    %td
+                      - if user != current_user
+                        = link_to 'Edit', edit_admin_user_path(user), class: 'btn btn-sm btn-outline-primary me-2'
+                        = link_to 'Delete', admin_user_path(user), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-sm btn-outline-danger'

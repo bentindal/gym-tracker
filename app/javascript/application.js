@@ -3,7 +3,7 @@ import "@hotwired/turbo-rails"
 import "controllers"
 import "chartkick"
 import "Chart.bundle"
-import "./chartkick/chart.js"
+import "bootstrap"
 
 // Service Worker registration disabled
 // if ('serviceWorker' in navigator) {
