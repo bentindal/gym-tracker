@@ -59,22 +59,22 @@
           %h5.mb-0 Usage Metrics (Last 30 Days)
         .card-body
           .row
-            .col-md-6.mb-4
+            .col-12.mb-4
               .card
                 .card-body
                   %h6.card-title User Growth
                   = line_chart @user_growth_data, colors: ['#009dff'], curve: true, points: false
-            .col-md-6.mb-4
+            .col-12.mb-4
               .card
                 .card-body
                   %h6.card-title Active Users
                   = line_chart @active_users_data, colors: ['#28a745'], curve: true, points: false
-            .col-md-6.mb-4
+            .col-12.mb-4
               .card
                 .card-body
                   %h6.card-title New Users
                   = line_chart @new_users_data, colors: ['#ffc107'], curve: true, points: false
-            .col-md-6.mb-4
+            .col-12.mb-4
               .card
                 .card-body
                   %h6.card-title Workouts & Sets
