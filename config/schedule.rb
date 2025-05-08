@@ -33,8 +33,3 @@ end
 every 1.day, at: '12:00 am' do
   runner 'Metric.collect_daily_metrics'
 end
-
-# Clean up old metrics once a week
-every :sunday, at: '1:00 am' do
-  runner 'Metric.cleanup_old_metrics'
-end

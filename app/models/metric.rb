@@ -20,12 +20,6 @@ class Metric < ApplicationRecord
     metric.save!
   end
 
-  def self.cleanup_old_metrics
-    # Keep metrics for the last 90 days
-    cutoff_date = 90.days.ago.to_date
-    where('date < ?', cutoff_date).delete_all
-  end
-
   def self.daily_metrics_for_range(start_date, end_date)
     where(date: start_date..end_date).order(date: :asc)
   end
