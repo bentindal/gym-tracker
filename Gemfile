@@ -13,7 +13,6 @@ gem 'sprockets-rails', '3.4.2'
 
 # Use Font Awesome with SASS support
 gem 'font-awesome-rails', '4.7.0.8'
-gem 'sassc-rails', '2.1.2'
 
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '1.6.2'
