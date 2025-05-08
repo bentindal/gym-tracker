@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 module Admin
   class UsersController < ApplicationController
     before_action :authenticate_user!
     before_action :require_admin
-    before_action :set_user, only: [:edit, :update, :destroy]
+    before_action :set_user, only: %i[edit update destroy]
 
     def edit
       @page_title = "Edit User - #{@user.name}"
-      @page_description = "Edit user details and role"
+      @page_description = 'Edit user details and role'
     end
 
     def update
@@ -37,10 +39,10 @@ module Admin
     end
 
     def require_admin
-      unless current_user&.admin?
-        flash[:alert] = 'You are not authorized to access this area.'
-        redirect_to root_path
-      end
+      return if current_user&.admin?
+
+      flash[:alert] = 'You are not authorized to access this area.'
+      redirect_to root_path
     end
   end
 end

@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     get 'users/update'
     get 'users/destroy'
     get 'dashboard', to: 'dashboard#index'
-    resources :users, only: [:edit, :update, :destroy]
+    resources :users, only: %i[edit update destroy]
   end
   get 'likes/create'
   get 'likes/destroy'

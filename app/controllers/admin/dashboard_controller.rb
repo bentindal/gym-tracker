@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   class DashboardController < ApplicationController
     before_action :authenticate_user!
@@ -25,10 +27,10 @@ module Admin
     private
 
     def require_admin
-      unless current_user&.admin?
-        flash[:alert] = 'You are not authorized to access this area.'
-        redirect_to root_path
-      end
+      return if current_user&.admin?
+
+      flash[:alert] = 'You are not authorized to access this area.'
+      redirect_to root_path
     end
 
     def generate_sample_data
