@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  include UserStreakable
+  include User::Streakable
   include User::ActivityTrackable
 
   # Include default devise modules. Others available are:
