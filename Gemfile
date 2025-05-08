@@ -11,6 +11,9 @@ gem 'rails', '7.0.4.3'
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails', '3.4.2'
 
+# Optimized SASS processing for Rails
+gem 'sassc-rails', '2.1.0'
+
 # Use Font Awesome with SASS support
 gem 'font-awesome-rails', '4.7.0.8'
 
@@ -84,9 +87,6 @@ gem 'simple_form', '5.2.0'
 # Handle native extensions
 gem 'json', '~> 2.6.3'
 gem 'msgpack', '~> 1.6.0'
-
-# Optimized SASS processing for Rails
-gem 'sassc-rails', '2.1.2'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
