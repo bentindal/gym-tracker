@@ -6,9 +6,9 @@
                 Current Workout
         - @time_elapsed_in_seconds = (Time.now - unassigned_sets.first[1].first.created_at)
         - @time_elapsed = Time.at(@time_elapsed_in_seconds)
-        .text-center.mb-2
+        .text-center.mb-2{"data-controller": "workout-timer"}
             %strong Time Elapsed
-            #timer.ml-1 #{@time_elapsed.strftime("%H:%M:%S")}
+            #timer.ml-1{"data-workout-timer-target": "display", "data-start-time": unassigned_sets.first[1].first.created_at.iso8601} #{@time_elapsed.strftime("%H:%M:%S")}
 
         - unassigned_sets.each do |item|
             %table.table.table-sm.border.bg-white.m-auto
@@ -33,30 +33,3 @@
             %h3.mt-3 No Workout in Progress
             %p.text-muted Click on the button below to start your first exercise
             = link_to 'Begin your Workout', "/exercises", {class: "btn btn-secondary"}
-:javascript
-    var timer = document.getElementById("timer");
-
-    // if restTimer exists
-    function updateTimer() {
-        if (timer) {
-            // Increment the timer by 1 second and update the display
-            var time = timer.innerHTML.split(":");
-            var seconds = parseInt(time[2]);
-            var minutes = parseInt(time[1]);
-            var hours = parseInt(time[0]);
-            seconds++;
-            if (seconds == 60) {
-                seconds = 0;
-                minutes++;
-                if (minutes == 60) {
-                    minutes = 0;
-                    hours++;
-                }
-            }
-            timer.innerHTML = (hours ? (hours > 9 ? hours : "0" + hours) : "00")
-                + ":" + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00")
-                + ":" + (seconds > 9 ? seconds : "0" + seconds);
-        }
-    }
-    updateTimer()
-    setInterval(updateTimer, 1000);

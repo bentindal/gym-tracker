@@ -85,6 +85,9 @@ gem 'simple_form', '5.2.0'
 gem 'json', '~> 2.6.3'
 gem 'msgpack', '~> 1.6.0'
 
+# Optimized SASS processing for Rails
+gem 'sassc-rails', '2.1.2'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', '1.7.2', platforms: %i[mri mingw x64_mingw]
