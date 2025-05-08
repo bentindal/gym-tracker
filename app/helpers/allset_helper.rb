@@ -5,7 +5,7 @@ module AllsetHelper
     return '' if date.nil?
 
     if date > Time.now.beginning_of_day - 10.minutes
-      ''  # Timer will be shown by the rest-timer controller
+      '' # Timer will be shown by the rest-timer controller
     elsif date > Time.now.beginning_of_day - 1.day
       'Today'
     elsif date > Time.now.beginning_of_day - 2.day
