@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_05_08_090046) do
+ActiveRecord::Schema[7.0].define(version: 2025_05_08_091937) do
   create_table "allsets", force: :cascade do |t|
     t.integer "exercise_id"
     t.integer "repetitions"
@@ -48,6 +48,18 @@ ActiveRecord::Schema[7.0].define(version: 2025_05_08_090046) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "metrics", force: :cascade do |t|
+    t.date "date", null: false
+    t.integer "total_users", default: 0
+    t.integer "total_workouts", default: 0
+    t.integer "total_sets", default: 0
+    t.integer "active_users", default: 0
+    t.integer "new_users", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["date"], name: "index_metrics_on_date", unique: true
   end
 
   create_table "users", force: :cascade do |t|
