@@ -4,10 +4,21 @@ export default class extends Controller {
   static targets = ["timer", "display"]
   
   connect() {
-    if (this.hasTimerTarget) {
+    console.log("Rest timer controller connected")
+    console.log("Element:", this.element)
+    console.log("Element HTML:", this.element.outerHTML)
+    
+    if (this.hasTimerTarget && this.hasDisplayTarget) {
+      console.log("Timer targets found")
       this.startTime = new Date(this.timerTarget.dataset.startTime)
+      console.log("Start time:", this.startTime)
       this.updateTimer()
       this.startTimer()
+    } else {
+      console.log("Missing timer targets:", {
+        hasTimer: this.hasTimerTarget,
+        hasDisplay: this.hasDisplayTarget
+      })
     }
   }
 
@@ -19,30 +30,39 @@ export default class extends Controller {
     
     if (mins >= 10) {
       this.displayTarget.textContent = ">10m ago"
-      if (this.interval) clearInterval(this.interval)
+      this.stopTimer()
       return
     }
     
     let msg
     if (mins === 0) {
-      msg = `${secs}s`
+      msg = `${secs}s ago`
     } else {
-      msg = `${mins}m ${secs.toString().padStart(2, '0')}s`
+      msg = `${mins}m ${secs.toString().padStart(2, '0')}s ago`
     }
     
+    console.log("Updating timer display:", msg)
     this.displayTarget.textContent = msg
   }
 
   startTimer() {
-    // Clear any existing timer to prevent duplicates
-    if (this.interval) clearInterval(this.interval)
-    
+    console.log("Starting timer")
+    this.stopTimer()
     this.interval = setInterval(() => {
       this.updateTimer()
     }, 1000)
   }
 
+  stopTimer() {
+    if (this.interval) {
+      console.log("Stopping timer")
+      clearInterval(this.interval)
+      this.interval = null
+    }
+  }
+
   disconnect() {
-    if (this.interval) clearInterval(this.interval)
+    console.log("Rest timer controller disconnected")
+    this.stopTimer()
   }
 } 

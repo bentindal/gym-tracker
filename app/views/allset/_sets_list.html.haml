@@ -1,6 +1,10 @@
 #rest-timer{"data-controller": "rest-timer"}
   - if sets.any? && sets.first.created_at > Time.now.beginning_of_day
-    #timer{"data-rest-timer-target": "timer", "data-start-time": sets.first.created_at.iso8601}
+    .text-muted.mb-2
+      - start_time = sets.first.created_at.iso8601
+      - puts "Debug: Start time for timer: #{start_time}"
+      #timer{"data-rest-timer-target": "timer", "data-start-time": start_time}
+      #timer-display{"data-rest-timer-target": "display"}
   
   - if setss.present?
     - setss.each do |date_sets|

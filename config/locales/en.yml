@@ -34,3 +34,37 @@ en:
   allset:
     create:
       success: "Set was successfully created."
+      error: "Failed to create set."
+    update:
+      success: "Set was successfully updated."
+      failure: "Failed to update set."
+  workout:
+    create:
+      success: "Workout was successfully created."
+    finish:
+      success: "Workout was successfully finished."
+      failure: "Failed to finish workout."
+  exercise:
+    create:
+      success: "Exercise was successfully created."
+    update:
+      success: "Exercise was successfully updated."
+      failure: "Failed to update exercise."
+  registrations:
+    new:
+      page_title: "Sign Up"
+      page_description: "Create a new account"
+  sessions:
+    new:
+      page_title: "Sign In"
+      page_description: "Sign in to your account"
+  home:
+    index:
+      page_description: "Welcome to GymTracker"
+  users:
+    list:
+      page_title: "Users"
+      page_description: "Browse all users"
+    view:
+      page_title: "%{name}'s Profile"
+      page_description: "View %{name}'s workout history and progress"

@@ -2,8 +2,10 @@
 
 import { application } from "./application"
 import RestTimerController from "./rest_timer_controller"
+import WorkoutTimerController from "./workout_timer_controller"
 
 application.register("rest-timer", RestTimerController)
+application.register("workout-timer", WorkoutTimerController)
 
 // Eager load all controllers defined in the import map under controllers/**/*_controller
 import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading"

@@ -5,7 +5,7 @@ module AllsetHelper
     return '' if date.nil?
 
     if date > Time.now.beginning_of_day - 10.minutes
-      content_tag(:div, '0s ago', 'data-rest-timer-target': 'display', style: 'min-height: 1.2em')
+      '' # Timer will be shown by the rest-timer controller
     elsif date > Time.now.beginning_of_day - 1.day
       'Today'
     elsif date > Time.now.beginning_of_day - 2.day
