@@ -333,6 +333,8 @@ GEM
     temple (0.10.3)
     terminal-table (4.0.0)
       unicode-display_width (>= 1.1.1, < 4)
+    terser (1.2.5)
+      execjs (>= 0.3.0, < 3)
     thor (1.2.1)
     tilt (2.1.0)
     timeout (0.3.2)
@@ -415,6 +417,7 @@ DEPENDENCIES
   sprockets-rails (= 3.4.2)
   sqlite3 (= 1.6.2)
   stimulus-rails (= 1.2.1)
+  terser (~> 1.1)
   turbo-rails (= 1.4.0)
   tzinfo-data
   uglifier (= 4.2.0)

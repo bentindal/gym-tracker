@@ -55,6 +55,9 @@ gem 'sitemap_generator', '6.3.0'
 # Chartkick
 gem 'chartkick', '5.0.2'
 
+# JavaScript compression
+gem 'terser', '~> 1.1'
+
 # Uglifier for js minification
 gem 'uglifier', '4.2.0'
 
