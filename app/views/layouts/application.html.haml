@@ -14,7 +14,8 @@
     = javascript_importmap_tags
     = javascript_include_tag "application", type: "module", defer: true
     = favicon_link_tag 'favicon.ico'
-    %link{href: asset_path("apple-touch-icon.png"), rel: "apple-touch-icon"}
+    %link{href: asset_path("apple-touch-icon.png"), rel: "apple-touch-icon", sizes: "180x180"}/
+    %link{href: asset_path("icon.png"), rel: "icon", type: "image/png", sizes: "512x512"}/
     - if @page_description.present?
       %meta{name: "description", content: @page_description}/
     
