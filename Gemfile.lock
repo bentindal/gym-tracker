@@ -288,7 +288,9 @@ GEM
       faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
     rubyzip (2.3.2)
-    sassc (2.4.0)
+    sassc (2.1.0)
+      ffi (~> 1.9)
+    sassc (2.1.0-x86_64-linux)
       ffi (~> 1.9)
     sassc-rails (2.1.0)
       railties (>= 4.0.0)
@@ -402,6 +404,7 @@ DEPENDENCIES
   rubocop-rspec
   rubocop-rspec_rails
   ruby-openai
+  sassc (= 2.1.0)
   sassc-rails (= 2.1.0)
   selenium-webdriver (= 4.8.6)
   shoulda-matchers

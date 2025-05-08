@@ -12,6 +12,7 @@ gem 'rails', '7.0.4.3'
 gem 'sprockets-rails', '3.4.2'
 
 # Optimized SASS processing for Rails
+gem 'sassc', '2.1.0'
 gem 'sassc-rails', '2.1.0'
 
 # Use Font Awesome with SASS support
