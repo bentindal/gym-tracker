@@ -8,11 +8,20 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-# Create demo user
-demo_user = User.create!(
+# Create or update admin user
+admin_user = User.find_or_initialize_by(email: 'admin@example.com')
+admin_user.update!(
+  first_name: 'Admin',
+  last_name: 'User',
+  password: 'password123',
+  role: 'admin'
+)
+
+# Create or update demo user
+demo_user = User.find_or_initialize_by(email: 'demo@example.com')
+demo_user.update!(
   first_name: 'Demo',
   last_name: 'User',
-  email: 'demo@example.com',
   password: 'password123'
 )
 
@@ -26,7 +35,7 @@ exercises = [
 ]
 
 exercise_records = exercises.map do |exercise|
-  Exercise.create!(
+  Exercise.find_or_create_by!(
     name: exercise[:name],
     group: exercise[:group],
     unit: exercise[:unit],

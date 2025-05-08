@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  namespace :admin do
+    get 'users/edit'
+    get 'users/update'
+    get 'users/destroy'
+    get 'dashboard', to: 'dashboard#index'
+    resources :users, only: [:edit, :update, :destroy]
+  end
   get 'likes/create'
   get 'likes/destroy'
   get 'settings/connections'

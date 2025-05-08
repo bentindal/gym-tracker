@@ -1,0 +1,38 @@
+.container.mt-4
+  .row
+    .col-12
+      %h1 Edit User
+      %p.text-muted= @page_description
+
+  .row.mt-4
+    .col-md-6.mx-auto
+      .card
+        .card-body
+          = form_with(model: [:admin, @user], local: true) do |f|
+            .form-group
+              = f.label :first_name
+              = f.text_field :first_name, class: 'form-control'
+              - if @user.errors[:first_name].any?
+                .text-danger= @user.errors[:first_name].join(', ')
+
+            .form-group
+              = f.label :last_name
+              = f.text_field :last_name, class: 'form-control'
+              - if @user.errors[:last_name].any?
+                .text-danger= @user.errors[:last_name].join(', ')
+
+            .form-group
+              = f.label :email
+              = f.email_field :email, class: 'form-control'
+              - if @user.errors[:email].any?
+                .text-danger= @user.errors[:email].join(', ')
+
+            .form-group
+              = f.label :role
+              = f.select :role, [['User', 'user'], ['Admin', 'admin']], {}, class: 'form-control'
+              - if @user.errors[:role].any?
+                .text-danger= @user.errors[:role].join(', ')
+
+            .form-group.mt-4
+              = f.submit 'Update User', class: 'btn btn-primary'
+              = link_to 'Cancel', admin_dashboard_path, class: 'btn btn-outline-secondary ml-2'

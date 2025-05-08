@@ -17,6 +17,7 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name, :email, presence: true
   validates :email, uniqueness: true
+  validates :role, presence: true, inclusion: { in: %w[user admin] }
 
   # First name and last name must be at least 2 characters long & only letters
   validates :first_name, :last_name, length: { minimum: 2 }
@@ -34,6 +35,14 @@ class User < ApplicationRecord
   # validates :password, length: { minimum: 6 }
   # validates :password, format: { with: /\A(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[[:^alnum:]])/x,
   #  message: "must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character" }
+
+  def admin?
+    role == 'admin'
+  end
+
+  def user?
+    role == 'user'
+  end
 
   def exercises
     Exercise.where(user_id: id)
@@ -214,5 +223,12 @@ class User < ApplicationRecord
     )
 
     unassigned_sets.update_all(belongs_to_workout: workout.id)
+  end
+
+  def last_active
+    last_workout = workouts.order(started_at: :desc).first&.started_at
+    last_set = sets.order(created_at: :desc).first&.created_at
+    
+    [last_workout, last_set].compact.max
   end
 end

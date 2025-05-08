@@ -123,6 +123,11 @@
                   .dropdown-menu{style: "position: absolute; right: 0; left: auto; z-index: 1050;"}
                     %a.dropdown-item{href: "/users/view?id="+current_user.id.to_s} My Profile
                     %a.dropdown-item{href: "/users/edit"} Edit my Details
+                    - if current_user.admin?
+                      .dropdown-divider
+                      = link_to admin_dashboard_path, class: "dropdown-item text-danger" do
+                        %i.fa-solid.fa-shield-halved.mr-2
+                        Admin Dashboard
                     .dropdown-divider
                     = link_to "Logout", destroy_user_session_path, method: :delete, class: "dropdown-item text-danger"
      
