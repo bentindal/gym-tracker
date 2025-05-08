@@ -154,14 +154,14 @@ RSpec.describe User do
     end
   end
 
-  describe '#has_worked_out_today' do
+  describe '#worked_out_today?' do
     context 'when user has worked out today' do
       it 'returns true' do
         exercise = create(:exercise, user_id: user.id)
         Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10,
                       created_at: Time.zone.now)
 
-        expect(user.has_worked_out_today).to be true
+        expect(user.worked_out_today?).to be true
       end
     end
 
@@ -170,7 +170,7 @@ RSpec.describe User do
         exercise = create(:exercise, user_id: user.id)
         Allset.create(exercise_id: exercise.id, user_id: user.id, weight: 100, repetitions: 10, created_at: 1.day.ago)
 
-        expect(user.has_worked_out_today).to be false
+        expect(user.worked_out_today?).to be false
       end
     end
   end
@@ -286,46 +286,40 @@ RSpec.describe User do
   describe '#streak_status' do
     context 'when user worked out today' do
       it 'returns "active"' do
-        create(:exercise, user_id: user.id)
-        allow(user).to receive(:has_worked_out_today).and_return(true)
-
+        allow(user).to receive(:worked_out_today?).and_return(true)
         expect(user.streak_status).to eq('active')
       end
     end
 
     context 'when user did not work out today but did yesterday' do
       it 'returns "pending"' do
-        create(:exercise, user_id: user.id)
-        allow(user).to receive(:has_worked_out_today).and_return(false)
+        allow(user).to receive(:worked_out_today?).and_return(false)
         allow(user).to receive(:worked_out_on_date).with(Date.yesterday.day, Date.yesterday.month,
                                                          Date.yesterday.year).and_return(true)
-
         expect(user.streak_status).to eq('pending')
       end
     end
 
     context 'when user did not work out today or yesterday but did the day before' do
       it 'returns "at_risk"' do
-        create(:exercise, user_id: user.id)
-        allow(user).to receive(:has_worked_out_today).and_return(false)
+        allow(user).to receive(:worked_out_today?).and_return(false)
         allow(user).to receive(:worked_out_on_date).with(Date.yesterday.day, Date.yesterday.month,
                                                          Date.yesterday.year).and_return(false)
-        allow(user).to receive(:worked_out_on_date).with(Date.yesterday.yesterday.day, Date.yesterday.yesterday.month,
+        allow(user).to receive(:worked_out_on_date).with(Date.yesterday.yesterday.day,
+                                                         Date.yesterday.yesterday.month,
                                                          Date.yesterday.yesterday.year).and_return(true)
-
         expect(user.streak_status).to eq('at_risk')
       end
     end
 
     context 'when user has not worked out in the last three days' do
       it 'returns "none"' do
-        create(:exercise, user_id: user.id)
-        allow(user).to receive(:has_worked_out_today).and_return(false)
+        allow(user).to receive(:worked_out_today?).and_return(false)
         allow(user).to receive(:worked_out_on_date).with(Date.yesterday.day, Date.yesterday.month,
                                                          Date.yesterday.year).and_return(false)
-        allow(user).to receive(:worked_out_on_date).with(Date.yesterday.yesterday.day, Date.yesterday.yesterday.month,
+        allow(user).to receive(:worked_out_on_date).with(Date.yesterday.yesterday.day,
+                                                         Date.yesterday.yesterday.month,
                                                          Date.yesterday.yesterday.year).and_return(false)
-
         expect(user.streak_status).to eq('none')
       end
     end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module User
-  module ActivityTrackable
+module ActivityTrackable
+  module User
     extend ActiveSupport::Concern
 
     def midworkout
@@ -26,31 +26,23 @@ module User
       return nil if sets.empty?
 
       last = last_set.created_at
-      # If greater than a month, print > 1 month
-      if last <= 1.month.ago
-        'over a month ago'
-      # elsif greater than a week, print how many weeks ago
-      elsif last <= 1.week.ago
+      return 'over a month ago' if last <= 1.month.ago
+
+      if last <= 1.week.ago
         weeks = ((Time.zone.now - last) / 1.week).round
         return "#{weeks} week ago" if weeks == 1
 
         "#{weeks} weeks ago"
-
-      # elsif greater than a day, print how many days ago
       elsif last <= 1.day.ago
         days = ((Time.zone.now - last) / 1.day).round
         return "#{days} day ago" if days == 1
 
         "#{days} days ago"
-
-      # elsif greater than an hour, print how many hours ago
       elsif last <= 1.hour.ago
         hours = ((Time.zone.now - last) / 1.hour).round
         return "#{hours} hour ago" if hours == 1
 
         "#{hours} hours ago"
-
-      # else, print in minutes
       else
         minutes = ((Time.zone.now - last) / 1.minute).round
         return "#{minutes} minute ago" if minutes == 1
@@ -72,4 +64,4 @@ module User
       [last_workout, last_set_time].compact.max
     end
   end
-end 
+end
