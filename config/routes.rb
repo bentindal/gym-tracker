@@ -3,7 +3,7 @@
 Rails.application.routes.draw do
   namespace :admin do
     get 'users/edit'
-    get 'users/update'
+    patch 'users/update'
     get 'users/destroy'
     get 'dashboard', to: 'dashboard#index'
     resources :users, only: %i[edit update destroy]

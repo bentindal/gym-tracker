@@ -16,11 +16,11 @@ module Admin
       if Rails.env.development?
         generate_sample_data
       else
-        @user_growth_data = Metric.where(name: 'total_users').order(date: :asc).pluck(:date, :value).to_h
-        @active_users_data = Metric.where(name: 'active_users').order(date: :asc).pluck(:date, :value).to_h
-        @new_users_data = Metric.where(name: 'new_users').order(date: :asc).pluck(:date, :value).to_h
-        @workouts_data = Metric.where(name: 'total_workouts').order(date: :asc).pluck(:date, :value).to_h
-        @sets_data = Metric.where(name: 'total_sets').order(date: :asc).pluck(:date, :value).to_h
+        @user_growth_data = Metric.order(date: :asc).pluck(:date, :total_users).to_h
+        @active_users_data = Metric.order(date: :asc).pluck(:date, :active_users).to_h
+        @new_users_data = Metric.order(date: :asc).pluck(:date, :new_users).to_h
+        @workouts_data = Metric.order(date: :asc).pluck(:date, :total_workouts).to_h
+        @sets_data = Metric.order(date: :asc).pluck(:date, :total_sets).to_h
       end
     end
 
