@@ -5,13 +5,13 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/assets/apple-touch-icon.png",
+      "src": "/apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "/assets/icon.png",
+      "src": "/icon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
@@ -49,19 +49,19 @@
   ],
   "screenshots": [
     {
-      "src": "/assets/screenshot1.png",
+      "src": "/screenshot1.png",
       "sizes": "1290x2796",
       "type": "image/png",
       "description": "Check your workout progress"
     },
     {
-      "src": "/assets/screenshot2.png",
+      "src": "/screenshot2.png",
       "sizes": "1290x2796",
       "type": "image/png",
       "description": "See your friends workouts"
     },
     {
-      "src": "/assets/screenshot3.png",
+      "src": "/screenshot3.png",
       "sizes": "1290x2796",
       "type": "image/png",
       "description": "View your workouts in the calendar on your profile"
